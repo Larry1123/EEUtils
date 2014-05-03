@@ -1,4 +1,21 @@
+/*
+ * Copyright 2014 ElecEntertainment
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.larry1123.util.logger;
+
+import net.larry1123.util.factorys.FactoryManager;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -13,10 +30,6 @@ import java.util.logging.Logger;
 
 @SuppressWarnings("WeakerAccess")
 public class EELogger extends Logger {
-
-    private LoggerSettings getConfig() {
-        return EELogManager.getLoggerSettings();
-    }
 
     /**
      * This is the path for the log files of this logger
@@ -42,11 +55,16 @@ public class EELogger extends Logger {
         setParent(parent);
     }
 
+    private LoggerSettings getConfig() {
+        return FactoryManager.getFactoryManager().getEELoggerFactory().getLoggerSettings();
+    }
+
     /**
      * Creates a LoggerLevel for this Logger
      * Makes the Log look like this: [{LoggerName}] [{LevelName}] {Message}
      *
      * @param levelName The name of the level to be made
+     *
      * @return The ID of the level to be used to get the Logger once more if needed
      */
     @SuppressWarnings("UnusedDeclaration")
@@ -60,6 +78,7 @@ public class EELogger extends Logger {
      *
      * @param levelName The name of the level to be made
      * @param prefix    The prefix to be used in the Log for this Level
+     *
      * @return The ID of the level to be used to get the Logger once more if needed
      */
     @SuppressWarnings("UnusedDeclaration")
@@ -72,6 +91,7 @@ public class EELogger extends Logger {
      * Makes the Log look like this: [{LoggerName}] [{LevelName}] {Message}
      *
      * @param levelName The name of the level to be made
+     *
      * @return The ID of the level to be used to get the Logger once more if needed
      */
     @SuppressWarnings("UnusedReturnValue")
@@ -88,6 +108,7 @@ public class EELogger extends Logger {
      *
      * @param levelName The name of the level to be made
      * @param prefix    The prefix to be used in the Log for this Level
+     *
      * @return The ID of the level to be used to get the Logger once more if needed
      */
     @SuppressWarnings("UnusedDeclaration")
@@ -102,6 +123,7 @@ public class EELogger extends Logger {
      * Get the LoggerLevel for the given name.
      *
      * @param name The ID of the Level to get
+     *
      * @return The LoggerLevel for the given ID
      */
     public LoggerLevel getLoggerLevel(String name) {
@@ -198,6 +220,7 @@ public class EELogger extends Logger {
      *
      * @param message Message to be Logged
      * @param thrown  Throwable Error To be logged
+     *
      * @return True if paste was made of stackTrace false if it failed for any reason
      */
     @SuppressWarnings("UnusedDeclaration")
@@ -213,6 +236,7 @@ public class EELogger extends Logger {
      * @param lvl     Name of the LoggerLevel to throw with
      * @param message Message to be Logged
      * @param thrown  Throwable Error To be logged
+     *
      * @return True if paste was made of stackTrace false if it failed for any reason
      */
     @SuppressWarnings("UnusedDeclaration")
@@ -228,6 +252,7 @@ public class EELogger extends Logger {
      * @param lvl     Object of the LoggerLevel to throw with
      * @param message Message to be Logged
      * @param thrown  Throwable Error To be logged
+     *
      * @return True if paste was made of stackTrace false if it failed for any reason
      */
     public boolean logStackTraceToPasteBin(LoggerLevel lvl, String message, Throwable thrown) {
@@ -245,6 +270,7 @@ public class EELogger extends Logger {
      * @param lvl     The Level to be thrown with
      * @param message Message to be Logged
      * @param thrown  Throwable Error To be logged
+     *
      * @return True if paste was made of stackTrace false if it failed for any reason
      */
     public boolean logStackTraceToPasteBin(Level lvl, String message, Throwable thrown) {
@@ -274,8 +300,7 @@ public class EELogger extends Logger {
                 wr.close();
 
                 int responseCode = con.getResponseCode();
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(con.getInputStream()));
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
                 String inputLine;
                 StringBuilder response = new StringBuilder();
 
@@ -286,14 +311,17 @@ public class EELogger extends Logger {
 
                 return responseCode == 200 && response.toString().contains("<id>");
 
-            } catch (MalformedURLException e) {
+            }
+            catch (MalformedURLException e) {
                 EELogger.getLogger("EEUtil").log(Level.SEVERE, "Failed to send: Malformed", e);
                 return false;
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 EELogger.getLogger("EEUtil").log(Level.SEVERE, "Failed to send: IOException", e);
                 return false;
             }
-        } else {
+        }
+        else {
             return false;
         }
     }

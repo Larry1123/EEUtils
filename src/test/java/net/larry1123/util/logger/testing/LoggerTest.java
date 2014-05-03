@@ -1,6 +1,7 @@
 package net.larry1123.util.logger.testing;
 
-import net.larry1123.util.logger.EELogManager;
+import net.larry1123.util.factorys.EELoggerFactory;
+import net.larry1123.util.factorys.FactoryManager;
 import net.larry1123.util.logger.EELogger;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,33 +14,35 @@ import java.io.File;
  */
 public class LoggerTest {
 
+    protected EELoggerFactory eeLoggerFactory = FactoryManager.getFactoryManager().getEELoggerFactory();
+
     @Test
     public void testMakingLogger() {
-        EELogManager.setLoggerSettings(new TestLoggerSettings());
-        Assert.assertNotNull("Failed to create Sub-Logger.", EELogManager.getLogger("EEUtilTest"));
+        eeLoggerFactory.setLoggerSettings(new TestLoggerSettings());
+        Assert.assertNotNull("Failed to create Sub-Logger.", eeLoggerFactory.getLogger("EEUtilTest"));
     }
 
     @Test
     public void testMakingSubLogger() {
-        EELogManager.setLoggerSettings(new TestLoggerSettings());
-        EELogger main = EELogManager.getLogger("EEUtilTest");
-        Assert.assertNotNull("Failed to create Sub-Logger.", EELogManager.getSubLogger("SubTest", main));
+        eeLoggerFactory.setLoggerSettings(new TestLoggerSettings());
+        EELogger main = eeLoggerFactory.getLogger("EEUtilTest");
+        Assert.assertNotNull("Failed to create Sub-Logger.", eeLoggerFactory.getSubLogger("SubTest", main));
     }
 
     @Test
     public void testFileCreation() {
-        EELogManager.setLoggerSettings(new TestLoggerSettings());
-        EELogger makeAFile = EELogManager.getLogger("EEUtilFileTest");
-        File logFile = new File(makeAFile.logPath + "." + EELogManager.getLoggerSettings().getFileType());
+        eeLoggerFactory.setLoggerSettings(new TestLoggerSettings());
+        EELogger makeAFile = eeLoggerFactory.getLogger("EEUtilFileTest");
+        File logFile = new File(makeAFile.logPath + "." + eeLoggerFactory.getLoggerSettings().getFileType());
         Assert.assertTrue("Logger File failed to be made.", logFile.exists());
     }
 
     @Test
     public void testLevelFileCreation() {
-        EELogManager.setLoggerSettings(new TestLoggerSettings());
-        EELogger makeAFile = EELogManager.getLogger("EEUtilFileTest");
+        eeLoggerFactory.setLoggerSettings(new TestLoggerSettings());
+        EELogger makeAFile = eeLoggerFactory.getLogger("EEUtilFileTest");
         makeAFile.addLoggerLevelWFile("LevelTest");
-        File logFile = new File(makeAFile.logPath + "-LevelTest." + EELogManager.getLoggerSettings().getFileType());
+        File logFile = new File(makeAFile.logPath + "-LevelTest." + eeLoggerFactory.getLoggerSettings().getFileType());
         Assert.assertTrue("Level File failed to be made.", logFile.exists());
     }
 

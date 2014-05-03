@@ -21,7 +21,7 @@ public class ProtectedConfigSaveTest {
     protected final String savePath = "target/tests/resources/save.cfg";
     protected PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
     protected TestConfigFile configFile = createTestConfigFile(savePropertiesFile);
-    protected final FieldHandlerFactory factory = FactoryManager.factoryManager.getMainFieldHandlerFactory();
+    protected final FieldHandlerFactory factory = FactoryManager.getFactoryManager().getMainFieldHandlerFactory();
 
     @Test
     public void protectedBooleanSave() {

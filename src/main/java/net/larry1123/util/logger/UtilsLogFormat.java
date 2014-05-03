@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 ElecEntertainment
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.larry1123.util.logger;
 
 import java.io.PrintWriter;
@@ -9,8 +24,7 @@ import java.util.logging.SimpleFormatter;
 
 final class UtilsLogFormat extends SimpleFormatter {
 
-    private final SimpleDateFormat dateform = new SimpleDateFormat(
-            "dd-MM-yyyy HH:mm:ss");
+    private final SimpleDateFormat dateform = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     private final String linesep = System.getProperty("line.separator");
 
     /**
@@ -30,10 +44,12 @@ final class UtilsLogFormat extends SimpleFormatter {
             LoggerLevel handle = (LoggerLevel) level;
             if (!handle.getPrefix().equals("")) {
                 message.append("[").append(handle.getPrefix()).append("] ").append(msg);
-            } else {
+            }
+            else {
                 message.append(msg);
             }
-        } else {
+        }
+        else {
             message.append("[").append(level.getName()).append("] ").append(rec.getMessage());
         }
 

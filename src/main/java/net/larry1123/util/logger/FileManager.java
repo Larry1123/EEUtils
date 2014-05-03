@@ -1,5 +1,22 @@
+/*
+ * Copyright 2014 ElecEntertainment
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.larry1123.util.logger;
 
+import net.larry1123.util.factorys.EELoggerFactory;
+import net.larry1123.util.factorys.FactoryManager;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -20,6 +37,7 @@ public class FileManager {
     private static final HashMap<FileHandler, UtilFilter> fileFilters = new HashMap<FileHandler, UtilFilter>();
     private static final HashMap<EELogger, String> loggerPaths = new HashMap<EELogger, String>();
     private static final HashMap<LoggerLevel, String> levelPaths = new HashMap<LoggerLevel, String>();
+    private static EELoggerFactory eeLoggerFactory = FactoryManager.getFactoryManager().getEELoggerFactory();
 
     /**
      * Returns the TimeDate that should be used for files at this time
@@ -31,7 +49,8 @@ public class FileManager {
         String set = DateFormatUtils.SMTP_DATETIME_FORMAT.format(System.currentTimeMillis());
         try {
             currentTime = DateUtils.parseDate(set, DateFormatUtils.SMTP_DATETIME_FORMAT.getPattern());
-        } catch (ParseException e) {
+        }
+        catch (ParseException e) {
             e.printStackTrace();
         }
 
@@ -39,7 +58,8 @@ public class FileManager {
             Date currentSplit;
             try {
                 currentSplit = DateUtils.parseDate(getConfig().getCurrentSplit(), DateFormatUtils.SMTP_DATETIME_FORMAT.getPattern());
-            } catch (ParseException e) {
+            }
+            catch (ParseException e) {
                 getConfig().setCurrentSplit(set);
                 return set.replace(":", "_");
             }
@@ -85,6 +105,7 @@ public class FileManager {
      *
      * @param logger      What Logger needs setup
      * @param logPathPath Where to Log to
+     *
      * @return Fully ready to use FileHandler
      */
     public static FileHandler setUpFile(EELogger logger, String logPathPath) {
@@ -94,10 +115,12 @@ public class FileManager {
             UtilFilter filter = fileFilters.get(handler);
             filter.setLogAll(true);
             return handler;
-        } catch (SecurityException e) {
-            EELogManager.getLogger("EEUtil").logCustom(LoggerLevels.getLoggerLevel("FileHandlerError"), "SecurityException", e);
-        } catch (IOException e) {
-            EELogManager.getLogger("EEUtil").logCustom(LoggerLevels.getLoggerLevel("FileHandlerError"), "IOException", e);
+        }
+        catch (SecurityException e) {
+            eeLoggerFactory.getLogger("EEUtil").logCustom(LoggerLevels.getLoggerLevel("FileHandlerError"), "SecurityException", e);
+        }
+        catch (IOException e) {
+            eeLoggerFactory.getLogger("EEUtil").logCustom(LoggerLevels.getLoggerLevel("FileHandlerError"), "IOException", e);
         }
         return null;
     }
@@ -108,6 +131,7 @@ public class FileManager {
      * @param logger    What Logger owns the LoggerLevel
      * @param lvl       What Level needs setup
      * @param levelPath Where To Log to
+     *
      * @return Fully ready to use FileHandler
      */
     public static FileHandler setUpFile(EELogger logger, LoggerLevel lvl, String levelPath) {
@@ -122,10 +146,12 @@ public class FileManager {
     }
 
     /**
-     * @param logger The logger that the file is made for
-     * @param lvl The Level the file is made for
+     * @param logger   The logger that the file is made for
+     * @param lvl      The Level the file is made for
      * @param pathName The Path that the file is to be saved to
+     *
      * @return A setup but not fully ready FileHandler
+     *
      * @throws SecurityException
      * @throws IOException
      */
@@ -166,9 +192,11 @@ public class FileManager {
     }
 
     /**
-     * @param logger The logger that the file is made for
+     * @param logger   The logger that the file is made for
      * @param pathName The Path that the file is to be saved to
+     *
      * @return A setup but not fully ready FileHandler
+     *
      * @throws SecurityException
      * @throws IOException
      */
@@ -225,7 +253,8 @@ public class FileManager {
                         fileHandlers.remove(levelPaths.get(lvl));
                         handler = setUpFile(logger, lvl, levelPaths.get(lvl));
                         handler.setFilter(filter);
-                    } else {
+                    }
+                    else {
                         fileHandlers.remove(loggerPaths.get(logger));
                         logger.removeHandler(handler);
                         handler = setUpFile(logger, logger.logPath);
@@ -245,7 +274,7 @@ public class FileManager {
     }
 
     private static LoggerSettings getConfig() {
-        return EELogManager.getLoggerSettings();
+        return eeLoggerFactory.getLoggerSettings();
     }
 
 }

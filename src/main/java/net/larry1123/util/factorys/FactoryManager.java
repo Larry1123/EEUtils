@@ -37,9 +37,15 @@ import java.util.ArrayList;
  */
 public class FactoryManager {
 
-    public static final FactoryManager factoryManager = new FactoryManager();
+    protected static final FactoryManager factoryManager = new FactoryManager();
+
+    public static FactoryManager getFactoryManager() {
+        return factoryManager;
+    }
+
     protected FieldHandlerFactory mainFieldHandlerFactory;
     protected ParameterizedTypeImplFactory parameterizedTypeImplFactory;
+    protected EELoggerFactory eeLoggerFactory;
 
     private FactoryManager() {}
 
@@ -109,6 +115,13 @@ public class FactoryManager {
             parameterizedTypeImplFactory = new ParameterizedTypeImplFactory();
         }
         return parameterizedTypeImplFactory;
+    }
+
+    public EELoggerFactory getEELoggerFactory() {
+        if (eeLoggerFactory == null) {
+            eeLoggerFactory = new EELoggerFactory();
+        }
+        return eeLoggerFactory;
     }
 
 }

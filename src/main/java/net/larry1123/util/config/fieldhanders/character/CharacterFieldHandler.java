@@ -13,17 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.larry1123.util.config;
+package net.larry1123.util.config.fieldhanders.character;
 
-import net.visualillusionsent.utils.PropertiesFile;
+import net.larry1123.util.config.ConfigBase;
+
+import java.lang.reflect.Field;
 
 /**
- * An Interface to ensure that the right type of object is being used
- *
  * @author Larry1123
+ * @since 4/30/2014 - 2:27 AM
  */
-public interface ConfigBase {
+public class CharacterFieldHandler extends CharacterWrapFieldHandler {
 
-    public PropertiesFile getPropertiesFile();
+    public CharacterFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+        super(field, configBase, fieldName);
+    }
+
+    public CharacterFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+        super(field, configBase);
+    }
 
 }

@@ -14,10 +14,9 @@ import java.util.ArrayList;
 
 /**
  * @author Larry1123
- * @since 1/31/14 - 9:33 AM
+ * @since 2/1/14 - 5:09 AM
  */
-@SuppressWarnings("WeakerAccess")
-public class PublicConfigSaveTest {
+public class ProtectedConfigSaveTest {
 
     protected final String savePath = "target/tests/resources/save.cfg";
     protected PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
@@ -25,8 +24,8 @@ public class PublicConfigSaveTest {
     protected final FieldHandlerFactory factory = FactoryManager.factoryManager.getMainFieldHandlerFactory();
 
     @Test
-    public void publicBooleanSave() {
-        String fieldName = "publicBoolean";
+    public void protectedBooleanSave() {
+        String fieldName = "protectedBoolean";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -40,8 +39,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void PublicBooleanSave() {
-        String fieldName = "PublicBoolean";
+    public void ProtectedBooleanSave() {
+        String fieldName = "ProtectedBoolean";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -55,8 +54,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicByteSave() {
-        String fieldName = "publicByte";
+    public void protectedByteSave() {
+        String fieldName = "protectedByte";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -70,8 +69,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void PublicByteSave() {
-        String fieldName = "PublicByte";
+    public void ProtectedByteSave() {
+        String fieldName = "ProtectedByte";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -85,8 +84,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicByteArraySave() {
-        String fieldName = "publicByteArray";
+    public void protectedByteArraySave() {
+        String fieldName = "protectedByteArray";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -100,8 +99,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void PublicByteArraySave() {
-        String fieldName = "PublicByteArray";
+    public void ProtectedByteArraySave() {
+        String fieldName = "ProtectedByteArray";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -116,8 +115,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicByteListSave() {
-        String fieldName = "publicByteList";
+    public void protectedByteListSave() {
+        String fieldName = "protectedByteList";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -133,8 +132,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicCharacterSave() {
-        String fieldName = "publicCharacter";
+    public void protectedCharacterSave() {
+        String fieldName = "protectedCharacter";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -148,8 +147,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void PublicCharacterSave() {
-        String fieldName = "PublicCharacter";
+    public void ProtectedCharacterSave() {
+        String fieldName = "ProtectedCharacter";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -163,8 +162,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicDoubleSave() {
-        String fieldName = "publicDouble";
+    public void protectedDoubleSave() {
+        String fieldName = "protectedDouble";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -178,8 +177,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void PublicDoubleSave() {
-        String fieldName = "PublicDouble";
+    public void ProtectedDoubleSave() {
+        String fieldName = "ProtectedDouble";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -193,8 +192,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicDoubleArraySave() {
-        String fieldName = "publicDoubleArray";
+    public void protectedDoubleArraySave() {
+        String fieldName = "protectedDoubleArray";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -208,8 +207,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void PublicDoubleArraySave() {
-        String fieldName = "PublicDoubleArray";
+    public void ProtectedDoubleArraySave() {
+        String fieldName = "ProtectedDoubleArray";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -224,8 +223,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicDoubleListSave() {
-        String fieldName = "publicDoubleList";
+    public void protectedDoubleListSave() {
+        String fieldName = "protectedDoubleList";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -241,8 +240,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicFloatSave() {
-        String fieldName = "publicFloat";
+    public void protectedFloatSave() {
+        String fieldName = "protectedFloat";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -256,8 +255,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void PublicFloatSave() {
-        String fieldName = "PublicFloat";
+    public void ProtectedFloatSave() {
+        String fieldName = "ProtectedFloat";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -271,8 +270,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicFloatArraySave() {
-        String fieldName = "publicFloatArray";
+    public void protectedFloatArraySave() {
+        String fieldName = "protectedFloatArray";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -286,8 +285,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void PublicFloatArraySave() {
-        String fieldName = "PublicFloatArray";
+    public void ProtectedFloatArraySave() {
+        String fieldName = "ProtectedFloatArray";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -302,8 +301,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicFloatListSave() {
-        String fieldName = "publicFloatList";
+    public void protectedFloatListSave() {
+        String fieldName = "protectedFloatList";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -319,8 +318,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicLongSave() {
-        String fieldName = "publicLong";
+    public void protectedLongSave() {
+        String fieldName = "protectedLong";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -334,8 +333,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void PublicLongSave() {
-        String fieldName = "PublicLong";
+    public void ProtectedLongSave() {
+        String fieldName = "ProtectedLong";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -349,8 +348,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicLongArraySave() {
-        String fieldName = "publicLongArray";
+    public void protectedLongArraySave() {
+        String fieldName = "protectedLongArray";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -364,8 +363,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void PublicLongArrayArraySave() {
-        String fieldName = "PublicLongArray";
+    public void ProtectedLongArrayArraySave() {
+        String fieldName = "ProtectedLongArray";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -380,8 +379,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicLongListSave() {
-        String fieldName = "publicLongList";
+    public void protectedLongListSave() {
+        String fieldName = "protectedLongList";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -397,8 +396,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicIntegerSave() {
-        String fieldName = "publicInteger";
+    public void protectedIntegerSave() {
+        String fieldName = "protectedInteger";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -412,8 +411,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void PublicIntegerSave() {
-        String fieldName = "PublicInteger";
+    public void ProtectedIntegerSave() {
+        String fieldName = "ProtectedInteger";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -427,8 +426,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicIntegerArraySave() {
-        String fieldName = "publicIntegerArray";
+    public void protectedIntegerArraySave() {
+        String fieldName = "protectedIntegerArray";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -442,8 +441,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void PublicIntegerArraySave() {
-        String fieldName = "PublicIntegerArray";
+    public void ProtectedIntegerArraySave() {
+        String fieldName = "ProtectedIntegerArray";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -458,8 +457,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicIntegerListSave() {
-        String fieldName = "publicIntegerList";
+    public void protectedIntegerListSave() {
+        String fieldName = "protectedIntegerList";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -475,8 +474,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicShortSave() {
-        String fieldName = "publicShort";
+    public void protectedShortSave() {
+        String fieldName = "protectedShort";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -490,8 +489,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void PublicShortSave() {
-        String fieldName = "PublicShort";
+    public void ProtectedShortSave() {
+        String fieldName = "ProtectedShort";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -505,8 +504,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicShortArraySave() {
-        String fieldName = "publicShortArray";
+    public void protectedShortArraySave() {
+        String fieldName = "protectedShortArray";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -520,8 +519,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void PublicShortArraySave() {
-        String fieldName = "PublicShortArray";
+    public void ProtectedShortArraySave() {
+        String fieldName = "ProtectedShortArray";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -536,8 +535,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicShortListSave() {
-        String fieldName = "publicShortList";
+    public void protectedShortListSave() {
+        String fieldName = "protectedShortList";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -553,8 +552,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicStringSave() {
-        String fieldName = "publicString";
+    public void protectedStringSave() {
+        String fieldName = "protectedString";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -568,8 +567,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicStringArraySave() {
-        String fieldName = "publicStringArray";
+    public void protectedStringArraySave() {
+        String fieldName = "protectedStringArray";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -583,8 +582,8 @@ public class PublicConfigSaveTest {
     }
 
     @Test
-    public void publicStringListSave() {
-        String fieldName = "publicStringList";
+    public void protectedStringListSave() {
+        String fieldName = "protectedStringList";
         Field testField = getField(configFile, fieldName, null);
 
         doLogic(fieldName, testField);
@@ -632,3 +631,4 @@ public class PublicConfigSaveTest {
     }
 
 }
+

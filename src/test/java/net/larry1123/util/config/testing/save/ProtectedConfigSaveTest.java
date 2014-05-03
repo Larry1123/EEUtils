@@ -624,7 +624,8 @@ public class ProtectedConfigSaveTest {
     protected TestConfigFile createTestConfigFile(final PropertiesFile file) {
         return new TestConfigFile() {
 
-            @Override public PropertiesFile getPropertiesFile() {
+            @Override
+            public PropertiesFile getPropertiesFile() {
                 return file;
             }
         };

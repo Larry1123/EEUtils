@@ -25,7 +25,8 @@ import java.lang.annotation.Target;
  *
  * @author Larry1123
  */
-@Retention(RetentionPolicy.RUNTIME) @Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
 public @interface ConfigField {
 
     /**

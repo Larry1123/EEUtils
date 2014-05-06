@@ -15,7 +15,7 @@
  */
 package net.larry1123.elec.util.factorys;
 
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
+import net.larry1123.elec.util.relection.ParameterizedTypeImpl;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -27,11 +27,11 @@ import java.lang.reflect.Type;
 public class ParameterizedTypeImplFactory {
 
     public ParameterizedType MakeTypeImpl(Class<?> rawType, Type... typeArguments) {
-        return ParameterizedTypeImpl.make(rawType, typeArguments, null);
+        return new ParameterizedTypeImpl(rawType, typeArguments);
     }
 
     public ParameterizedType MakeTypeImpl(Class<?> rawType, Type ownerType, Type[] typeArguments) {
-        return ParameterizedTypeImpl.make(rawType, typeArguments, ownerType);
+        return new ParameterizedTypeImpl(rawType, ownerType, typeArguments);
     }
 
 }

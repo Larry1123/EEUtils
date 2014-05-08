@@ -51,6 +51,19 @@
         <url>https://github.com/ElecEntertainment/EEUtils/issues</url>
     </issueManagement>
 
+    <distributionManagement>
+        <repository>
+            <id>repo1123</id>
+            <name>Release Repository</name>
+            <url>http://repo.larry1123.net/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>repo1123</id>
+            <name>Snapshot Repository</name>
+            <url>http://repo.larry1123.net/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <build>
         <defaultGoal>clean install</defaultGoal>
 

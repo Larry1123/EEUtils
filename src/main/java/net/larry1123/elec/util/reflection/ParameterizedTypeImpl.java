@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.larry1123.elec.util.relection;
+package net.larry1123.elec.util.reflection;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -42,19 +42,36 @@ public class ParameterizedTypeImpl implements ParameterizedType {
         this.typeArguments = typeArguments;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Type[] getActualTypeArguments() {
         return this.typeArguments.clone();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Type getRawType() {
         return this.rawType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Type getOwnerType() {
         return this.ownerType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean equals(Object o) {
         return o instanceof ParameterizedType && (rawType == null ? ((ParameterizedType) o).getRawType() == null : rawType.equals(((ParameterizedType) o).getRawType())) && (ownerType == null ? ((ParameterizedType) o).getOwnerType() == null : ownerType.equals(((ParameterizedType) o).getOwnerType())) && (Arrays.equals(typeArguments, ((ParameterizedType) o).getActualTypeArguments()));
     }
+
 }

@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 /**
  * @author Larry1123
  * @since 1/30/14 - 7:05 AM
+ *
+ * A simple Settings class.
  */
 public class LogSettings implements LoggerSettings {
 

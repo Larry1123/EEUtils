@@ -109,8 +109,10 @@ public abstract class FieldHandler<T> {
 
     /**
      * Load from the file.
+     * Will write to file from field if it fails to find a key in file,
+     * this allows for first time setup values to be set into file on loading.
      *
-     * @return False if it fails.
+     * @return False if it fails, unless it saved a setup value.
      */
     public boolean load() {
         T pass;

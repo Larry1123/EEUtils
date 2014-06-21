@@ -77,13 +77,6 @@ public class FieldHandlerFactory {
         }
     }
 
-    /**
-     * Ensure that we use the equals method so if a type is ParameterizedTypeImpl it will work
-     *
-     * @param type
-     *
-     * @return
-     */
     protected boolean containsType(Type type) {
         for (Type providedType : providedHandlers.keySet()) {
             if (providedType.equals(type)) {

@@ -17,7 +17,6 @@ package net.larry1123.elec.util.logger;
 
 import java.util.HashMap;
 
-@SuppressWarnings("WeakerAccess")
 public class LoggerLevels {
 
     private final static HashMap<String, LoggerLevel> LoggerLevels = new HashMap<String, LoggerLevel>();

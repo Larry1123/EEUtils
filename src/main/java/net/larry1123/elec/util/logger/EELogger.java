@@ -67,7 +67,6 @@ public class EELogger extends Logger {
      *
      * @return The ID of the level to be used to get the Logger once more if needed
      */
-    @SuppressWarnings("UnusedDeclaration")
     public String addLoggerLevel(String levelName) {
         return LoggerLevels.getLoggerLevel(levelName, this).getID();
     }
@@ -81,7 +80,6 @@ public class EELogger extends Logger {
      *
      * @return The ID of the level to be used to get the Logger once more if needed
      */
-    @SuppressWarnings("UnusedDeclaration")
     public String addLoggerLevel(String levelName, String prefix) {
         return LoggerLevels.getLoggerLevel(levelName, prefix, this).getID();
     }
@@ -94,8 +92,7 @@ public class EELogger extends Logger {
      *
      * @return The ID of the level to be used to get the Logger once more if needed
      */
-    @SuppressWarnings("UnusedReturnValue")
-    public String addLoggerLevelWFile(@SuppressWarnings("SameParameterValue") String levelName) {
+    public String addLoggerLevelWFile(String levelName) {
         LoggerLevel lvl = LoggerLevels.getLoggerLevel(levelName, this);
         String levelPath = logPath + "-" + levelName;
         FileManager.setUpFile(this, lvl, levelPath);
@@ -111,7 +108,6 @@ public class EELogger extends Logger {
      *
      * @return The ID of the level to be used to get the Logger once more if needed
      */
-    @SuppressWarnings("UnusedDeclaration")
     public String addLoggerLevelWFile(String levelName, String prefix) {
         LoggerLevel lvl = LoggerLevels.getLoggerLevel(levelName, prefix, this);
         String levelPath = logPath + "-" + levelName;
@@ -155,7 +151,6 @@ public class EELogger extends Logger {
      * @param lvl The LoggerLevel object to use
      * @param msg Message to be Logged with Level
      */
-    @SuppressWarnings("UnusedDeclaration")
     public void logCustom(LoggerLevel lvl, String msg) {
         log(lvl, msg);
     }
@@ -188,7 +183,6 @@ public class EELogger extends Logger {
      * @param msg    Message to be Logged with Level
      * @param thrown The Throwable Error
      */
-    @SuppressWarnings("UnusedDeclaration")
     public void logCustom(String lvl, String msg, Throwable thrown) {
         log(LoggerLevels.getLoggerLevel(lvl), msg, thrown);
     }
@@ -198,7 +192,6 @@ public class EELogger extends Logger {
      *
      * @param name The ID of the LoggerLevel to remove
      */
-    @SuppressWarnings("UnusedDeclaration")
     public void removeLoggerLevel(String name) {
         removeLoggerLevel(getLoggerLevel(name));
     }
@@ -223,7 +216,7 @@ public class EELogger extends Logger {
      *
      * @return True if paste was made of stackTrace false if it failed for any reason
      */
-    @SuppressWarnings("UnusedDeclaration")
+    @Deprecated
     public boolean logStackTraceToPasteBin(String message, Throwable thrown) {
         return logStackTraceToPasteBin(Level.WARNING, message, thrown);
     }
@@ -239,7 +232,7 @@ public class EELogger extends Logger {
      *
      * @return True if paste was made of stackTrace false if it failed for any reason
      */
-    @SuppressWarnings("UnusedDeclaration")
+    @Deprecated
     public boolean logStackTraceToPasteBin(String lvl, String message, Throwable thrown) {
         return logStackTraceToPasteBin(LoggerLevels.getLoggerLevel(lvl), message, thrown);
     }
@@ -255,6 +248,7 @@ public class EELogger extends Logger {
      *
      * @return True if paste was made of stackTrace false if it failed for any reason
      */
+    @Deprecated
     public boolean logStackTraceToPasteBin(LoggerLevel lvl, String message, Throwable thrown) {
         if (!lvl.getPrefix().isEmpty()) {
             message = "[" + lvl.getPrefix() + "] " + message;
@@ -273,6 +267,7 @@ public class EELogger extends Logger {
      *
      * @return True if paste was made of stackTrace false if it failed for any reason
      */
+    @Deprecated
     public boolean logStackTraceToPasteBin(Level lvl, String message, Throwable thrown) {
         log(lvl, message, thrown);
 

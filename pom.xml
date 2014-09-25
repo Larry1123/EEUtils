@@ -4,11 +4,15 @@
 
     <groupId>net.larry1123</groupId>
     <artifactId>EEUtils</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.3.0</version>
     <inceptionYear>2013</inceptionYear>
 
     <properties>
         <build.number/>
+        <author>Larry1123</author>
+        <VIutil.groupID>net.visualillusionsent</VIutil.groupID>
+        <VIutil.name>viutils</VIutil.name>
+        <VIutil.version>1.4.0</VIutil.version>
     </properties>
 
     <organization>
@@ -64,6 +68,33 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <repositories>
+        <repository>
+            <id>repo1123</id>
+            <name>Larry1123's Repo</name>
+            <url>http://repo.larry1123.net/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>${VIutil.groupID}</groupId>
+            <artifactId>${VIutil.name}</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
+
     <build>
         <defaultGoal>clean install</defaultGoal>
 
@@ -106,13 +137,16 @@
                             <addDefaultImplementationEntries>false</addDefaultImplementationEntries>
                         </manifest>
                         <manifestEntries>
-                            <Implementation-Title>EEUtils</Implementation-Title>
+                            <Implementation-Title>${project.name}</Implementation-Title>
                             <Implementation-Version>${project.version}</Implementation-Version>
-                            <Implementation-Vendor>Larry1123</Implementation-Vendor>
-                            <Implementation-Vendor-Id>net.larry1123</Implementation-Vendor-Id>
-                            <Specification-Title>EEUtils</Specification-Title>
-                            <Specification-Vendor>Larry1123</Specification-Vendor>
-                            <Specification-Vendor-Id>net.larry1123</Specification-Vendor-Id>
+                            <Implementation-Vendor>${author}</Implementation-Vendor>
+                            <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
+                            <Specification-Title>${project.name}</Specification-Title>
+                            <Specification-Vendor>${author}</Specification-Vendor>
+                            <Specification-Vendor-Id>${project.groupId}</Specification-Vendor-Id>
+                            <authors>
+                                <author>${author}</author>
+                            </authors>
                             <Sealed>true</Sealed>
                         </manifestEntries>
                         <manifestSections>
@@ -144,49 +178,12 @@
         </profile>
     </profiles>
 
-    <repositories>
-        <repository>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </snapshots>
-            <id>vi-repo</id>
-            <name>Visual Illusions Repository</name>
-            <url>http://repo.visualillusionsent.net/repository/public/</url>
-        </repository>
-    </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>net.visualillusionsent</groupId>
-            <artifactId>viutils</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-    </dependencies>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>net.visualillusionsent</groupId>
-                <artifactId>viutils</artifactId>
-                <version>1.3.0</version>
+                <groupId>${VIutil.groupID}</groupId>
+                <artifactId>${VIutil.name}</artifactId>
+                <version>${VIutil.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>

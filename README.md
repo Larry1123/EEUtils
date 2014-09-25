@@ -16,7 +16,7 @@ Maven
         <dependency>
             <groupId>net.larry1123</groupId>
             <artifactId>EEUtils</artifactId>
-            <version>[1.3.0-SNAPSHOT,)</version> <!-- Will always use the latest version found (including snapshots)-->
+            <version>[1.3.0,)</version> <!-- Will always use the latest version found (including snapshots)-->
         </dependency>
 
 

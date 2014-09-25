@@ -32,7 +32,6 @@ public interface LoggerSettings {
      *
      * @param path Local Path to place Log files
      */
-    @SuppressWarnings("UnusedDeclaration")
     public void setLoggerPath(String path);
 
     /**
@@ -47,7 +46,6 @@ public interface LoggerSettings {
      *
      * @param state True if allowed, false if not
      */
-    @SuppressWarnings("UnusedDeclaration")
     public void setPastingAllowed(boolean state);
 
     /**
@@ -60,7 +58,6 @@ public interface LoggerSettings {
     /**
      * Set the Setting for how to split log files.
      */
-    @SuppressWarnings("UnusedDeclaration")
     public void setFileSplit(FileSplits fileSplit);
 
     /**
@@ -91,7 +88,6 @@ public interface LoggerSettings {
      *
      * @param type String to use as the file extension
      */
-    @SuppressWarnings("UnusedDeclaration")
     public void setFileType(String type);
 
     /**
@@ -106,7 +102,6 @@ public interface LoggerSettings {
      *
      * @param logger The Logger to be used
      */
-    @SuppressWarnings("UnusedDeclaration")
     public void setParentLogger(Logger logger);
 
 }

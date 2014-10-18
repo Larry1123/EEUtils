@@ -78,11 +78,11 @@ public class EELoggerFactory {
      * @return The EELogger for the requested sub-Logger
      */
     public EELogger getSubLogger(String name, EELogger parent) {
-        if (!loggers.containsKey(parent.getName() + ":" + name)) {
+        if (!loggers.containsKey(parent.getName() + "." + name)) {
             EELogger logger = new EELogger(name, parent);
             loggers.put(logger.getName(), logger);
         }
-        return loggers.get(parent.getName() + ":" + name);
+        return loggers.get(parent.getName() + "." + name);
     }
 
     /**

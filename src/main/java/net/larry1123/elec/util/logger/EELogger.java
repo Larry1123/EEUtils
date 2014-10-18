@@ -48,9 +48,9 @@ public class EELogger extends Logger {
     }
 
     public EELogger(String name, EELogger parent) {
-        super(parent.getName() + ":" + name, null);
+        super(parent.getName() + "." + name, null);
         path = parent.path;
-        logPath = path + parent.getName() + ":" + name;
+        logPath = path + parent.getName() + "." + name;
         FileManager.setUpFile(this, logPath);
         setParent(parent);
     }

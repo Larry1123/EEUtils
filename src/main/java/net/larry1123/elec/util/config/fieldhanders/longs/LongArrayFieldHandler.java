@@ -40,7 +40,9 @@ public class LongArrayFieldHandler extends ArrayFieldHandler<long[]> {
      */
     @Override
     public void setToFile(long[] value) {
-        getPropertiesFile().setLongArray(getPropertyKey(), value, getSpacer());
+        if (value.length > 0) {
+            getPropertiesFile().setLongArray(getPropertyKey(), value, getSpacer());
+        }
     }
 
     /**

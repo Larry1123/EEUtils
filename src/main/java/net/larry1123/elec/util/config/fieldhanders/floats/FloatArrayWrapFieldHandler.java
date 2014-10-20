@@ -41,8 +41,10 @@ public class FloatArrayWrapFieldHandler extends ArrayFieldHandler<Float[]> {
      */
     @Override
     public void setToFile(Float[] value) {
-        float[] temp = ArrayUtils.toPrimitive(value);
-        getPropertiesFile().setFloatArray(getPropertyKey(), temp, getSpacer());
+        if (value.length > 0) {
+            float[] temp = ArrayUtils.toPrimitive(value);
+            getPropertiesFile().setFloatArray(getPropertyKey(), temp, getSpacer());
+        }
     }
 
     /**

@@ -26,8 +26,10 @@ public class ByteArrayWrapFieldHandler extends ArrayFieldHandler<Byte[]> {
      */
     @Override
     public void setToFile(Byte[] value) {
-        byte[] temp = ArrayUtils.toPrimitive(value);
-        getPropertiesFile().setByteArray(getPropertyKey(), temp, getSpacer());
+        if (value.length > 0) {
+            byte[] temp = ArrayUtils.toPrimitive(value);
+            getPropertiesFile().setByteArray(getPropertyKey(), temp, getSpacer());
+        }
     }
 
     /**

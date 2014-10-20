@@ -40,7 +40,9 @@ public class FloatArrayFieldHandler extends ArrayFieldHandler<float[]> {
      */
     @Override
     public void setToFile(float[] value) {
-        getPropertiesFile().setFloatArray(getPropertyKey(), value, getSpacer());
+        if (value.length > 0) {
+            getPropertiesFile().setFloatArray(getPropertyKey(), value, getSpacer());
+        }
     }
 
     /**

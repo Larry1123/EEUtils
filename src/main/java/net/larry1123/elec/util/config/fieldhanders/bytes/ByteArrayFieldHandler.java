@@ -40,7 +40,9 @@ public class ByteArrayFieldHandler extends ArrayFieldHandler<byte[]> {
      */
     @Override
     public void setToFile(byte[] value) {
-        getPropertiesFile().setByteArray(getPropertyKey(), value, getSpacer());
+        if (value.length > 0) {
+            getPropertiesFile().setByteArray(getPropertyKey(), value, getSpacer());
+        }
     }
 
     /**

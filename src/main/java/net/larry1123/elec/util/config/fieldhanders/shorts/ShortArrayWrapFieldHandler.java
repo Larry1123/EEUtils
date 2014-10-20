@@ -41,7 +41,9 @@ public class ShortArrayWrapFieldHandler extends ArrayFieldHandler<Short[]> {
      */
     @Override
     public void setToFile(Short[] value) {
-        getPropertiesFile().setShortArray(getPropertyKey(), ArrayUtils.toPrimitive(value), getSpacer());
+        if (value.length > 0) {
+            getPropertiesFile().setShortArray(getPropertyKey(), ArrayUtils.toPrimitive(value), getSpacer());
+        }
     }
 
     /**

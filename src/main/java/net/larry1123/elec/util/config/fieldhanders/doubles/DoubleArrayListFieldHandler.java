@@ -44,7 +44,9 @@ public class DoubleArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Dou
      */
     @Override
     public void setToFile(ArrayList<Double> value) {
-        getPropertiesFile().setDoubleArray(getPropertyKey(), Doubles.toArray(value), getSpacer());
+        if (value.size() > 0) {
+            getPropertiesFile().setDoubleArray(getPropertyKey(), Doubles.toArray(value), getSpacer());
+        }
     }
 
     /**

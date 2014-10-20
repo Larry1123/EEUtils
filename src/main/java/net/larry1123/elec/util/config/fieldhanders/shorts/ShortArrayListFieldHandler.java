@@ -44,7 +44,9 @@ public class ShortArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Shor
      */
     @Override
     public void setToFile(ArrayList<Short> value) {
-        getPropertiesFile().setShortArray(getPropertyKey(), Shorts.toArray(value), getSpacer());
+        if (value.size() > 0) {
+            getPropertiesFile().setShortArray(getPropertyKey(), Shorts.toArray(value), getSpacer());
+        }
     }
 
     /**

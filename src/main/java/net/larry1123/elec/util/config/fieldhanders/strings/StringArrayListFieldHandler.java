@@ -42,7 +42,9 @@ public class StringArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Str
      */
     @Override
     public void setToFile(ArrayList<String> value) {
-        getPropertiesFile().setStringArray(getPropertyKey(), value.toArray(new String[value.size()]), getSpacer());
+        if (value.size() > 0) {
+            getPropertiesFile().setStringArray(getPropertyKey(), value.toArray(new String[value.size()]), getSpacer());
+        }
     }
 
     /**

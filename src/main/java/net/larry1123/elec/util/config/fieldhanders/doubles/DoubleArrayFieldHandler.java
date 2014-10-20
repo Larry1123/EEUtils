@@ -40,7 +40,9 @@ public class DoubleArrayFieldHandler extends ArrayFieldHandler<double[]> {
      */
     @Override
     public void setToFile(double[] value) {
-        getPropertiesFile().setDoubleArray(getPropertyKey(), value, getSpacer());
+        if (value.length > 0) {
+            getPropertiesFile().setDoubleArray(getPropertyKey(), value, getSpacer());
+        }
     }
 
     /**

@@ -44,7 +44,9 @@ public class ByteArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Byte>
      */
     @Override
     public void setToFile(ArrayList<Byte> value) {
-        getPropertiesFile().setByteArray(getPropertyKey(), Bytes.toArray(value), getSpacer());
+        if (value.size() > 0) {
+            getPropertiesFile().setByteArray(getPropertyKey(), Bytes.toArray(value), getSpacer());
+        }
     }
 
     /**

@@ -44,7 +44,9 @@ public class IntegerArrayListFieldHandler extends ArrayFieldHandler<ArrayList<In
      */
     @Override
     public void setToFile(ArrayList<Integer> value) {
-        getPropertiesFile().setIntArray(getPropertyKey(), Ints.toArray(value), getSpacer());
+        if (value.size() > 0) {
+            getPropertiesFile().setIntArray(getPropertyKey(), Ints.toArray(value), getSpacer());
+        }
     }
 
     /**

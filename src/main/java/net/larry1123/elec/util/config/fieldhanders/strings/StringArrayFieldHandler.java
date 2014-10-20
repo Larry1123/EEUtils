@@ -40,7 +40,9 @@ public class StringArrayFieldHandler extends ArrayFieldHandler<String[]> {
      */
     @Override
     public void setToFile(String[] value) {
-        getPropertiesFile().setStringArray(getPropertyKey(), value, getSpacer());
+        if (value.length > 0) {
+            getPropertiesFile().setStringArray(getPropertyKey(), value, getSpacer());
+        }
     }
 
     /**

@@ -40,7 +40,9 @@ public class IntegerArrayFieldHandler extends ArrayFieldHandler<int[]> {
      */
     @Override
     public void setToFile(int[] value) {
-        getPropertiesFile().setIntArray(getPropertyKey(), value, getSpacer());
+        if (value.length > 0) {
+            getPropertiesFile().setIntArray(getPropertyKey(), value, getSpacer());
+        }
     }
 
     /**

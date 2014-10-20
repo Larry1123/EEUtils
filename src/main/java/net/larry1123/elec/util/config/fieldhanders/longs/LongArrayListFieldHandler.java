@@ -44,7 +44,9 @@ public class LongArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Long>
      */
     @Override
     public void setToFile(ArrayList<Long> value) {
-        getPropertiesFile().setLongArray(getPropertyKey(), Longs.toArray(value), getSpacer());
+        if (value.size() > 0) {
+            getPropertiesFile().setLongArray(getPropertyKey(), Longs.toArray(value), getSpacer());
+        }
     }
 
     /**

@@ -41,7 +41,9 @@ public class DoubleArrayWrapFieldHandler extends ArrayFieldHandler<Double[]> {
      */
     @Override
     public void setToFile(Double[] value) {
-        getPropertiesFile().setDoubleArray(getPropertyKey(), ArrayUtils.toPrimitive(value), getSpacer());
+        if (value.length > 0) {
+            getPropertiesFile().setDoubleArray(getPropertyKey(), ArrayUtils.toPrimitive(value), getSpacer());
+        }
     }
 
     /**

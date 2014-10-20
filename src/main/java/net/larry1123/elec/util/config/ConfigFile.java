@@ -25,11 +25,6 @@ import java.lang.reflect.Field;
 public class ConfigFile {
 
     /**
-     * The PropertiesFile to control
-     */
-    protected final PropertiesFile propertiesfile;
-
-    /**
      * The ConfigBase to base the PropertiesFile on
      */
     protected final ConfigBase config;
@@ -47,7 +42,6 @@ public class ConfigFile {
      */
     public ConfigFile(ConfigBase config) {
         this.config = config;
-        this.propertiesfile = config.getPropertiesFile();
         collectFields(this.config, null);
         load();
     }
@@ -74,14 +68,14 @@ public class ConfigFile {
      * @return PropertiesFile being controlled
      */
     public PropertiesFile getPropFile() {
-        return propertiesfile;
+        return config.getPropertiesFile();
     }
 
     /**
      * Updates the ConfigBase to match the current file without saving first
      */
     public void reload() {
-        propertiesfile.reload();
+        config.getPropertiesFile().reload();
         load();
     }
 
@@ -92,7 +86,7 @@ public class ConfigFile {
             fieldHandler.setComments();
         }
         // Well lets SAVE!!!
-        propertiesfile.save();
+        config.getPropertiesFile().save();
     }
 
     /**
@@ -105,6 +99,6 @@ public class ConfigFile {
             fieldHandler.setComments();
         }
         // Well lets SAVE!!!
-        propertiesfile.save();
+        config.getPropertiesFile().save();
     }
 }

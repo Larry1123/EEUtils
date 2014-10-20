@@ -15,8 +15,6 @@
  */
 package net.larry1123.elec.util.logger;
 
-import java.util.logging.Logger;
-
 /**
  * @author Larry1123
  * @since 1/30/14 - 7:05 AM
@@ -25,12 +23,11 @@ import java.util.logging.Logger;
  */
 public class LogSettings implements LoggerSettings {
 
-    private String loggerPath = "logs/";
-    private boolean pastingAllowed = false;
-    private FileSplits split = FileSplits.NONE;
-    private String currentSplit = "";
-    private String fileType = "log";
-    private Logger parentLogger = null;
+    protected String loggerPath = "logs/";
+    protected boolean pastingAllowed = false;
+    protected FileSplits split = FileSplits.NONE;
+    protected String currentSplit = "";
+    protected String fileType = "log";
 
     /**
      * {@inheritDoc}
@@ -110,22 +107,6 @@ public class LogSettings implements LoggerSettings {
     @Override
     public void setFileType(String type) {
         fileType = type;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Logger getParentLogger() {
-        return parentLogger;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setParentLogger(Logger logger) {
-        parentLogger = logger;
     }
 
 }

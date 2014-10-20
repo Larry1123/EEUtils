@@ -66,7 +66,7 @@ public class EELogger implements Logger {
     }
 
     public EELogger(String name, String subName, boolean fileLog) {
-        this(name + "." + subName, fileLog);
+        this(name + File.separatorChar + subName, fileLog);
     }
 
     public EELogger(String name, boolean fileLog) {

@@ -66,7 +66,7 @@ public class EELogger implements Logger {
     }
 
     public EELogger(String name, String subName, boolean fileLog) {
-        this(name + File.separatorChar + subName, fileLog);
+        this(name + "." + subName, fileLog);
     }
 
     public EELogger(String name, boolean fileLog) {
@@ -74,7 +74,7 @@ public class EELogger implements Logger {
         logger = LoggerFactory.getLogger(name);
         fileLogger = new FileLogger(getName());
         path = getConfig().getLoggerPath() + getName() + File.separatorChar;
-        logFile = getPath() + getName();
+        logFile = getPath() + getName().replace('.', File.separatorChar);
         if (fileLog) {
             try {
                 FileManager.setUpLogger(getFileLogger(), getLogFile());

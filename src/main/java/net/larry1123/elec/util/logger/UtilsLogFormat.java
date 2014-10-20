@@ -29,29 +29,22 @@ final class UtilsLogFormat extends SimpleFormatter {
 
     /**
      * {@inheritDoc}
+     * <p/>
+     * [Level] [Prefix] Message
      */
-    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     @Override
     public final String format(LogRecord rec) {
-
         Level level = rec.getLevel();
-        String msg = rec.getMessage();
-
         StringBuilder message = new StringBuilder();
         message.append(dateform.format(rec.getMillis())).append(" ");
-
+        message.append("[").append(level.getName()).append("] ");
         if (level instanceof LoggerLevel) {
             LoggerLevel handle = (LoggerLevel) level;
             if (!handle.getPrefix().equals("")) {
-                message.append("[").append(handle.getPrefix()).append("] ").append(msg);
-            }
-            else {
-                message.append(msg);
+                message.append("[").append(handle.getPrefix()).append("] ");
             }
         }
-        else {
-            message.append("[").append(level.getName()).append("] ").append(rec.getMessage());
-        }
+        message.append(rec.getMessage());
 
         message.append(linesep);
         if (rec.getThrown() != null) {

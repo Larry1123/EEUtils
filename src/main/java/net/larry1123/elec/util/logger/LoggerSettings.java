@@ -15,8 +15,6 @@
  */
 package net.larry1123.elec.util.logger;
 
-import java.util.logging.Logger;
-
 public interface LoggerSettings {
 
     /**
@@ -89,19 +87,5 @@ public interface LoggerSettings {
      * @param type String to use as the file extension
      */
     public void setFileType(String type);
-
-    /**
-     * Get the Parent to set to for all Loggers
-     *
-     * @return Logger to use to set as Parent
-     */
-    public Logger getParentLogger();
-
-    /**
-     * Set the Parent to set for all Loggers
-     *
-     * @param logger The Logger to be used
-     */
-    public void setParentLogger(Logger logger);
 
 }

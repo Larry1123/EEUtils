@@ -15,22 +15,14 @@
  */
 package net.larry1123.elec.util.logger;
 
+import org.slf4j.Marker;
+
 import java.util.HashMap;
+import java.util.logging.Level;
 
 public class LoggerLevels {
 
     private final static HashMap<String, LoggerLevel> LoggerLevels = new HashMap<String, LoggerLevel>();
-
-    /**
-     * This will add a Logger Level and return the name of the Level with in LoggerLevels
-     *
-     * @param levelName Name to give the level
-     *
-     * @return String ID of the LoggerLevel
-     */
-    private static String addLoggerLevel(String levelName) {
-        return addLoggerLevel(levelName, "");
-    }
 
     /**
      * This will add a Logger Level and return the name of the Level with in LoggerLevels
@@ -41,7 +33,13 @@ public class LoggerLevels {
      * @return String ID of the LoggerLevel
      */
     private static String addLoggerLevel(String levelName, String prefix) {
-        String name = levelName + "-" + prefix;
+        String name;
+        if (!prefix.equals("")) {
+            name = levelName + "-" + prefix;
+        }
+        else {
+            name = levelName;
+        }
         LoggerLevels.put(name, new LoggerLevel(levelName, prefix, name));
         return name;
     }
@@ -76,12 +74,7 @@ public class LoggerLevels {
      * @return LoggerLevel The LoggerLevel that as been Gotten
      */
     public static LoggerLevel getLoggerLevel(String name) {
-        if (LoggerLevels.containsKey(name)) {
-            return LoggerLevels.get(name);
-        }
-        else {
-            return LoggerLevels.get(addLoggerLevel(name));
-        }
+        return getLoggerLevel(name, "");
     }
 
     /**
@@ -92,9 +85,14 @@ public class LoggerLevels {
      *
      * @return The LoggerLevel that as been Gotten
      */
-    @SuppressWarnings("UnusedDeclaration")
     public static LoggerLevel getLoggerLevel(String levelName, String prefix) {
-        String name = levelName + "-" + prefix;
+        String name;
+        if (!prefix.equals("")) {
+            name = levelName + "-" + prefix;
+        }
+        else {
+            name = levelName;
+        }
         if (LoggerLevels.containsKey(name)) {
             return LoggerLevels.get(name);
         }
@@ -140,6 +138,20 @@ public class LoggerLevels {
         }
     }
 
+    public static LoggerLevel getLoggerLevel(Level level, Marker marker) {
+        return getLoggerLevel(level.getName(), marker);
+    }
+
+    public static LoggerLevel getLoggerLevel(String level, Marker marker) {
+        String name = level + "-" + marker.getName();
+        if (LoggerLevels.containsKey(name)) {
+            return LoggerLevels.get(name);
+        }
+        else {
+            return LoggerLevels.get(addLoggerLevel(level, marker.getName()));
+        }
+    }
+
     /**
      * This will Remove a LoggerLevel from being able to be tracked and returned by this Level Manager
      *
@@ -154,8 +166,9 @@ public class LoggerLevels {
      *
      * @param lvl Logger to remove
      */
+    @Deprecated
     public static void removeLoggerLevel(LoggerLevel lvl) {
-        removeLoggerLevel(lvl.getID());
+        // Point less to remove a LoggerLevel each level has an uid...
     }
 
 }

@@ -4,7 +4,7 @@
 
     <groupId>net.larry1123</groupId>
     <artifactId>EEUtils</artifactId>
-    <version>1.3.1</version>
+    <version>1.4.0-SNAPSHOT</version>
     <inceptionYear>2013</inceptionYear>
 
     <properties>
@@ -46,7 +46,6 @@
     <scm>
         <connection>scm:git:https://github.com/ElecEntertainment/EEUtils.git</connection>
         <developerConnection>scm:git:https://github.com/ElecEntertainment/EEUtils.git</developerConnection>
-        <tag>1.2.5-SNAPSHOT</tag>
         <url>https://github.com/ElecEntertainment/EEUtils</url>
     </scm>
 
@@ -90,8 +89,17 @@
             <artifactId>guava</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <!-- Test Dependencies -->
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
         </dependency>
     </dependencies>
 
@@ -199,9 +207,22 @@
                 <scope>compile</scope>
             </dependency>
             <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.7</version>
+                <scope>compile</scope>
+            </dependency>
+            <!-- Test Dependencies -->
+            <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.11</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-jdk14</artifactId>
+                <version>1.7.7</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

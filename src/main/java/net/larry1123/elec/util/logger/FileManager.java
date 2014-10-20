@@ -15,6 +15,7 @@
  */
 package net.larry1123.elec.util.logger;
 
+import com.google.common.io.Files;
 import net.larry1123.elec.util.factorys.EELoggerFactory;
 import net.larry1123.elec.util.factorys.FactoryManager;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -27,16 +28,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
+import java.util.logging.Logger;
 
-@SuppressWarnings("WeakerAccess")
 public class FileManager {
 
     private static final HashMap<String, FileHandler> fileHandlers = new HashMap<String, FileHandler>();
-    private static final HashMap<FileHandler, UtilFilter> fileFilters = new HashMap<FileHandler, UtilFilter>();
-    private static final HashMap<EELogger, String> loggerPaths = new HashMap<EELogger, String>();
-    private static final HashMap<LoggerLevel, String> levelPaths = new HashMap<LoggerLevel, String>();
+    private static final HashMap<String, UtilFileHandler> utilFileHandlers = new HashMap<String, UtilFileHandler>();
     private static EELoggerFactory eeLoggerFactory = FactoryManager.getFactoryManager().getEELoggerFactory();
 
     /**
@@ -76,7 +73,7 @@ public class FileManager {
                     }
                     break;
                 case DAY:
-                    if (DateUtils.isSameDay(currentTime, currentSplit)) {
+                    if (!DateUtils.isSameDay(currentTime, currentSplit)) {
                         set = getConfig().getCurrentSplit();
                     }
                     break;
@@ -101,175 +98,45 @@ public class FileManager {
     }
 
     /**
-     * Sets up the file for a Logger to use
+     * This will set up a Logger to have a {@link net.larry1123.elec.util.logger.UtilFileHandler}.
      *
-     * @param logger      What Logger needs setup
-     * @param logPathPath Where to Log to
+     * @param logger  Any Java Logger you want to have a UtilFileHandler
+     * @param logPath The path and Logger Name
      *
-     * @return Fully ready to use FileHandler
+     * @throws IOException
      */
-    public static FileHandler setUpFile(EELogger logger, String logPathPath) {
-        createDirectoryFromPath(logger.logPath);
-        try {
-            FileHandler handler = getHandler(logger, logPathPath);
-            UtilFilter filter = fileFilters.get(handler);
-            filter.setLogAll(true);
-            return handler;
-        }
-        catch (SecurityException e) {
-            eeLoggerFactory.getLogger("EEUtil").logCustom(LoggerLevels.getLoggerLevel("FileHandlerError"), "SecurityException", e);
-        }
-        catch (IOException e) {
-            eeLoggerFactory.getLogger("EEUtil").logCustom(LoggerLevels.getLoggerLevel("FileHandlerError"), "IOException", e);
-        }
-        return null;
+    public static void setUpLogger(Logger logger, String logPath) throws IOException {
+        Files.createParentDirs(new File(logPath));
+        UtilFileHandler fileHandler = new UtilFileHandler(logPath);
+        logger.addHandler(fileHandler);
     }
 
-    /**
-     * Sets up a file for a LoggerLevel to use Under a Logger
-     *
-     * @param logger    What Logger owns the LoggerLevel
-     * @param lvl       What Level needs setup
-     * @param levelPath Where To Log to
-     *
-     * @return Fully ready to use FileHandler
-     */
-    public static FileHandler setUpFile(EELogger logger, LoggerLevel lvl, String levelPath) {
-        createDirectoryFromPath(logger.path);
-
-        FileHandler handler = setUpFile(logger, levelPath);
-        UtilFilter filter = fileFilters.get(handler);
-        filter.setLogAll(false);
-        filter.addLogLevel(lvl);
+    public static FileHandler getHandler(UtilFileHandler utilFileHandler) throws IOException {
+        FileHandler handler = null;
+        String logPath = utilFileHandler.getFilePath();
+        if (!fileHandlers.containsKey(logPath)) {
+            handler = new FileHandler(utilFileHandler.getFilePattern(), true);
+            handler.setFilter(utilFileHandler.getFilter());
+            handler.setLevel(utilFileHandler.getLevel());
+            handler.setFormatter(utilFileHandler.getFormatter());
+            handler.setEncoding(utilFileHandler.getEncoding());
+            handler.setErrorManager(utilFileHandler.getErrorManager());
+            fileHandlers.put(logPath, handler);
+        }
+        else {
+            handler = fileHandlers.get(logPath);
+        }
+        if (handler == null) {
+            throw new NullPointerException();
+        }
 
         return handler;
     }
 
-    /**
-     * @param logger   The logger that the file is made for
-     * @param lvl      The Level the file is made for
-     * @param pathName The Path that the file is to be saved to
-     *
-     * @return A setup but not fully ready FileHandler
-     *
-     * @throws SecurityException
-     * @throws IOException
-     */
-    @SuppressWarnings("UnusedDeclaration")
-    public static FileHandler getHandler(EELogger logger, LoggerLevel lvl, String pathName) throws SecurityException, IOException {
-
-        FileHandler handler = null;
-
-        if (!getConfig().getSplit().equals(FileSplits.NONE)) {
-            pathName = pathName + "_" + FileManager.dateTime();
-        }
-
-        pathName = pathName + "." + getConfig().getFileType();
-
-        if (!fileHandlers.containsKey(pathName)) {
-
-            handler = new FileHandler(pathName, true);
-            UtilsLogFormat lf = new UtilsLogFormat();
-            UtilFilter uf = new UtilFilter();
-            fileFilters.put(handler, uf);
-            handler.setFilter(uf);
-            handler.setLevel(lvl);
-            handler.setFormatter(lf);
-            handler.setEncoding("UTF-8");
-
-            logger.addHandler(handler);
-
-            fileHandlers.put(pathName, handler);
-            levelPaths.put(lvl, pathName);
-        }
-        if (handler == null) {
-            handler = fileHandlers.get(pathName);
-        }
-
-        fileFilters.get(handler).addLogLevel(lvl);
-        return fileHandlers.get(pathName);
-
-    }
-
-    /**
-     * @param logger   The logger that the file is made for
-     * @param pathName The Path that the file is to be saved to
-     *
-     * @return A setup but not fully ready FileHandler
-     *
-     * @throws SecurityException
-     * @throws IOException
-     */
-    public static FileHandler getHandler(EELogger logger, String pathName) throws SecurityException, IOException {
-
-        FileHandler handler = null;
-
-        if (!getConfig().getSplit().equals(FileSplits.NONE)) {
-            pathName = pathName + "_" + FileManager.dateTime();
-        }
-
-        pathName = pathName + "." + getConfig().getFileType();
-
-        if (!fileHandlers.containsKey(pathName)) {
-
-            handler = new FileHandler(pathName, true);
-            UtilsLogFormat lf = new UtilsLogFormat();
-            UtilFilter uf = new UtilFilter();
-            fileFilters.put(handler, uf);
-            handler.setFilter(uf);
-            handler.setLevel(Level.ALL);
-            handler.setFormatter(lf);
-            handler.setEncoding("UTF-8");
-
-            logger.addHandler(handler);
-
-            fileHandlers.put(pathName, handler);
-            loggerPaths.put(logger, pathName);
-        }
-        if (handler == null) {
-            handler = fileHandlers.get(pathName);
-        }
-        return handler;
-    }
-
-    /**
-     * Removes A Level from the file filter that it is linked to
-     *
-     * @param lvl Remove a fileHandler for the given level
-     */
-    public static void removeLoggerLevel(LoggerLevel lvl) {
-        fileFilters.get(fileHandlers.get(levelPaths.remove(lvl))).removeLogLevel(lvl);
-    }
-
-    public static void updateFileHandlers() {
-        for (EELogger logger : loggerPaths.keySet()) {
-            for (Handler handlerM : logger.getHandlers()) {
-                if (handlerM instanceof FileHandler) {
-                    FileHandler handler = (FileHandler) handlerM;
-                    UtilFilter filter = (UtilFilter) handler.getFilter();
-                    if (!handler.getLevel().equals(Level.ALL)) {
-                        LoggerLevel lvl = (LoggerLevel) handler.getLevel();
-                        logger.removeHandler(handler);
-                        fileHandlers.remove(levelPaths.get(lvl));
-                        handler = setUpFile(logger, lvl, levelPaths.get(lvl));
-                        handler.setFilter(filter);
-                    }
-                    else {
-                        fileHandlers.remove(loggerPaths.get(logger));
-                        logger.removeHandler(handler);
-                        handler = setUpFile(logger, logger.logPath);
-                        handler.setFilter(filter);
-                    }
-                }
-            }
-        }
-    }
-
-    private static void createDirectoryFromPath(String path) {
-        File logDir = new File(path.substring(0, path.lastIndexOf('/')));
-        if (!logDir.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            logDir.mkdirs();
+    public synchronized static void updateFileHandlers() throws IOException {
+        for (UtilFileHandler fileHandler : utilFileHandlers.values()) {
+            utilFileHandlers.remove(fileHandler.getFilePath());
+            fileHandler.updateFileHandler();
         }
     }
 

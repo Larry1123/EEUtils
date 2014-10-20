@@ -48,17 +48,21 @@ public class LoggerTest {
     public void testFileCreation() {
         eeLoggerFactory.setLoggerSettings(new TestLoggerSettings());
         EELogger makeAFile = eeLoggerFactory.getLogger("EEUtilFileTest");
-        File logFile = new File(makeAFile.logPath + "." + eeLoggerFactory.getLoggerSettings().getFileType());
+        File logFile = new File(makeAFile.getLogFile() + ".0." + eeLoggerFactory.getLoggerSettings().getFileType());
         Assert.assertTrue("Logger File failed to be made.", logFile.exists());
     }
 
+    /**
+     * This test does not assert it just looks to see if it errors.
+     * Will look into seeing if I can assert if it truly logs stuff to file.
+     */
     @Test
-    public void testLevelFileCreation() {
+    public void testLogs() {
         eeLoggerFactory.setLoggerSettings(new TestLoggerSettings());
-        EELogger makeAFile = eeLoggerFactory.getLogger("EEUtilFileTest");
-        makeAFile.addLoggerLevelWFile("LevelTest");
-        File logFile = new File(makeAFile.logPath + "-LevelTest." + eeLoggerFactory.getLoggerSettings().getFileType());
-        Assert.assertTrue("Level File failed to be made.", logFile.exists());
+        EELogger eeLogger = eeLoggerFactory.getLogger("EEUtilLogsTest");
+        eeLogger.info("This is a test! This should be logged in " + eeLogger.getLogFile()+ ".0." + eeLoggerFactory.getLoggerSettings().getFileType());
+        eeLogger.error("A fake ERROR!!", new Error());
+        Assert.assertTrue(eeLogger.canFileLog());
     }
 
 }

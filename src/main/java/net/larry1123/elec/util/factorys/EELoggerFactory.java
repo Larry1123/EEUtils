@@ -70,6 +70,22 @@ public class EELoggerFactory {
     }
 
     /**
+     * Gets the EELogger for the given name
+     *
+     * @param name Name of the Logger
+     * @param subName SubName of logger
+     *
+     * @return the EELogger for the given
+     */
+    public EELogger getSubLogger(String name, String subName) {
+        if (!loggers.containsKey(name + "." + name)) {
+            EELogger logMan = new EELogger(name, subName);
+            loggers.put(logMan.getName(), logMan);
+        }
+        return loggers.get(name + "." + name);
+    }
+
+    /**
      * Gets the EELogger for the given name as a sub of the given parent
      *
      * @param name   Name of the sub-Logger

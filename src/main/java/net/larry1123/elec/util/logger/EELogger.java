@@ -16,225 +16,676 @@
 package net.larry1123.elec.util.logger;
 
 import net.larry1123.elec.util.factorys.FactoryManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
-import java.io.BufferedReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
-@SuppressWarnings("WeakerAccess")
-public class EELogger extends Logger {
+public class EELogger implements Logger {
 
-    /**
-     * This is the path for the log files of this logger
-     */
-    public final String path;
-    public final String logPath;
+    public static final LoggerLevel TRACE = LoggerLevels.getLoggerLevel("TRACE");
+    public static final LoggerLevel DEBUG = LoggerLevels.getLoggerLevel("DEBUG");
+    public static final LoggerLevel ERROR = LoggerLevels.getLoggerLevel("ERROR");
+
+    protected final org.slf4j.Logger logger;
+    protected final FileLogger fileLogger;
+
+    protected final String path;
+    protected final String logFile;
+    protected final boolean fileLogging;
 
     public EELogger(String name) {
-        super(name, null);
-        path = getConfig().getLoggerPath() + name + "/";
-        logPath = path + name;
-        FileManager.setUpFile(this, logPath);
-        if (getConfig().getParentLogger() != null) {
-            setParent(getConfig().getParentLogger());
-        }
+        this(name, true);
     }
 
-    public EELogger(String name, EELogger parent) {
-        super(parent.getName() + "." + name, null);
-        path = parent.path;
-        logPath = path + parent.getName() + "." + name;
-        FileManager.setUpFile(this, logPath);
-        setParent(parent);
+    public EELogger(String name, Logger parent) {
+        this(name, parent, true);
     }
 
-    private LoggerSettings getConfig() {
-        return FactoryManager.getFactoryManager().getEELoggerFactory().getLoggerSettings();
+    public EELogger(String name, String subName) {
+        this(name, subName, true);
     }
 
-    /**
-     * Creates a LoggerLevel for this Logger
-     * Makes the Log look like this: [{LoggerName}] [{LevelName}] {Message}
-     *
-     * @param levelName The name of the level to be made
-     *
-     * @return The ID of the level to be used to get the Logger once more if needed
-     */
-    public String addLoggerLevel(String levelName) {
-        return LoggerLevels.getLoggerLevel(levelName, this).getID();
+    public EELogger(String name, Logger parent, boolean fileLog) {
+        this(parent.getName() + "." + name, fileLog);
     }
 
-    /**
-     * Creates a LoggerLevel for this Logger with a prefix
-     * Makes the Log look like this: [{LoggerName}] [{LevelName}] [{Prefix}] {Message}
-     *
-     * @param levelName The name of the level to be made
-     * @param prefix    The prefix to be used in the Log for this Level
-     *
-     * @return The ID of the level to be used to get the Logger once more if needed
-     */
-    public String addLoggerLevel(String levelName, String prefix) {
-        return LoggerLevels.getLoggerLevel(levelName, prefix, this).getID();
+    public EELogger(String name, String subName, boolean fileLog) {
+        this(name + "." + subName, fileLog);
     }
 
-    /**
-     * Creates a LoggerLevel for this Logger and saves it to a Log file
-     * Makes the Log look like this: [{LoggerName}] [{LevelName}] {Message}
-     *
-     * @param levelName The name of the level to be made
-     *
-     * @return The ID of the level to be used to get the Logger once more if needed
-     */
-    public String addLoggerLevelWFile(String levelName) {
-        LoggerLevel lvl = LoggerLevels.getLoggerLevel(levelName, this);
-        String levelPath = logPath + "-" + levelName;
-        FileManager.setUpFile(this, lvl, levelPath);
-        return lvl.getID();
-    }
-
-    /**
-     * Creates a LoggerLevel for this Logger with a prefix and saves it to a Log file
-     * Makes the Log look like this: [{LoggerName}] [{LevelName}] [{Prefix}] {Message}
-     *
-     * @param levelName The name of the level to be made
-     * @param prefix    The prefix to be used in the Log for this Level
-     *
-     * @return The ID of the level to be used to get the Logger once more if needed
-     */
-    public String addLoggerLevelWFile(String levelName, String prefix) {
-        LoggerLevel lvl = LoggerLevels.getLoggerLevel(levelName, prefix, this);
-        String levelPath = logPath + "-" + levelName;
-        FileManager.setUpFile(this, lvl, levelPath);
-        return lvl.getID();
-    }
-
-    /**
-     * Get the LoggerLevel for the given name.
-     *
-     * @param name The ID of the Level to get
-     *
-     * @return The LoggerLevel for the given ID
-     */
-    public LoggerLevel getLoggerLevel(String name) {
-        return LoggerLevels.getLoggerLevel(name);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void log(LogRecord logRecord) {
-        Level level = logRecord.getLevel();
-        StringBuilder message = new StringBuilder();
-        if (level instanceof LoggerLevel) {
-            LoggerLevel handle = (LoggerLevel) level;
-            if (!handle.getPrefix().isEmpty()) {
-                message.append("[").append(handle.getPrefix()).append("] ").append(logRecord.getMessage());
+    public EELogger(String name, boolean fileLog) {
+        boolean fileLoggingTemp = fileLog;
+        logger = LoggerFactory.getLogger(name);
+        fileLogger = new FileLogger(getName());
+        path = getConfig().getLoggerPath() + getName() + "/";
+        logFile = getPath() + getName();
+        if (fileLog) {
+            try {
+                FileManager.setUpLogger(getFileLogger(), getLogFile());
+                fileLoggingTemp = true;
+            }
+            catch (IOException e) {
+                fileLoggingTemp = false;
             }
         }
-        message.insert(0, "[").insert(0, this.getName()).insert(0, "] ");
-        logRecord.setMessage(message.toString());
+        fileLogging = fileLoggingTemp;
+    }
 
-        super.log(logRecord);
+    public static LoggerLevel getTrace() {
+        return TRACE;
+    }
+
+    public static LoggerLevel getDebug() {
+        return DEBUG;
+    }
+
+    public static LoggerLevel getError() {
+        return ERROR;
+    }
+
+    @Override
+    public String getName() {
+        return getLogger().getName();
+    }
+
+    @Override
+    public boolean isTraceEnabled() {
+        return getLogger().isTraceEnabled();
+    }
+
+    @Override
+    public void trace(String s) {
+        getLogger().trace(s);
+        if (isTraceEnabled()) {
+            getFileLogger().log(getTrace(), s);
+        }
+    }
+
+    @Override
+    public void trace(String s, Object o) {
+        getLogger().trace(s, o);
+        if (isTraceEnabled()) {
+            getFileLogger().log(getTrace(), format(s, o));
+        }
+    }
+
+    @Override
+    public void trace(String s, Object o, Object o2) {
+        getLogger().trace(s, o, o2);
+        if (isTraceEnabled()) {
+            getFileLogger().log(getTrace(), format(s, o, o2));
+        }
+    }
+
+    @Override
+    public void trace(String s, Object... objects) {
+        getLogger().trace(s, objects);
+        if (isTraceEnabled()) {
+            getFileLogger().log(getTrace(), format(s, objects));
+        }
+    }
+
+    @Override
+    public void trace(String s, Throwable throwable) {
+        getLogger().trace(s, throwable);
+        if (isTraceEnabled()) {
+            getFileLogger().log(getTrace(), s, throwable);
+        }
+    }
+
+    @Override
+    public boolean isTraceEnabled(Marker marker) {
+        return getLogger().isTraceEnabled(marker);
+    }
+
+    @Override
+    public void trace(Marker marker, String s) {
+        getLogger().trace(marker, s);
+        if (isTraceEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(getTrace(), marker), s);
+        }
+    }
+
+    @Override
+    public void trace(Marker marker, String s, Object o) {
+        getLogger().trace(marker, s, o);
+        if (isTraceEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(getTrace(), marker), format(s, o));
+        }
+    }
+
+    @Override
+    public void trace(Marker marker, String s, Object o, Object o2) {
+        getLogger().trace(marker, s, o, o2);
+        if (isTraceEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(getTrace(), marker), format(s, o, o2));
+        }
+    }
+
+    @Override
+    public void trace(Marker marker, String s, Object... objects) {
+        getLogger().trace(marker, s, objects);
+        if (isTraceEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(getTrace(), marker), format(s, objects));
+        }
+    }
+
+    @Override
+    public void trace(Marker marker, String s, Throwable throwable) {
+        getLogger().trace(marker, s, throwable);
+        if (isTraceEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(getTrace(), marker), s, throwable);
+        }
+    }
+
+    @Override
+    public boolean isDebugEnabled() {
+        return getLogger().isDebugEnabled();
+    }
+
+    @Override
+    public void debug(String s) {
+        getLogger().debug(s);
+        if (isDebugEnabled()) {
+            getFileLogger().log(getDebug(), s);
+        }
+    }
+
+    @Override
+    public void debug(String s, Object o) {
+        getLogger().debug(s, o);
+        if (isDebugEnabled()) {
+            getFileLogger().log(getDebug(), format(s, o));
+        }
+    }
+
+    @Override
+    public void debug(String s, Object o, Object o2) {
+        getLogger().trace(s, o, o2);
+        if (isDebugEnabled()) {
+            getFileLogger().log(getDebug(), format(s, o, o2));
+        }
+    }
+
+    @Override
+    public void debug(String s, Object... objects) {
+        getLogger().debug(s, objects);
+        if (isDebugEnabled()) {
+            getFileLogger().log(getDebug(), format(s, objects));
+        }
+    }
+
+    @Override
+    public void debug(String s, Throwable throwable) {
+        getLogger().trace(s, throwable);
+        if (isDebugEnabled()) {
+            getFileLogger().log(getDebug(), s, throwable);
+        }
+    }
+
+    @Override
+    public boolean isDebugEnabled(Marker marker) {
+        return getLogger().isDebugEnabled(marker);
+    }
+
+    @Override
+    public void debug(Marker marker, String s) {
+        getLogger().debug(marker, s);
+        if (isDebugEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(getDebug(), marker), s);
+        }
+    }
+
+    @Override
+    public void debug(Marker marker, String s, Object o) {
+        getLogger().debug(marker, s, o);
+        if (isDebugEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(getDebug(), marker), format(s, o));
+        }
+    }
+
+    @Override
+    public void debug(Marker marker, String s, Object o, Object o2) {
+        getLogger().debug(marker, s, o, o2);
+        if (isDebugEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(getDebug(), marker), format(s, o, o2));
+        }
+    }
+
+    @Override
+    public void debug(Marker marker, String s, Object... objects) {
+        getLogger().debug(marker, s, objects);
+        if (isDebugEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(getDebug(), marker), format(s, objects));
+        }
+    }
+
+    @Override
+    public void debug(Marker marker, String s, Throwable throwable) {
+        getLogger().debug(marker, s, throwable);
+        if (isDebugEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(getDebug(), marker), s, throwable);
+        }
+    }
+
+    @Override
+    public boolean isInfoEnabled() {
+        return getLogger().isInfoEnabled();
+    }
+
+    @Override
+    public void info(String s) {
+        getLogger().info(s);
+        if (isInfoEnabled()) {
+            getFileLogger().info(s);
+        }
+    }
+
+    @Override
+    public void info(String s, Object o) {
+        getLogger().info(s, o);
+        if (isInfoEnabled()) {
+            getFileLogger().info(format(s, o));
+        }
+    }
+
+    @Override
+    public void info(String s, Object o, Object o2) {
+        getLogger().info(s, o, o2);
+        if (isInfoEnabled()) {
+            getFileLogger().info(format(s, o, o2));
+        }
+    }
+
+    @Override
+    public void info(String s, Object... objects) {
+        getLogger().info(s, objects);
+        if (isInfoEnabled()) {
+            getFileLogger().info(format(s, objects));
+        }
+    }
+
+    @Override
+    public void info(String s, Throwable throwable) {
+        getLogger().info(s, throwable);
+        if (isInfoEnabled()) {
+            getFileLogger().log(Level.INFO, s, throwable);
+        }
+    }
+
+    @Override
+    public boolean isInfoEnabled(Marker marker) {
+        return getLogger().isInfoEnabled(marker);
+    }
+
+    @Override
+    public void info(Marker marker, String s) {
+        getLogger().info(marker, s);
+        if (isInfoEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(Level.INFO, marker), s);
+        }
+    }
+
+    @Override
+    public void info(Marker marker, String s, Object o) {
+        getLogger().info(marker, s, o);
+        if (isInfoEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(Level.INFO, marker), format(s, o));
+        }
+    }
+
+    @Override
+    public void info(Marker marker, String s, Object o, Object o2) {
+        getLogger().info(marker, s, o, o2);
+        if (isInfoEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(Level.INFO, marker), format(s, o, o2));
+        }
+    }
+
+    @Override
+    public void info(Marker marker, String s, Object... objects) {
+        getLogger().info(marker, s, objects);
+        if (isInfoEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(Level.INFO, marker), format(s, objects));
+        }
+    }
+
+    @Override
+    public void info(Marker marker, String s, Throwable throwable) {
+        getLogger().info(marker, s, throwable);
+        if (isInfoEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(Level.INFO, marker), s, throwable);
+        }
+    }
+
+    @Override
+    public boolean isWarnEnabled() {
+        return getLogger().isWarnEnabled();
+    }
+
+    @Override
+    public void warn(String s) {
+        getLogger().warn(s);
+        if (isWarnEnabled()) {
+            getFileLogger().log(Level.WARNING, s);
+        }
+    }
+
+    @Override
+    public void warn(String s, Object o) {
+        getLogger().warn(s, o);
+        if (isWarnEnabled()) {
+            getFileLogger().log(Level.WARNING, format(s, o));
+        }
+    }
+
+    @Override
+    public void warn(String s, Object... objects) {
+        getLogger().warn(s, objects);
+        if (isWarnEnabled()) {
+            getFileLogger().log(Level.WARNING, format(s, objects));
+        }
+    }
+
+    @Override
+    public void warn(String s, Object o, Object o2) {
+        getLogger().warn(s, o, o2);
+        if (isWarnEnabled()) {
+            getFileLogger().log(Level.WARNING, format(s, o, o2));
+        }
+    }
+
+    @Override
+    public void warn(String s, Throwable throwable) {
+        getLogger().warn(s, throwable);
+        if (isWarnEnabled()) {
+            getFileLogger().log(Level.WARNING, s, throwable);
+        }
+    }
+
+    @Override
+    public boolean isWarnEnabled(Marker marker) {
+        return getLogger().isWarnEnabled(marker);
+    }
+
+    @Override
+    public void warn(Marker marker, String s) {
+        getLogger().warn(marker, s);
+        if (isWarnEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(Level.WARNING, marker), s);
+        }
+    }
+
+    @Override
+    public void warn(Marker marker, String s, Object o) {
+        getLogger().warn(marker, s, o);
+        if (isWarnEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(Level.WARNING, marker), format(s, o));
+        }
+    }
+
+    @Override
+    public void warn(Marker marker, String s, Object o, Object o2) {
+        getLogger().warn(marker, s, o, o2);
+        if (isWarnEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(Level.WARNING, marker), format(s, o, o2));
+        }
+    }
+
+    @Override
+    public void warn(Marker marker, String s, Object... objects) {
+        getLogger().warn(marker, s, objects);
+        if (isWarnEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(Level.WARNING, marker), format(s, objects));
+        }
+    }
+
+    @Override
+    public void warn(Marker marker, String s, Throwable throwable) {
+        getLogger().warn(marker, s, throwable);
+        if (isWarnEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(Level.WARNING, marker), s, throwable);
+        }
+    }
+
+    @Override
+    public boolean isErrorEnabled() {
+        return getLogger().isErrorEnabled();
+    }
+
+    @Override
+    public void error(String s) {
+        getLogger().error(s);
+        if (isErrorEnabled()) {
+            getFileLogger().log(getError(), s);
+        }
+    }
+
+    @Override
+    public void error(String s, Object o) {
+        getLogger().error(s, o);
+        if (isErrorEnabled()) {
+            getFileLogger().log(getError(), format(s, o));
+        }
+    }
+
+    @Override
+    public void error(String s, Object o, Object o2) {
+        getLogger().error(s, o, o2);
+        if (isErrorEnabled()) {
+            getFileLogger().log(getError(), format(s, o, o2));
+        }
+    }
+
+    @Override
+    public void error(String s, Object... objects) {
+        getLogger().error(s, objects);
+        if (isErrorEnabled()) {
+            getFileLogger().log(getError(), format(s, objects));
+        }
+    }
+
+    @Override
+    public void error(String s, Throwable throwable) {
+        getLogger().error(s, throwable);
+        if (isErrorEnabled()) {
+            getFileLogger().log(getError(), s, throwable);
+        }
+    }
+
+    @Override
+    public boolean isErrorEnabled(Marker marker) {
+        return getLogger().isErrorEnabled(marker);
+    }
+
+    @Override
+    public void error(Marker marker, String s) {
+        getLogger().error(marker, s);
+        if (isErrorEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(getError(), marker), s);
+        }
+    }
+
+    @Override
+    public void error(Marker marker, String s, Object o) {
+        getLogger().error(marker, s, o);
+        if (isErrorEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(getError(), marker), format(s, o));
+        }
+    }
+
+    @Override
+    public void error(Marker marker, String s, Object o, Object o2) {
+        getLogger().error(marker, s, o, o2);
+        if (isErrorEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(getError(), marker), format(s, o, o2));
+        }
+    }
+
+    @Override
+    public void error(Marker marker, String s, Object... objects) {
+        getLogger().error(marker, s, objects);
+        if (isErrorEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(getError(), marker), format(s, objects));
+        }
+    }
+
+    @Override
+    public void error(Marker marker, String s, Throwable throwable) {
+        getLogger().error(marker, s, throwable);
+        if (isErrorEnabled(marker)) {
+            getFileLogger().log(getLoggerLevel(getError(), marker), s, throwable);
+        }
     }
 
     /**
-     * Used to Log a Custom Logger Level
+     * TODO
      *
-     * @param lvl The LoggerLevel object to use
-     * @param msg Message to be Logged with Level
+     * @param s         the message accompanying the exception
+     * @param throwable the exception (throwable) to log
+     *
+     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
      */
-    public void logCustom(LoggerLevel lvl, String msg) {
-        log(lvl, msg);
+    public boolean traceToPasteBin(String s, Throwable throwable) {
+        trace(s, throwable);
+        return isTraceEnabled() && logStackTraceToPasteBin(getTrace(), s, throwable);
     }
 
     /**
-     * Used to Log a Custom Logger Level with a StackTrace
+     * TODO
      *
-     * @param lvl    The LoggerLevel object to use
-     * @param msg    Message to be Logged with Level
-     * @param thrown The Throwable Error
+     * @param marker    the marker data specific to this log statement
+     * @param s         the message accompanying the exception
+     * @param throwable the exception (throwable) to log
+     *
+     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
      */
-    public void logCustom(LoggerLevel lvl, String msg, Throwable thrown) {
-        log(lvl, msg, thrown);
+    public boolean traceToPasteBin(Marker marker, String s, Throwable throwable) {
+        trace(marker, s, throwable);
+        return isTraceEnabled(marker) && logStackTraceToPasteBin(getLoggerLevel(getTrace(), marker), s, throwable);
     }
 
     /**
-     * Used to Log a Custom Logger Level
+     * TODO
      *
-     * @param lvl The name of the LoggerLevel to use
-     * @param msg Message to be Logged with Level
+     * @param s         the message accompanying the exception
+     * @param throwable the exception (throwable) to log
+     *
+     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
      */
-    public void logCustom(String lvl, String msg) {
-        log(LoggerLevels.getLoggerLevel(lvl), msg);
+    public boolean debugToPasteBin(String s, Throwable throwable) {
+        trace(s, throwable);
+        return isDebugEnabled() && logStackTraceToPasteBin(getDebug(), s, throwable);
     }
 
     /**
-     * Used to Log a Custom Logger Level with a StackTrace
+     * TODO
      *
-     * @param lvl    The name of the LoggerLevel to use
-     * @param msg    Message to be Logged with Level
-     * @param thrown The Throwable Error
+     * @param marker    the marker data specific to this log statement
+     * @param s         the message accompanying the exception
+     * @param throwable the exception (throwable) to log
+     *
+     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
      */
-    public void logCustom(String lvl, String msg, Throwable thrown) {
-        log(LoggerLevels.getLoggerLevel(lvl), msg, thrown);
+    public boolean debugToPasteBin(Marker marker, String s, Throwable throwable) {
+        debug(marker, s, throwable);
+        return isDebugEnabled(marker) && logStackTraceToPasteBin(getLoggerLevel(getDebug(), marker), s, throwable);
     }
 
     /**
-     * Remove a LoggerLevel
+     * TODO
      *
-     * @param name The ID of the LoggerLevel to remove
+     * @param s         the message accompanying the exception
+     * @param throwable the exception (throwable) to log
+     *
+     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
      */
-    public void removeLoggerLevel(String name) {
-        removeLoggerLevel(getLoggerLevel(name));
+    public boolean infoToPasteBin(String s, Throwable throwable) {
+        info(s, throwable);
+        return isInfoEnabled() && logStackTraceToPasteBin(Level.INFO, s, throwable);
     }
 
     /**
-     * Remove a LoggerLevel
+     * TODO
      *
-     * @param lvl LoggerLevel to remove
+     * @param marker    the marker data specific to this log statement
+     * @param s         the message accompanying the exception
+     * @param throwable the exception (throwable) to log
+     *
+     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
      */
-    public void removeLoggerLevel(LoggerLevel lvl) {
-        FileManager.removeLoggerLevel(lvl);
-        LoggerLevels.removeLoggerLevel(lvl);
+    public boolean infoToPasteBin(Marker marker, String s, Throwable throwable) {
+        info(marker, s, throwable);
+        return isInfoEnabled(marker) && logStackTraceToPasteBin(getLoggerLevel(Level.INFO, marker), s, throwable);
     }
 
     /**
-     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
-     * Will return true if it was able to post and false if it was not able to post
-     * Throws with the Level Warning
+     * TODO
      *
-     * @param message Message to be Logged
-     * @param thrown  Throwable Error To be logged
+     * @param s         the message accompanying the exception
+     * @param throwable the exception (throwable) to log
      *
-     * @return True if paste was made of stackTrace false if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
      */
-    @Deprecated
-    public boolean logStackTraceToPasteBin(String message, Throwable thrown) {
-        return logStackTraceToPasteBin(Level.WARNING, message, thrown);
+    public boolean warnToPasteBin(String s, Throwable throwable) {
+        warn(s, throwable);
+        return isWarnEnabled() && logStackTraceToPasteBin(Level.WARNING, s, throwable);
     }
 
     /**
-     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
-     * Will return true if it was able to post and false if it was not able to post
-     * Throws with the LoggerLevel Given
+     * TODO
      *
-     * @param lvl     Name of the LoggerLevel to throw with
-     * @param message Message to be Logged
-     * @param thrown  Throwable Error To be logged
+     * @param marker    the marker data specific to this log statement
+     * @param s         the message accompanying the exception
+     * @param throwable the exception (throwable) to log
      *
-     * @return True if paste was made of stackTrace false if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
      */
-    @Deprecated
-    public boolean logStackTraceToPasteBin(String lvl, String message, Throwable thrown) {
-        return logStackTraceToPasteBin(LoggerLevels.getLoggerLevel(lvl), message, thrown);
+    public boolean warnToPasteBin(Marker marker, String s, Throwable throwable) {
+        warn(marker, s, throwable);
+        return isWarnEnabled(marker) && logStackTraceToPasteBin(getLoggerLevel(Level.WARNING, marker), s, throwable);
+    }
+
+    /**
+     * TODO
+     *
+     * @param s         the message accompanying the exception
+     * @param throwable the exception (throwable) to log
+     *
+     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
+     */
+    public boolean errorToPasteBin(String s, Throwable throwable) {
+        error(s, throwable);
+        return isTraceEnabled() && logStackTraceToPasteBin(getError(), s, throwable);
+    }
+
+    /**
+     * TODO
+     *
+     * @param marker    the marker data specific to this log statement
+     * @param s         the message accompanying the exception
+     * @param throwable the exception (throwable) to log
+     *
+     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
+     */
+    public boolean errorToPasteBin(Marker marker, String s, Throwable throwable) {
+        error(marker, s, throwable);
+        return isErrorEnabled(marker) && logStackTraceToPasteBin(getLoggerLevel("ERROR", marker), s, throwable);
     }
 
     /**
@@ -246,9 +697,8 @@ public class EELogger extends Logger {
      * @param message Message to be Logged
      * @param thrown  Throwable Error To be logged
      *
-     * @return True if paste was made of stackTrace false if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
      */
-    @Deprecated
     public boolean logStackTraceToPasteBin(LoggerLevel lvl, String message, Throwable thrown) {
         if (!lvl.getPrefix().isEmpty()) {
             message = "[" + lvl.getPrefix() + "] " + message;
@@ -265,13 +715,11 @@ public class EELogger extends Logger {
      * @param message Message to be Logged
      * @param thrown  Throwable Error To be logged
      *
-     * @return True if paste was made of stackTrace false if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
      */
-    @Deprecated
     public boolean logStackTraceToPasteBin(Level lvl, String message, Throwable thrown) {
-        log(lvl, message, thrown);
-
         if (getConfig().isPastingAllowed()) {
+            EELogger eeLogger =  FactoryManager.getFactoryManager().getEELoggerFactory().getSubLogger("EEUtil", "PasteBinLog");
             try {
                 URL url = new URL("https://paste.larry1123.net/api/xml/create");
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -281,11 +729,10 @@ public class EELogger extends Logger {
 
                 String urlParameters = "data=" + "[" + lvl.getName() + "] " + message + "\n" + org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(thrown);
                 urlParameters += "&";
-                urlParameters += "title=" + "[" + lvl.getName() + "] " + message;
+                String title = "[" + lvl.getName() + "] " + message;
+                urlParameters += "title=" + (title.length() > 30 ? title.substring(0, 30) : title);
                 urlParameters += "&";
                 urlParameters += "language=Java";
-                urlParameters += "&";
-                urlParameters += "project=" + this.getName();
 
                 // Send post request
                 con.setDoOutput(true);
@@ -294,25 +741,45 @@ public class EELogger extends Logger {
                 wr.flush();
                 wr.close();
 
-                int responseCode = con.getResponseCode();
-                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
+                // int responseCode = con.getResponseCode();
+                // BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                // String inputLine;
+                // StringBuilder response = new StringBuilder();
 
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
+                // while ((inputLine = in.readLine()) != null) {
+                //    response.append(inputLine);
+                // }
+                // in.close();
+
+                if (con.getResponseCode() == 200) {
+                    DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                    Document document = dBuilder.parse(con.getInputStream());
+                    document.getDocumentElement().normalize();
+
+                    NodeList nodeList = document.getElementsByTagName("id");
+                    Node node = nodeList.item(0);
+                    String id = node.getTextContent();
+                    eeLogger.info("Logger " + getName() + ": https://paste.larry1123.net/" + id);
+                    return true;
                 }
-                in.close();
-
-                return responseCode == 200 && response.toString().contains("<id>");
-
+                // return responseCode == 200 && response.toString().contains("<id>");
+                return false;
             }
             catch (MalformedURLException e) {
-                EELogger.getLogger("EEUtil").log(Level.SEVERE, "Failed to send: Malformed", e);
+                eeLogger.error("Failed to send: Malformed", e);
                 return false;
             }
             catch (IOException e) {
-                EELogger.getLogger("EEUtil").log(Level.SEVERE, "Failed to send: IOException", e);
+                eeLogger.error("Failed to send: IOException", e);
+                return false;
+            }
+            catch (ParserConfigurationException e) {
+                eeLogger.error("Failed to send: ParserConfigurationException", e);
+                return false;
+            }
+            catch (SAXException e) {
+                eeLogger.error("Failed to send: SAXException", e);
                 return false;
             }
         }
@@ -321,68 +788,43 @@ public class EELogger extends Logger {
         }
     }
 
-    /**
-     * Log a message with INFO level.
-     *
-     * @param message the message to be logged
-     */
-    public void logInfo(String message) {
-        log(Level.INFO, message);
+    protected LoggerSettings getConfig() {
+        return FactoryManager.getFactoryManager().getEELoggerFactory().getLoggerSettings();
+    }
+
+    protected LoggerLevel getLoggerLevel(Level level, Marker marker) {
+        return LoggerLevels.getLoggerLevel(level, marker);
+    }
+
+    protected LoggerLevel getLoggerLevel(String level, Marker marker) {
+        return LoggerLevels.getLoggerLevel(level, marker);
+    }
+
+    protected String format(String pattern, Object... arguments) {
+        return MessageFormat.format(pattern, arguments);
     }
 
     /**
-     * Log a message with WARNING level
-     *
-     * @param message the message to be logged
+     * This is the path for the log files of this logger
      */
-    public void logWarning(String message) {
-        log(Level.WARNING, message);
+    public String getPath() {
+        return path;
     }
 
-    /**
-     * Log a message with SEVERE level
-     *
-     * @param message the message to be logged
-     */
-    public void logSevere(String message) {
-        log(Level.SEVERE, message);
+    public String getLogFile() {
+        return logFile;
     }
 
-    /**
-     * Logs a debug message.
-     *
-     * @param message the message to be logged
-     */
-    public void logDebug(String message) {
-        logCustom("DEBUG", message);
+    public Logger getLogger() {
+        return logger;
     }
 
-    /**
-     * Log a derpy message
-     *
-     * @param message the message to be logged
-     */
-    public void logDerp(String message) {
-        logCustom("DERP", message);
+    public FileLogger getFileLogger() {
+        return fileLogger;
     }
 
-    /**
-     * Log a Plugin Debug message
-     *
-     * @param message the message to be logged
-     */
-    public void logPluginDebug(String message) {
-        logCustom("PLUGIN_DEBUG", message);
-    }
-
-    /**
-     * Dump a stackTrace to the log
-     *
-     * @param message the message to be logged
-     * @param thrown  the {@link Throwable} thrown
-     */
-    public void logStackTrace(String message, Throwable thrown) {
-        log(Level.SEVERE, message, thrown);
+    public boolean canFileLog() {
+        return fileLogging;
     }
 
 }

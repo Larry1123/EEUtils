@@ -133,7 +133,7 @@ public class FileManager {
         return handler;
     }
 
-    public synchronized static void updateFileHandlers() throws IOException {
+    public synchronized static void updateFileHandlers() {
         for (UtilFileHandler fileHandler : utilFileHandlers.values()) {
             utilFileHandlers.remove(fileHandler.getFilePath());
             fileHandler.updateFileHandler();

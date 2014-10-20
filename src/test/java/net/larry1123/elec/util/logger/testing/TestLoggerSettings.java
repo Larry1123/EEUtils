@@ -114,20 +114,4 @@ public class TestLoggerSettings implements LoggerSettings {
         fileType = type;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Logger getParentLogger() {
-        return parentLogger;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setParentLogger(Logger logger) {
-        parentLogger = logger;
-    }
-
 }

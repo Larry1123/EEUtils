@@ -28,6 +28,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -61,7 +62,7 @@ public class EELogger implements Logger {
     }
 
     public EELogger(String name, Logger parent, boolean fileLog) {
-        this(parent.getName() + "." + name, fileLog);
+        this(parent.getName(), name, fileLog);
     }
 
     public EELogger(String name, String subName, boolean fileLog) {
@@ -72,7 +73,7 @@ public class EELogger implements Logger {
         boolean fileLoggingTemp = fileLog;
         logger = LoggerFactory.getLogger(name);
         fileLogger = new FileLogger(getName());
-        path = getConfig().getLoggerPath() + getName() + "/";
+        path = getConfig().getLoggerPath() + getName() + File.separatorChar;
         logFile = getPath() + getName();
         if (fileLog) {
             try {

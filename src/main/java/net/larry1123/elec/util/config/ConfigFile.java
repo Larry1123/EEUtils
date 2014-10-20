@@ -16,6 +16,7 @@
 package net.larry1123.elec.util.config;
 
 import net.larry1123.elec.util.config.fieldhanders.FieldHandler;
+import net.larry1123.elec.util.factorys.FactoryManager;
 import net.larry1123.elec.util.factorys.FieldHandlerFactory;
 import net.visualillusionsent.utils.PropertiesFile;
 import org.apache.commons.lang3.ArrayUtils;
@@ -23,6 +24,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.lang.reflect.Field;
 
 public class ConfigFile {
+
+    protected final FieldHandlerFactory factory = FactoryManager.getFactoryManager().getMainFieldHandlerFactory();
 
     /**
      * The ConfigBase to base the PropertiesFile on
@@ -79,9 +82,12 @@ public class ConfigFile {
         load();
     }
 
+    /**
+     * Load data from disk and if a key is miss it will create it.
+     */
     public void load() {
         for (Field field : configFields) {
-            FieldHandler<?> fieldHandler = new FieldHandlerFactory().createFieldHandler(field.getGenericType(), field, config);
+            FieldHandler<?> fieldHandler = factory.createFieldHandler(field.getGenericType(), field, config);
             fieldHandler.load();
             fieldHandler.setComments();
         }
@@ -94,7 +100,7 @@ public class ConfigFile {
      */
     public void save() {
         for (Field field : configFields) {
-            FieldHandler<?> fieldHandler = new FieldHandlerFactory().createFieldHandler(field.getGenericType(), field, config);
+            FieldHandler<?> fieldHandler = factory.createFieldHandler(field.getGenericType(), field, config);
             fieldHandler.save();
             fieldHandler.setComments();
         }

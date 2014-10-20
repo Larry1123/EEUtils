@@ -40,7 +40,7 @@ public class StringFieldHandler extends FieldHandler<String> {
      */
     @Override
     public void setToFile(String value) {
-        getPropertiesFile().setString(getFieldName(), value);
+        getPropertiesFile().setString(getPropertyKey(), value);
     }
 
     /**
@@ -49,7 +49,7 @@ public class StringFieldHandler extends FieldHandler<String> {
     @Override
     public String getFromFile() {
         try {
-            return getPropertiesFile().getString(getFieldName());
+            return getPropertiesFile().getString(getPropertyKey());
         }
         catch (UtilityException utilityException) {
             return "";

@@ -40,7 +40,7 @@ public class DoubleArrayFieldHandler extends ArrayFieldHandler<double[]> {
      */
     @Override
     public void setToFile(double[] value) {
-        getPropertiesFile().setDoubleArray(getFieldName(), value, getSpacer());
+        getPropertiesFile().setDoubleArray(getPropertyKey(), value, getSpacer());
     }
 
     /**
@@ -49,7 +49,7 @@ public class DoubleArrayFieldHandler extends ArrayFieldHandler<double[]> {
     @Override
     public double[] getFromFile() {
         try {
-            return getPropertiesFile().getDoubleArray(getFieldName(), getSpacer());
+            return getPropertiesFile().getDoubleArray(getPropertyKey(), getSpacer());
         }
         catch (UtilityException utilityException) {
             return new double[0];

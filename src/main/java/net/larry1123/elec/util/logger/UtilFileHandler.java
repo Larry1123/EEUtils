@@ -52,6 +52,11 @@ public class UtilFileHandler extends Handler {
     }
 
     @Override
+    public synchronized void flush() {
+        getFileHandler().flush();
+    }
+
+    @Override
     public synchronized void close() throws SecurityException {
         getFileHandler().close();
     }
@@ -73,84 +78,24 @@ public class UtilFileHandler extends Handler {
         return path;
     }
 
-    @Override
-    public synchronized void flush() {
-        getFileHandler().flush();
-    }
-
+    /**
+     * Gets the directory path and part of the final file's name
+     *
+     * @return The building block path String
+     */
     public String getFilePath() {
         return filePath;
-    }
-
-    @Override
-    public synchronized void setFormatter(Formatter newFormatter) throws SecurityException {
-        if (newFormatter.equals(getFormatter())) { return; }
-        getFileHandler().setFormatter(newFormatter);
-        formatter = newFormatter;
-    }
-
-    @Override
-    public Formatter getFormatter() {
-        return formatter;
     }
 
     protected LoggerSettings getConfig() {
         return FactoryManager.getFactoryManager().getEELoggerFactory().getLoggerSettings();
     }
 
-    @Override
-    public synchronized void setEncoding(String encoding) throws UnsupportedEncodingException {
-        if (encoding.equals(getEncoding())) { return; }
-        getFileHandler().setEncoding(encoding);
-        this.encoding = encoding;
-    }
-
-    @Override
-    public String getEncoding() {
-        return encoding;
-    }
-
-    @Override
-    public synchronized void setFilter(Filter newFilter) throws SecurityException {
-        if (newFilter.equals(getFilter())) { return; }
-        getFileHandler().setFilter(newFilter);
-        filter = newFilter;
-    }
-
-    @Override
-    public Filter getFilter() {
-        return filter;
-    }
-
-    @Override
-    public synchronized void setErrorManager(ErrorManager em) {
-        if (em.equals(getErrorManager())) { return; }
-        getFileHandler().setErrorManager(em);
-        errorManager = em;
-    }
-
-    @Override
-    public ErrorManager getErrorManager() {
-        return errorManager;
-    }
-
-    @Override
-    public synchronized void setLevel(Level newLevel) throws SecurityException {
-        if (newLevel.equals(getLevel())) { return; }
-        getFileHandler().setLevel(newLevel);
-        logLevel = newLevel;
-    }
-
-    @Override
-    public Level getLevel() {
-        return logLevel;
-    }
-
-    @Override
-    public boolean isLoggable(LogRecord record) {
-        return getFileHandler().isLoggable(record);
-    }
-
+    /**
+     * This will try to update the real FileHandler doing the logging
+     *
+     * @return {@code true} if the FileHandler was changed; {@code false} if the FileHandler did not change;
+     */
     public boolean updateFileHandler() {
         try {
             FileHandler tempFileHandler = FileManager.getHandler(this);
@@ -167,11 +112,109 @@ public class UtilFileHandler extends Handler {
         }
     }
 
-    public FileHandler getFileHandler() {
+    protected FileHandler getFileHandler() {
         if (fileHandler == null) {
             updateFileHandler();
         }
         return fileHandler;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized void setFormatter(Formatter newFormatter) throws SecurityException {
+        if (newFormatter.equals(getFormatter())) { return; }
+        getFileHandler().setFormatter(newFormatter);
+        formatter = newFormatter;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Formatter getFormatter() {
+        return formatter;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized void setEncoding(String encoding) throws UnsupportedEncodingException {
+        if (encoding.equals(getEncoding())) { return; }
+        getFileHandler().setEncoding(encoding);
+        this.encoding = encoding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getEncoding() {
+        return encoding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized void setFilter(Filter newFilter) throws SecurityException {
+        if (newFilter.equals(getFilter())) { return; }
+        getFileHandler().setFilter(newFilter);
+        filter = newFilter;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized void setErrorManager(ErrorManager em) {
+        if (em.equals(getErrorManager())) { return; }
+        getFileHandler().setErrorManager(em);
+        errorManager = em;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ErrorManager getErrorManager() {
+        return errorManager;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized void setLevel(Level newLevel) throws SecurityException {
+        if (newLevel.equals(getLevel())) { return; }
+        getFileHandler().setLevel(newLevel);
+        logLevel = newLevel;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Level getLevel() {
+        return logLevel;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isLoggable(LogRecord record) {
+        return getFileHandler().isLoggable(record);
     }
 
 }

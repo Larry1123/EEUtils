@@ -40,7 +40,7 @@ public class ShortWrapFieldHandler extends FieldHandler<Short> {
      */
     @Override
     public void setToFile(Short value) {
-        getPropertiesFile().setShort(getFieldName(), value);
+        getPropertiesFile().setShort(getPropertyKey(), value);
     }
 
     /**
@@ -49,7 +49,7 @@ public class ShortWrapFieldHandler extends FieldHandler<Short> {
     @Override
     public Short getFromFile() {
         try {
-            return getPropertiesFile().getShort(getFieldName());
+            return getPropertiesFile().getShort(getPropertyKey());
         }
         catch (UtilityException utilityException) {
             return 0;

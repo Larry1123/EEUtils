@@ -30,29 +30,27 @@ import java.lang.reflect.Type;
 public abstract class FieldHandler<T> {
 
     protected final Field field;
-    protected final String fieldName;
+    protected final String propertyKey;
     protected final ConfigBase config;
     protected final PropertiesFile propertiesFile;
     protected final ConfigField ano;
     protected T value;
 
     /**
-     * @param field      The Field to be handled
-     * @param configBase The object containing the field
-     * @param fieldName  The name of the key to get from the PropertiesFile
+     * @param field       The Field to be handled
+     * @param configBase  The object containing the field
+     * @param propertyKey The name of the key to get from the PropertiesFile
      *
      * @throws NoSuchFieldException is thrown if the config object does not contain the given Field
      */
-    @SuppressWarnings("UnusedDeclaration")
-    public FieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public FieldHandler(Field field, ConfigBase configBase, String propertyKey) throws NoSuchFieldException {
         this.field = field;
         // Ensure we can use the field
         this.getField().setAccessible(true);
         ano = this.getField().getAnnotation(ConfigField.class);
         this.propertiesFile = configBase.getPropertiesFile();
         this.config = configBase;
-        this.fieldName = fieldName;
-
+        this.propertyKey = propertyKey;
     }
 
     /**
@@ -69,7 +67,7 @@ public abstract class FieldHandler<T> {
         this.propertiesFile = configBase.getPropertiesFile();
         this.config = configBase;
         // Lets give this thing a name
-        this.fieldName = (getAno().name().equals("")) ? field.getName() : getAno().name();
+        this.propertyKey = (getAno().name().equals("")) ? field.getName() : getAno().name();
     }
 
     public ConfigField getAno() {
@@ -80,8 +78,13 @@ public abstract class FieldHandler<T> {
         return field;
     }
 
+    @Deprecated
     public String getFieldName() {
-        return fieldName;
+        return getPropertyKey();
+    }
+
+    public String getPropertyKey() {
+        return propertyKey;
     }
 
     public Object getConfig() {
@@ -167,9 +170,9 @@ public abstract class FieldHandler<T> {
     public void setComments() {
         if (getAno() == null) { throw new NullPointerException("Annotation can not be null when setting"); }
         // Make Exception for throwing at making
-        if (!getPropertiesFile().containsKey(getFieldName())) { return; }
+        if (!getPropertiesFile().containsKey(getPropertyKey())) { return; }
         if ((getAno().comments().length != 1 || !getAno().comments()[0].equals(""))) {
-            getPropertiesFile().setComments(getFieldName(), getAno().comments());
+            getPropertiesFile().setComments(getPropertyKey(), getAno().comments());
         }
     }
 
@@ -177,6 +180,17 @@ public abstract class FieldHandler<T> {
         return field.getGenericType();
     }
 
+    /**
+     * Searches an object's class for a field with a given name.
+     * If it does not find the field it will search the superclass.
+     * It will keep doing this until there is no more superclasses to search or it finds the field.
+     *
+     * @param ob        Object to search search for fields in
+     * @param fieldName Name of the field to search for
+     * @param lastClass The last class searched {@code null} if first search try
+     *
+     * @return The field reference
+     */
     protected Field getField(Object ob, String fieldName, Class lastClass) {
         Class currentClass = lastClass == null ? ob.getClass() : lastClass.getSuperclass();
         try {

@@ -41,7 +41,7 @@ public class DoubleArrayWrapFieldHandler extends ArrayFieldHandler<Double[]> {
      */
     @Override
     public void setToFile(Double[] value) {
-        getPropertiesFile().setDoubleArray(getFieldName(), ArrayUtils.toPrimitive(value), getSpacer());
+        getPropertiesFile().setDoubleArray(getPropertyKey(), ArrayUtils.toPrimitive(value), getSpacer());
     }
 
     /**
@@ -50,7 +50,7 @@ public class DoubleArrayWrapFieldHandler extends ArrayFieldHandler<Double[]> {
     @Override
     public Double[] getFromFile() {
         try {
-            double[] temp = getPropertiesFile().getDoubleArray(getFieldName(), getSpacer());
+            double[] temp = getPropertiesFile().getDoubleArray(getPropertyKey(), getSpacer());
             return ArrayUtils.toObject(temp);
         }
         catch (UtilityException utilityException) {

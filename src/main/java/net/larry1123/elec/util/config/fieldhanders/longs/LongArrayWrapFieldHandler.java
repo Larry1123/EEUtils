@@ -41,7 +41,7 @@ public class LongArrayWrapFieldHandler extends ArrayFieldHandler<Long[]> {
      */
     @Override
     public void setToFile(Long[] value) {
-        getPropertiesFile().setLongArray(getFieldName(), ArrayUtils.toPrimitive(value), getSpacer());
+        getPropertiesFile().setLongArray(getPropertyKey(), ArrayUtils.toPrimitive(value), getSpacer());
     }
 
     /**
@@ -51,7 +51,7 @@ public class LongArrayWrapFieldHandler extends ArrayFieldHandler<Long[]> {
     public Long[] getFromFile() {
         try {
 
-            return ArrayUtils.toObject(getPropertiesFile().getLongArray(getFieldName(), getSpacer()));
+            return ArrayUtils.toObject(getPropertiesFile().getLongArray(getPropertyKey(), getSpacer()));
         }
         catch (UtilityException utilityException) {
             return new Long[0];

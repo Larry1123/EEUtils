@@ -40,7 +40,7 @@ public class IntegerArrayFieldHandler extends ArrayFieldHandler<int[]> {
      */
     @Override
     public void setToFile(int[] value) {
-        getPropertiesFile().setIntArray(getFieldName(), value, getSpacer());
+        getPropertiesFile().setIntArray(getPropertyKey(), value, getSpacer());
     }
 
     /**
@@ -49,7 +49,7 @@ public class IntegerArrayFieldHandler extends ArrayFieldHandler<int[]> {
     @Override
     public int[] getFromFile() {
         try {
-            return getPropertiesFile().getIntArray(getFieldName(), getSpacer());
+            return getPropertiesFile().getIntArray(getPropertyKey(), getSpacer());
         }
         catch (UtilityException utilityException) {
             return new int[0];

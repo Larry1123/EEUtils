@@ -40,7 +40,7 @@ public class ShortArrayFieldHandler extends ArrayFieldHandler<short[]> {
      */
     @Override
     public void setToFile(short[] value) {
-        getPropertiesFile().setShortArray(getFieldName(), value, getSpacer());
+        getPropertiesFile().setShortArray(getPropertyKey(), value, getSpacer());
     }
 
     /**
@@ -49,7 +49,7 @@ public class ShortArrayFieldHandler extends ArrayFieldHandler<short[]> {
     @Override
     public short[] getFromFile() {
         try {
-            return getPropertiesFile().getShortArray(getFieldName(), getSpacer());
+            return getPropertiesFile().getShortArray(getPropertyKey(), getSpacer());
         }
         catch (UtilityException utilityException) {
             return new short[0];

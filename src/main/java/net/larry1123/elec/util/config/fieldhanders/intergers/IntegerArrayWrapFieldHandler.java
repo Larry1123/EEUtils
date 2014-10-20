@@ -41,7 +41,7 @@ public class IntegerArrayWrapFieldHandler extends ArrayFieldHandler<Integer[]> {
      */
     @Override
     public void setToFile(Integer[] value) {
-        getPropertiesFile().setIntArray(getFieldName(), ArrayUtils.toPrimitive(value), getSpacer());
+        getPropertiesFile().setIntArray(getPropertyKey(), ArrayUtils.toPrimitive(value), getSpacer());
     }
 
     /**
@@ -51,7 +51,7 @@ public class IntegerArrayWrapFieldHandler extends ArrayFieldHandler<Integer[]> {
     public Integer[] getFromFile() {
         try {
 
-            return ArrayUtils.toObject(getPropertiesFile().getIntArray(getFieldName(), getSpacer()));
+            return ArrayUtils.toObject(getPropertiesFile().getIntArray(getPropertyKey(), getSpacer()));
         }
         catch (UtilityException utilityException) {
             return new Integer[0];

@@ -40,7 +40,7 @@ public class LongWrapFieldHandler extends FieldHandler<Long> {
      */
     @Override
     public void setToFile(Long value) {
-        getPropertiesFile().setLong(getFieldName(), value);
+        getPropertiesFile().setLong(getPropertyKey(), value);
     }
 
     /**
@@ -49,7 +49,7 @@ public class LongWrapFieldHandler extends FieldHandler<Long> {
     @Override
     public Long getFromFile() {
         try {
-            return getPropertiesFile().getLong(getFieldName());
+            return getPropertiesFile().getLong(getPropertyKey());
         }
         catch (UtilityException utilityException) {
             return 0L;

@@ -40,7 +40,7 @@ public class IntegerWrapFieldHandler extends FieldHandler<Integer> {
      */
     @Override
     public void setToFile(Integer value) {
-        getPropertiesFile().setInt(getFieldName(), value);
+        getPropertiesFile().setInt(getPropertyKey(), value);
     }
 
     /**
@@ -49,7 +49,7 @@ public class IntegerWrapFieldHandler extends FieldHandler<Integer> {
     @Override
     public Integer getFromFile() {
         try {
-            return getPropertiesFile().getInt(getFieldName());
+            return getPropertiesFile().getInt(getPropertyKey());
         }
         catch (UtilityException utilityException) {
             return 0;

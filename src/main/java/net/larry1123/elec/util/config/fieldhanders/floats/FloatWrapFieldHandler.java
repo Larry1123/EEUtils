@@ -40,7 +40,7 @@ public class FloatWrapFieldHandler extends FieldHandler<Float> {
      */
     @Override
     public void setToFile(Float value) {
-        getPropertiesFile().setFloat(getFieldName(), value);
+        getPropertiesFile().setFloat(getPropertyKey(), value);
     }
 
     /**
@@ -49,7 +49,7 @@ public class FloatWrapFieldHandler extends FieldHandler<Float> {
     @Override
     public Float getFromFile() {
         try {
-            return getPropertiesFile().getFloat(getFieldName());
+            return getPropertiesFile().getFloat(getPropertyKey());
         }
         catch (UtilityException utilityException) {
             return 0F;

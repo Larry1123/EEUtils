@@ -40,7 +40,7 @@ public class BooleanWrapFieldHandler extends FieldHandler<Boolean> {
      */
     @Override
     public void setToFile(Boolean value) {
-        getPropertiesFile().setBoolean(getFieldName(), value);
+        getPropertiesFile().setBoolean(getPropertyKey(), value);
     }
 
     /**
@@ -49,7 +49,7 @@ public class BooleanWrapFieldHandler extends FieldHandler<Boolean> {
     @Override
     public Boolean getFromFile() {
         try {
-            return getPropertiesFile().getBoolean(getFieldName());
+            return getPropertiesFile().getBoolean(getPropertyKey());
         }
         catch (UtilityException utilityException) {
             return false;

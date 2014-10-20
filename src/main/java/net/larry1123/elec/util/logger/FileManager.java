@@ -50,7 +50,6 @@ public class FileManager {
         catch (ParseException e) {
             e.printStackTrace();
         }
-
         if (!(getConfig().getCurrentSplit() == null || getConfig().getCurrentSplit().equals(""))) {
             Date currentSplit;
             try {
@@ -60,7 +59,6 @@ public class FileManager {
                 getConfig().setCurrentSplit(set);
                 return set.replace(":", "_");
             }
-
             Date test;
             switch (getConfig().getSplit()) {
                 case HOUR:
@@ -129,7 +127,6 @@ public class FileManager {
         if (handler == null) {
             throw new NullPointerException();
         }
-
         return handler;
     }
 

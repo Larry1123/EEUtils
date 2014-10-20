@@ -40,7 +40,7 @@ public class ByteWrapFieldHandler extends FieldHandler<Byte> {
      */
     @Override
     public void setToFile(Byte value) {
-        getPropertiesFile().setByte(getFieldName(), value);
+        getPropertiesFile().setByte(getPropertyKey(), value);
     }
 
     /**
@@ -49,7 +49,7 @@ public class ByteWrapFieldHandler extends FieldHandler<Byte> {
     @Override
     public Byte getFromFile() {
         try {
-            return getPropertiesFile().getByte(getFieldName());
+            return getPropertiesFile().getByte(getPropertyKey());
         }
         catch (UtilityException utilityException) {
             return 0;

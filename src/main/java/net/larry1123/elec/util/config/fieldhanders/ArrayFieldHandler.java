@@ -34,10 +34,8 @@ public abstract class ArrayFieldHandler<T> extends FieldHandler<T> {
      *
      * @throws NoSuchFieldException is thrown if the config object does not contain the given Field
      */
-    @SuppressWarnings("UnusedDeclaration")
     public ArrayFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
         super(field, configBase, fieldName);
-
         // Lets get the Spacer
         this.spacer = (getAno().spacer().equals("")) ? "," : getAno().spacer();
     }
@@ -50,7 +48,6 @@ public abstract class ArrayFieldHandler<T> extends FieldHandler<T> {
      */
     public ArrayFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
         super(field, configBase);
-
         // Lets get the Spacer
         this.spacer = (getAno().spacer().equals("")) ? "," : getAno().spacer();
     }

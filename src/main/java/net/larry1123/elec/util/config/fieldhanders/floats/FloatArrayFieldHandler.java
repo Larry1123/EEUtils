@@ -40,7 +40,7 @@ public class FloatArrayFieldHandler extends ArrayFieldHandler<float[]> {
      */
     @Override
     public void setToFile(float[] value) {
-        getPropertiesFile().setFloatArray(getFieldName(), value, getSpacer());
+        getPropertiesFile().setFloatArray(getPropertyKey(), value, getSpacer());
     }
 
     /**
@@ -49,7 +49,7 @@ public class FloatArrayFieldHandler extends ArrayFieldHandler<float[]> {
     @Override
     public float[] getFromFile() {
         try {
-            return getPropertiesFile().getFloatArray(getFieldName(), getSpacer());
+            return getPropertiesFile().getFloatArray(getPropertyKey(), getSpacer());
         }
         catch (UtilityException utilityException) {
             return new float[0];

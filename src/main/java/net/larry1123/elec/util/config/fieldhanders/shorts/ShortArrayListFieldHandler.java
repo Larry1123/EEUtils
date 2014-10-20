@@ -44,7 +44,7 @@ public class ShortArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Shor
      */
     @Override
     public void setToFile(ArrayList<Short> value) {
-        getPropertiesFile().setShortArray(getFieldName(), Shorts.toArray(value), getSpacer());
+        getPropertiesFile().setShortArray(getPropertyKey(), Shorts.toArray(value), getSpacer());
     }
 
     /**
@@ -53,7 +53,7 @@ public class ShortArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Shor
     @Override
     public ArrayList<Short> getFromFile() {
         try {
-            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getShortArray(getFieldName(), getSpacer())));
+            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getShortArray(getPropertyKey(), getSpacer())));
         }
         catch (UtilityException utilityException) {
             return Lists.newArrayList(new Short[0]);

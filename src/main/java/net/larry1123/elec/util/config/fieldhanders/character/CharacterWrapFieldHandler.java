@@ -40,7 +40,7 @@ public class CharacterWrapFieldHandler extends FieldHandler<Character> {
      */
     @Override
     public void setToFile(Character value) {
-        getPropertiesFile().setCharacter(getFieldName(), value);
+        getPropertiesFile().setCharacter(getPropertyKey(), value);
     }
 
     /**
@@ -49,7 +49,7 @@ public class CharacterWrapFieldHandler extends FieldHandler<Character> {
     @Override
     public Character getFromFile() {
         try {
-            return getPropertiesFile().getCharacter(getFieldName());
+            return getPropertiesFile().getCharacter(getPropertyKey());
         }
         catch (UtilityException utilityException) {
             return 0;

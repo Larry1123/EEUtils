@@ -20,7 +20,7 @@ import java.util.logging.Level;
 public class LoggerLevel extends Level {
 
     private static final long serialVersionUID = 912743220309496892L;
-    private static int baselvl = 10000;
+    private static int baseLvl = 10000;
     private final String id;
     private final String prefix;
 
@@ -31,8 +31,7 @@ public class LoggerLevel extends Level {
     }
 
     private static int genLevel() {
-        baselvl++;
-        return baselvl;
+        return ++baseLvl;
     }
 
     /**

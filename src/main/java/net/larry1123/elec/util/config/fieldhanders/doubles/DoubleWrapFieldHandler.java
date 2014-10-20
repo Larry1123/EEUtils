@@ -40,7 +40,7 @@ public class DoubleWrapFieldHandler extends FieldHandler<Double> {
      */
     @Override
     public void setToFile(Double value) {
-        getPropertiesFile().setDouble(getFieldName(), value);
+        getPropertiesFile().setDouble(getPropertyKey(), value);
     }
 
     /**
@@ -49,7 +49,7 @@ public class DoubleWrapFieldHandler extends FieldHandler<Double> {
     @Override
     public Double getFromFile() {
         try {
-            return getPropertiesFile().getDouble(getFieldName());
+            return getPropertiesFile().getDouble(getPropertyKey());
         }
         catch (UtilityException utilityException) {
             return 0D;

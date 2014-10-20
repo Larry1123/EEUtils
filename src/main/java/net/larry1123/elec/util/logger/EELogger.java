@@ -719,7 +719,7 @@ public class EELogger implements Logger {
      */
     public boolean logStackTraceToPasteBin(Level lvl, String message, Throwable thrown) {
         if (getConfig().isPastingAllowed()) {
-            EELogger eeLogger =  FactoryManager.getFactoryManager().getEELoggerFactory().getSubLogger("EEUtil", "PasteBinLog");
+            EELogger eeLogger = FactoryManager.getFactoryManager().getEELoggerFactory().getSubLogger("EEUtil", "PasteBinLog");
             try {
                 URL url = new URL("https://paste.larry1123.net/api/xml/create");
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();

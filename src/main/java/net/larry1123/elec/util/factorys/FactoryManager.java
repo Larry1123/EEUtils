@@ -16,17 +16,17 @@
 package net.larry1123.elec.util.factorys;
 
 import net.larry1123.elec.util.config.fieldhanders.booleans.BooleanFieldHandler;
+import net.larry1123.elec.util.config.fieldhanders.booleans.BooleanWrapFieldHandler;
 import net.larry1123.elec.util.config.fieldhanders.bytes.*;
 import net.larry1123.elec.util.config.fieldhanders.character.CharacterFieldHandler;
+import net.larry1123.elec.util.config.fieldhanders.character.CharacterWrapFieldHandler;
 import net.larry1123.elec.util.config.fieldhanders.doubles.*;
 import net.larry1123.elec.util.config.fieldhanders.floats.*;
 import net.larry1123.elec.util.config.fieldhanders.intergers.*;
 import net.larry1123.elec.util.config.fieldhanders.longs.*;
 import net.larry1123.elec.util.config.fieldhanders.shorts.*;
-import net.larry1123.elec.util.config.fieldhanders.strings.StringArrayListFieldHandler;
-import net.larry1123.elec.util.config.fieldhanders.booleans.BooleanWrapFieldHandler;
-import net.larry1123.elec.util.config.fieldhanders.character.CharacterWrapFieldHandler;
 import net.larry1123.elec.util.config.fieldhanders.strings.StringArrayFieldHandler;
+import net.larry1123.elec.util.config.fieldhanders.strings.StringArrayListFieldHandler;
 import net.larry1123.elec.util.config.fieldhanders.strings.StringFieldHandler;
 
 import java.util.ArrayList;
@@ -38,16 +38,15 @@ import java.util.ArrayList;
 public class FactoryManager {
 
     protected static final FactoryManager factoryManager = new FactoryManager();
-
-    public static FactoryManager getFactoryManager() {
-        return factoryManager;
-    }
-
     protected FieldHandlerFactory mainFieldHandlerFactory;
     protected ParameterizedTypeFactory parameterizedTypeFactory;
     protected EELoggerFactory eeLoggerFactory;
 
     private FactoryManager() {}
+
+    public static FactoryManager getFactoryManager() {
+        return factoryManager;
+    }
 
     public FieldHandlerFactory getMainFieldHandlerFactory() {
         if (mainFieldHandlerFactory == null) {

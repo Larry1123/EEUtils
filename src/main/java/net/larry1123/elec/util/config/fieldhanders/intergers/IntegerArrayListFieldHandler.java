@@ -44,7 +44,7 @@ public class IntegerArrayListFieldHandler extends ArrayFieldHandler<ArrayList<In
      */
     @Override
     public void setToFile(ArrayList<Integer> value) {
-        getPropertiesFile().setIntArray(getFieldName(), Ints.toArray(value), getSpacer());
+        getPropertiesFile().setIntArray(getPropertyKey(), Ints.toArray(value), getSpacer());
     }
 
     /**
@@ -53,7 +53,7 @@ public class IntegerArrayListFieldHandler extends ArrayFieldHandler<ArrayList<In
     @Override
     public ArrayList<Integer> getFromFile() {
         try {
-            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getIntArray(getFieldName(), getSpacer())));
+            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getIntArray(getPropertyKey(), getSpacer())));
         }
         catch (UtilityException utilityException) {
             return Lists.newArrayList(new Integer[0]);

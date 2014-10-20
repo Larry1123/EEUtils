@@ -44,7 +44,7 @@ public class LongArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Long>
      */
     @Override
     public void setToFile(ArrayList<Long> value) {
-        getPropertiesFile().setLongArray(getFieldName(), Longs.toArray(value), getSpacer());
+        getPropertiesFile().setLongArray(getPropertyKey(), Longs.toArray(value), getSpacer());
     }
 
     /**
@@ -53,7 +53,7 @@ public class LongArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Long>
     @Override
     public ArrayList<Long> getFromFile() {
         try {
-            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getLongArray(getFieldName(), getSpacer())));
+            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getLongArray(getPropertyKey(), getSpacer())));
         }
         catch (UtilityException utilityException) {
             return Lists.newArrayList(new Long[0]);

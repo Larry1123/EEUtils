@@ -27,7 +27,7 @@ public class ByteArrayWrapFieldHandler extends ArrayFieldHandler<Byte[]> {
     @Override
     public void setToFile(Byte[] value) {
         byte[] temp = ArrayUtils.toPrimitive(value);
-        getPropertiesFile().setByteArray(getFieldName(), temp, getSpacer());
+        getPropertiesFile().setByteArray(getPropertyKey(), temp, getSpacer());
     }
 
     /**
@@ -36,7 +36,7 @@ public class ByteArrayWrapFieldHandler extends ArrayFieldHandler<Byte[]> {
     @Override
     public Byte[] getFromFile() {
         try {
-            byte[] temp = getPropertiesFile().getByteArray(getFieldName(), getSpacer());
+            byte[] temp = getPropertiesFile().getByteArray(getPropertyKey(), getSpacer());
             return ArrayUtils.toObject(temp);
         }
         catch (UtilityException utilityException) {

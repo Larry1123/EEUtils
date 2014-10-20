@@ -73,7 +73,6 @@ public class ConfigFile {
      *
      * @return PropertiesFile being controlled
      */
-    @SuppressWarnings("UnusedDeclaration")
     public PropertiesFile getPropFile() {
         return propertiesfile;
     }

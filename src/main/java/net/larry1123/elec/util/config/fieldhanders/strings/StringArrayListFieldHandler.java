@@ -42,7 +42,7 @@ public class StringArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Str
      */
     @Override
     public void setToFile(ArrayList<String> value) {
-        getPropertiesFile().setStringArray(getFieldName(), value.toArray(new String[value.size()]), getSpacer());
+        getPropertiesFile().setStringArray(getPropertyKey(), value.toArray(new String[value.size()]), getSpacer());
     }
 
     /**
@@ -51,7 +51,7 @@ public class StringArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Str
     @Override
     public ArrayList<String> getFromFile() {
         try {
-            return Lists.newArrayList(getPropertiesFile().getStringArray(getFieldName(), getSpacer()));
+            return Lists.newArrayList(getPropertiesFile().getStringArray(getPropertyKey(), getSpacer()));
         }
         catch (UtilityException utilityException) {
             return Lists.newArrayList(new String[0]);

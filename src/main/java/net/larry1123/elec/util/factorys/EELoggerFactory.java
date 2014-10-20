@@ -72,7 +72,7 @@ public class EELoggerFactory {
     /**
      * Gets the EELogger for the given name
      *
-     * @param name Name of the Logger
+     * @param name    Name of the Logger
      * @param subName SubName of logger
      *
      * @return the EELogger for the given
@@ -104,7 +104,7 @@ public class EELoggerFactory {
     /**
      * Remove a logger from the held logger list.
      *
-     * @param logger    What Logger to remove
+     * @param logger What Logger to remove
      */
     public void removeLogger(EELogger logger) {
         if (loggers.containsValue(logger)) {

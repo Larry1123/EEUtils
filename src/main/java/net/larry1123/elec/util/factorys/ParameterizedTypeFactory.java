@@ -31,8 +31,9 @@ public class ParameterizedTypeFactory {
      * To create a ParameterizedType for <code>ArrayList<\String></code>
      * <code>MakeParameterizedType(Arraylist.class, String.class)</code>
      *
-     * @param rawType          The {@code Type} object representing the class or interface that declared this type.
-     * @param typeArguments    An array of {@code Type} objects representing the actual type arguments to this type.
+     * @param rawType       The {@code Type} object representing the class or interface that declared this type.
+     * @param typeArguments An array of {@code Type} objects representing the actual type arguments to this type.
+     *
      * @return A ParameterizedType that will equal one created from reflection
      */
     public ParameterizedType MakeParameterizedType(Class<?> rawType, Type... typeArguments) {
@@ -44,9 +45,10 @@ public class ParameterizedTypeFactory {
      * To create a ParameterizedType for <code>ArrayList<\String></code>
      * <code>MakeParameterizedType(Arraylist.class, String.class)</code>
      *
-     * @param rawType          The {@code Type} object representing the class or interface that declared this type.
-     * @param ownerType        A {@code Type} object representing the type that this type is a member of.
-     * @param typeArguments    An array of {@code Type} objects representing the actual type arguments to this type.
+     * @param rawType       The {@code Type} object representing the class or interface that declared this type.
+     * @param ownerType     A {@code Type} object representing the type that this type is a member of.
+     * @param typeArguments An array of {@code Type} objects representing the actual type arguments to this type.
+     *
      * @return A ParameterizedType that will equal one created from reflection
      */
     public ParameterizedType MakeParameterizedType(Class<?> rawType, Type ownerType, Type[] typeArguments) {

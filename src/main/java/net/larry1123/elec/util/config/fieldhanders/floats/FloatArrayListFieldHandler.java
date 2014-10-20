@@ -44,7 +44,7 @@ public class FloatArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Floa
      */
     @Override
     public void setToFile(ArrayList<Float> value) {
-        getPropertiesFile().setFloatArray(getFieldName(), Floats.toArray(value), getSpacer());
+        getPropertiesFile().setFloatArray(getPropertyKey(), Floats.toArray(value), getSpacer());
     }
 
     /**
@@ -53,7 +53,7 @@ public class FloatArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Floa
     @Override
     public ArrayList<Float> getFromFile() {
         try {
-            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getFloatArray(getFieldName(), getSpacer())));
+            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getFloatArray(getPropertyKey(), getSpacer())));
         }
         catch (UtilityException utilityException) {
             return Lists.newArrayList(new Float[0]);

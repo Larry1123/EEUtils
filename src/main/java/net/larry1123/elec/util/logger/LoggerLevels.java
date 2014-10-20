@@ -29,10 +29,13 @@ public class LoggerLevels {
      *
      * @param levelName Name to give the level
      * @param prefix    The Prefix to give Messages with said given LoggerLevel
-     *
-     * @return String ID of the LoggerLevel
      */
-    private static String addLoggerLevel(String levelName, String prefix) {
+    private static void addLoggerLevel(String levelName, String prefix) {
+        String name = getName(levelName, prefix);
+        LoggerLevels.put(name, new LoggerLevel(levelName, prefix, name));
+    }
+
+    private static String getName(String levelName, String prefix) {
         String name;
         if (!prefix.equals("")) {
             name = levelName + "-" + prefix;
@@ -40,29 +43,6 @@ public class LoggerLevels {
         else {
             name = levelName;
         }
-        LoggerLevels.put(name, new LoggerLevel(levelName, prefix, name));
-        return name;
-    }
-
-    /**
-     * This will add a Logger Level and return the name of the Level with in LoggerLevels
-     *
-     * @param levelName Name to give the level
-     * @param prefix    The Prefix to give Messages with said given LoggerLevel
-     * @param logger    Logger to have Level Tied to
-     *
-     * @return ID of the LoggerLevel
-     */
-    private static String addLoggerLevel(String levelName, String prefix, EELogger logger) {
-        String name;
-        if (!prefix.equals("")) {
-            name = logger.getName() + ":" + levelName + "-" + prefix;
-        }
-        else {
-            name = logger.getName() + ":" + levelName;
-        }
-        LoggerLevel lvl = new LoggerLevel(levelName, prefix, name);
-        LoggerLevels.put(name, lvl);
         return name;
     }
 
@@ -86,70 +66,38 @@ public class LoggerLevels {
      * @return The LoggerLevel that as been Gotten
      */
     public static LoggerLevel getLoggerLevel(String levelName, String prefix) {
-        String name;
-        if (!prefix.equals("")) {
-            name = levelName + "-" + prefix;
-        }
-        else {
-            name = levelName;
-        }
+        String name = getName(levelName, prefix);
         if (LoggerLevels.containsKey(name)) {
             return LoggerLevels.get(name);
         }
         else {
-            return LoggerLevels.get(addLoggerLevel(levelName, prefix));
+            addLoggerLevel(levelName, prefix);
+            return LoggerLevels.get(name);
         }
     }
 
     /**
      * Makes or returns a LoggerLevel
      *
-     * @param levelName Name to give the level
-     * @param logger    Logger to have Level Tied to
+     * @param level  Name to give the level
+     * @param marker The Prefix to give Messages with said given LoggerLevel
      *
      * @return The LoggerLevel that as been Gotten
      */
-    public static LoggerLevel getLoggerLevel(String levelName, EELogger logger) {
-        return getLoggerLevel(levelName, "", logger);
-    }
-
-    /**
-     * Makes or returns a LoggerLevel
-     *
-     * @param levelName Name to give the level
-     * @param prefix    The Prefix to give Messages with said given LoggerLevel
-     * @param logger    Logger to have Level Tied to
-     *
-     * @return The LoggerLevel that as been Gotten
-     */
-    public static LoggerLevel getLoggerLevel(String levelName, String prefix, EELogger logger) {
-        String name;
-        if (!prefix.equals("")) {
-            name = logger.getName() + ":" + levelName + "-" + prefix;
-        }
-        else {
-            name = logger.getName() + ":" + levelName;
-        }
-        if (LoggerLevels.containsKey(name)) {
-            return LoggerLevels.get(name);
-        }
-        else {
-            return LoggerLevels.get(addLoggerLevel(levelName, prefix, logger));
-        }
-    }
-
     public static LoggerLevel getLoggerLevel(Level level, Marker marker) {
         return getLoggerLevel(level.getName(), marker);
     }
 
-    public static LoggerLevel getLoggerLevel(String level, Marker marker) {
-        String name = level + "-" + marker.getName();
-        if (LoggerLevels.containsKey(name)) {
-            return LoggerLevels.get(name);
-        }
-        else {
-            return LoggerLevels.get(addLoggerLevel(level, marker.getName()));
-        }
+    /**
+     * Makes or returns a LoggerLevel
+     *
+     * @param levelName Name to give the level
+     * @param marker    The Prefix to give Messages with said given LoggerLevel
+     *
+     * @return The LoggerLevel that as been Gotten
+     */
+    public static LoggerLevel getLoggerLevel(String levelName, Marker marker) {
+        return getLoggerLevel(levelName, marker.getName());
     }
 
     /**
@@ -157,6 +105,7 @@ public class LoggerLevels {
      *
      * @param name ID of the Logger to remove
      */
+    @Deprecated
     public static void removeLoggerLevel(String name) {
         LoggerLevels.remove(name);
     }

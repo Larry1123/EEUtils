@@ -44,7 +44,7 @@ public class DoubleArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Dou
      */
     @Override
     public void setToFile(ArrayList<Double> value) {
-        getPropertiesFile().setDoubleArray(getFieldName(), Doubles.toArray(value), getSpacer());
+        getPropertiesFile().setDoubleArray(getPropertyKey(), Doubles.toArray(value), getSpacer());
     }
 
     /**
@@ -53,7 +53,7 @@ public class DoubleArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Dou
     @Override
     public ArrayList<Double> getFromFile() {
         try {
-            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getDoubleArray(getFieldName(), getSpacer())));
+            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getDoubleArray(getPropertyKey(), getSpacer())));
         }
         catch (UtilityException utilityException) {
             return Lists.newArrayList(new Double[0]);

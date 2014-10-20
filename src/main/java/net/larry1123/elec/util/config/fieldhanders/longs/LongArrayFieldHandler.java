@@ -40,7 +40,7 @@ public class LongArrayFieldHandler extends ArrayFieldHandler<long[]> {
      */
     @Override
     public void setToFile(long[] value) {
-        getPropertiesFile().setLongArray(getFieldName(), value, getSpacer());
+        getPropertiesFile().setLongArray(getPropertyKey(), value, getSpacer());
     }
 
     /**
@@ -49,7 +49,7 @@ public class LongArrayFieldHandler extends ArrayFieldHandler<long[]> {
     @Override
     public long[] getFromFile() {
         try {
-            return getPropertiesFile().getLongArray(getFieldName(), getSpacer());
+            return getPropertiesFile().getLongArray(getPropertyKey(), getSpacer());
         }
         catch (UtilityException utilityException) {
             return new long[0];

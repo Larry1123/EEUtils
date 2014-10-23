@@ -41,7 +41,7 @@ public class IntegerArrayWrapFieldHandler extends ArrayFieldHandler<Integer[]> {
      */
     @Override
     public void setToFile(Integer[] value) {
-        if (value.length > 0) {
+        if (ArrayUtils.isNotEmpty(value)) {
             getPropertiesFile().setIntArray(getPropertyKey(), ArrayUtils.toPrimitive(value), getSpacer());
         }
     }

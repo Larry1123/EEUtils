@@ -18,6 +18,7 @@ package net.larry1123.elec.util.config.fieldhanders.shorts;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
 import net.visualillusionsent.utils.UtilityException;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
 
@@ -40,7 +41,7 @@ public class ShortArrayFieldHandler extends ArrayFieldHandler<short[]> {
      */
     @Override
     public void setToFile(short[] value) {
-        if (value.length > 0) {
+        if (ArrayUtils.isNotEmpty(value)) {
             getPropertiesFile().setShortArray(getPropertyKey(), value, getSpacer());
         }
     }

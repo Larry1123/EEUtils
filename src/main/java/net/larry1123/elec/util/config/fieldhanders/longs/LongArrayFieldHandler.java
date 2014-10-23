@@ -18,6 +18,7 @@ package net.larry1123.elec.util.config.fieldhanders.longs;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
 import net.visualillusionsent.utils.UtilityException;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
 
@@ -40,7 +41,7 @@ public class LongArrayFieldHandler extends ArrayFieldHandler<long[]> {
      */
     @Override
     public void setToFile(long[] value) {
-        if (value.length > 0) {
+        if (ArrayUtils.isNotEmpty(value)) {
             getPropertiesFile().setLongArray(getPropertyKey(), value, getSpacer());
         }
     }

@@ -41,7 +41,7 @@ public class LongArrayWrapFieldHandler extends ArrayFieldHandler<Long[]> {
      */
     @Override
     public void setToFile(Long[] value) {
-        if (value.length > 0) {
+        if (ArrayUtils.isNotEmpty(value)) {
             getPropertiesFile().setLongArray(getPropertyKey(), ArrayUtils.toPrimitive(value), getSpacer());
         }
     }

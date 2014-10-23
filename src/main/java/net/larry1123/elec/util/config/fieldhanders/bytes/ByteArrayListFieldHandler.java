@@ -20,6 +20,7 @@ import com.google.common.primitives.Bytes;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
 import net.visualillusionsent.utils.UtilityException;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
@@ -44,7 +45,7 @@ public class ByteArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Byte>
      */
     @Override
     public void setToFile(ArrayList<Byte> value) {
-        if (value.size() > 0) {
+        if (CollectionUtils.isNotEmpty(value)) {
             getPropertiesFile().setByteArray(getPropertyKey(), Bytes.toArray(value), getSpacer());
         }
     }

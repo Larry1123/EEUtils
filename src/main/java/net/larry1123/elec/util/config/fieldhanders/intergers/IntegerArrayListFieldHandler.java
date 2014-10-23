@@ -20,6 +20,7 @@ import com.google.common.primitives.Ints;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
 import net.visualillusionsent.utils.UtilityException;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
@@ -44,7 +45,7 @@ public class IntegerArrayListFieldHandler extends ArrayFieldHandler<ArrayList<In
      */
     @Override
     public void setToFile(ArrayList<Integer> value) {
-        if (value.size() > 0) {
+        if (CollectionUtils.isNotEmpty(value)) {
             getPropertiesFile().setIntArray(getPropertyKey(), Ints.toArray(value), getSpacer());
         }
     }

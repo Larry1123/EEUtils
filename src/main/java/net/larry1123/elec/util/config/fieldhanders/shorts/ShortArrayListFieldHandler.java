@@ -20,6 +20,7 @@ import com.google.common.primitives.Shorts;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
 import net.visualillusionsent.utils.UtilityException;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
@@ -44,7 +45,7 @@ public class ShortArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Shor
      */
     @Override
     public void setToFile(ArrayList<Short> value) {
-        if (value.size() > 0) {
+        if (CollectionUtils.isNotEmpty(value)) {
             getPropertiesFile().setShortArray(getPropertyKey(), Shorts.toArray(value), getSpacer());
         }
     }

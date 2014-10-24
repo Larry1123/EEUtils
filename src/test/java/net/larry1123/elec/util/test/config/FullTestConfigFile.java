@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.larry1123.elec.util.test.config.load;
+package net.larry1123.elec.util.test.config;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.ConfigField;
@@ -22,9 +22,9 @@ import java.util.ArrayList;
 
 /**
  * @author Larry1123
- * @since 6/20/2014 - 10:48 PM
+ * @since 10/24/2014 - 1:55 AM
  */
-public abstract class LoadingTestConfigFile implements ConfigBase {
+public abstract class FullTestConfigFile implements ConfigBase {
 
     // Public fields
     @ConfigField
@@ -179,7 +179,7 @@ public abstract class LoadingTestConfigFile implements ConfigBase {
     protected ArrayList<String> ProtectedStringArrayList = new ArrayList<String>();
 
 
-    public LoadingTestConfigFile() {
+    public FullTestConfigFile() {
         PublicByteArrayList.add((byte) 82);
         PublicByteArrayList.add((byte) 85);
         PublicByteArrayList.add((byte) 129);

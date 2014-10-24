@@ -15,9 +15,8 @@
  */
 package net.larry1123.elec.util.test.logger;
 
-import net.larry1123.elec.util.factorys.EELoggerFactory;
-import net.larry1123.elec.util.factorys.FactoryManager;
 import net.larry1123.elec.util.logger.EELogger;
+import net.larry1123.elec.util.test.AbstractTestClass;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,28 +26,30 @@ import java.io.File;
  * @author Larry1123
  * @since 1/30/14 - 7:33 AM
  */
-public class LoggerTest {
+public class LoggerTest extends AbstractTestClass {
 
-    protected EELoggerFactory eeLoggerFactory = FactoryManager.getFactoryManager().getEELoggerFactory();
+    public LoggerTest() {
+        super("LoggerTest");
+    }
 
     @Test
     public void testMakingLogger() {
-        eeLoggerFactory.setLoggerSettings(new TestLoggerSettings());
-        Assert.assertNotNull("Failed to create Sub-Logger.", eeLoggerFactory.getLogger("EEUtilTest"));
+        getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
+        Assert.assertNotNull("Failed to create Sub-Logger.", getEELoggerFactory().getLogger("EEUtilTest"));
     }
 
     @Test
     public void testMakingSubLogger() {
-        eeLoggerFactory.setLoggerSettings(new TestLoggerSettings());
-        EELogger main = eeLoggerFactory.getLogger("EEUtilTest");
-        Assert.assertNotNull("Failed to create Sub-Logger.", eeLoggerFactory.getSubLogger("SubTest", main));
+        getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
+        EELogger main = getEELoggerFactory().getLogger("EEUtilTest");
+        Assert.assertNotNull("Failed to create Sub-Logger.", getEELoggerFactory().getSubLogger("SubTest", main));
     }
 
     @Test
     public void testFileCreation() {
-        eeLoggerFactory.setLoggerSettings(new TestLoggerSettings());
-        EELogger makeAFile = eeLoggerFactory.getLogger("EEUtilFileTest");
-        File logFile = new File(makeAFile.getLogFile() + ".0." + eeLoggerFactory.getLoggerSettings().getFileType());
+        getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
+        EELogger makeAFile = getEELoggerFactory().getLogger("EEUtilFileTest");
+        File logFile = new File(makeAFile.getLogFile() + ".0." + getEELoggerFactory().getLoggerSettings().getFileType());
         Assert.assertTrue("Logger File failed to be made.", logFile.exists());
     }
 
@@ -58,9 +59,9 @@ public class LoggerTest {
      */
     @Test
     public void testLogs() {
-        eeLoggerFactory.setLoggerSettings(new TestLoggerSettings());
-        EELogger eeLogger = eeLoggerFactory.getLogger("EEUtilLogsTest");
-        eeLogger.info("This is a test! This should be logged in " + eeLogger.getLogFile() + ".0." + eeLoggerFactory.getLoggerSettings().getFileType());
+        getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
+        EELogger eeLogger = getEELoggerFactory().getLogger("EEUtilLogsTest");
+        eeLogger.info("This is a test! This should be logged in " + eeLogger.getLogFile() + ".0." + getEELoggerFactory().getLoggerSettings().getFileType());
         eeLogger.error("A fake ERROR!!", new Error());
         Assert.assertTrue(eeLogger.canFileLog());
     }

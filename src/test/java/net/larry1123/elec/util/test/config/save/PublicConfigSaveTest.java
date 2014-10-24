@@ -18,6 +18,7 @@ package net.larry1123.elec.util.test.config.save;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.FieldHandler;
 import net.larry1123.elec.util.test.config.AbstractConfigTest;
+import net.larry1123.elec.util.test.config.FieldNames;
 import net.visualillusionsent.utils.PropertiesFile;
 import org.junit.Test;
 
@@ -27,7 +28,6 @@ import java.lang.reflect.Field;
  * @author Larry1123
  * @since 1/31/14 - 9:33 AM
  */
-@SuppressWarnings("WeakerAccess")
 public class PublicConfigSaveTest extends AbstractConfigTest {
 
     public PublicConfigSaveTest() {
@@ -36,7 +36,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicBooleanLoad() {
-        String fieldName = "publicBoolean";
+        String fieldName = FieldNames.publicBoolean.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -45,7 +45,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void PublicBooleanLoad() {
-        String fieldName = "PublicBoolean";
+        String fieldName = FieldNames.PublicBoolean.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -54,7 +54,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicByteLoad() {
-        String fieldName = "publicByte";
+        String fieldName = FieldNames.publicByte.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -63,7 +63,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void PublicByteLoad() {
-        String fieldName = "PublicByte";
+        String fieldName = FieldNames.PublicByte.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -72,7 +72,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicByteArrayLoad() {
-        String fieldName = "publicByteArray";
+        String fieldName = FieldNames.publicByteArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -81,7 +81,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void PublicByteArrayLoad() {
-        String fieldName = "PublicByteArray";
+        String fieldName = FieldNames.PublicByteArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -90,7 +90,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicByteListLoad() {
-        String fieldName = "publicByteList";
+        String fieldName = FieldNames.PublicByteArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -99,7 +99,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicCharacterLoad() {
-        String fieldName = "publicCharacter";
+        String fieldName = FieldNames.publicCharacter.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -108,7 +108,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void PublicCharacterLoad() {
-        String fieldName = "PublicCharacter";
+        String fieldName = FieldNames.PublicCharacter.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -117,7 +117,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicDoubleLoad() {
-        String fieldName = "publicDouble";
+        String fieldName = FieldNames.publicDouble.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -126,7 +126,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void PublicDoubleLoad() {
-        String fieldName = "PublicDouble";
+        String fieldName = FieldNames.PublicDouble.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -135,7 +135,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicDoubleArrayLoad() {
-        String fieldName = "publicDoubleArray";
+        String fieldName = FieldNames.publicDoubleArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -144,7 +144,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void PublicDoubleArrayLoad() {
-        String fieldName = "PublicDoubleArray";
+        String fieldName = FieldNames.PublicDoubleArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -154,7 +154,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicDoubleListLoad() {
-        String fieldName = "publicDoubleList";
+        String fieldName = FieldNames.PublicDoubleArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -163,7 +163,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicFloatLoad() {
-        String fieldName = "publicFloat";
+        String fieldName = FieldNames.publicFloat.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -172,7 +172,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void PublicFloatLoad() {
-        String fieldName = "PublicFloat";
+        String fieldName = FieldNames.PublicFloat.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -181,7 +181,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicFloatArrayLoad() {
-        String fieldName = "publicFloatArray";
+        String fieldName = FieldNames.publicFloatArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -190,7 +190,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void PublicFloatArrayLoad() {
-        String fieldName = "PublicFloatArray";
+        String fieldName = FieldNames.PublicFloatArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -199,7 +199,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicFloatListLoad() {
-        String fieldName = "publicFloatList";
+        String fieldName = FieldNames.PublicFloatArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -208,7 +208,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicLongLoad() {
-        String fieldName = "publicLong";
+        String fieldName = FieldNames.publicLong.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -217,7 +217,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void PublicLongLoad() {
-        String fieldName = "PublicLong";
+        String fieldName = FieldNames.PublicLong.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -226,7 +226,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicLongArrayLoad() {
-        String fieldName = "publicLongArray";
+        String fieldName = FieldNames.publicLongArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -235,7 +235,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void PublicLongArrayArrayLoad() {
-        String fieldName = "PublicLongArray";
+        String fieldName = FieldNames.PublicLongArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -244,7 +244,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicLongListLoad() {
-        String fieldName = "publicLongList";
+        String fieldName = FieldNames.PublicLongArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -253,7 +253,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicIntegerLoad() {
-        String fieldName = "publicInteger";
+        String fieldName = FieldNames.publicInteger.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -262,7 +262,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void PublicIntegerLoad() {
-        String fieldName = "PublicInteger";
+        String fieldName = FieldNames.PublicInteger.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -271,7 +271,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicIntegerArrayLoad() {
-        String fieldName = "publicIntegerArray";
+        String fieldName = FieldNames.publicIntegerArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -280,7 +280,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void PublicIntegerArrayLoad() {
-        String fieldName = "PublicIntegerArray";
+        String fieldName = FieldNames.PublicIntegerArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -289,7 +289,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicIntegerListLoad() {
-        String fieldName = "publicIntegerList";
+        String fieldName = FieldNames.PublicIntegerArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -298,7 +298,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicShortLoad() {
-        String fieldName = "publicShort";
+        String fieldName = FieldNames.publicShort.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -307,7 +307,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void PublicShortLoad() {
-        String fieldName = "PublicShort";
+        String fieldName = FieldNames.PublicShort.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -316,25 +316,25 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicShortArrayLoad() {
-        String fieldName = "publicShortArray";
+        String fieldName = FieldNames.publicShortArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        shortArray(fieldName, testField);
+        shortArrayTest(fieldName, testField);
     }
 
     @Test
     public void PublicShortArrayLoad() {
-        String fieldName = "PublicShortArray";
+        String fieldName = FieldNames.PublicShortArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        ShortArray(fieldName, testField);
+        ShortArrayTest(fieldName, testField);
     }
 
     @Test
     public void publicShortListLoad() {
-        String fieldName = "publicShortList";
+        String fieldName = FieldNames.PublicShortArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -343,7 +343,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicStringLoad() {
-        String fieldName = "publicString";
+        String fieldName = FieldNames.PublicString.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -352,7 +352,7 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicStringArrayLoad() {
-        String fieldName = "publicStringArray";
+        String fieldName = FieldNames.PublicStringArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
@@ -361,27 +361,17 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
 
     @Test
     public void publicStringListLoad() {
-        String fieldName = "publicStringList";
+        String fieldName = FieldNames.PublicStringArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        StringArrayList(fieldName, testField);
+        StringArrayListTest(fieldName, testField);
     }
 
     protected void doLogic(String fieldName, Field testField) {
         FieldHandler<?> handler = getFieldHandlerFactory().createFieldHandler(testField.getGenericType(), testField, getConfigBase());
         handler.save();
         getPropertiesFile().save();
-    }
-
-    protected TestConfigFile createTestConfigFile(final PropertiesFile file) {
-        return new TestConfigFile() {
-
-            @Override
-            public PropertiesFile getPropertiesFile() {
-                return file;
-            }
-        };
     }
 
     @Override

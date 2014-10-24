@@ -42,7 +42,7 @@ public abstract class TestConfigFile implements ConfigBase {
     @ConfigField
     public Byte[] PublicByteArray = new Byte[] {(byte) 1, (byte) 4, (byte) 7, (byte) 101, (byte) 98};
     @ConfigField
-    public ArrayList<Byte> publicByteList = new ArrayList<Byte>();
+    public ArrayList<Byte> PublicByteArrayList = new ArrayList<Byte>();
     @ConfigField
     public char publicCharacter = (char) 52;
     @ConfigField
@@ -56,7 +56,7 @@ public abstract class TestConfigFile implements ConfigBase {
     @ConfigField
     public Double[] PublicDoubleArray = new Double[] {48.6, 94.4, 991.2, 5D};
     @ConfigField
-    public ArrayList<Double> publicDoubleList = new ArrayList<Double>();
+    public ArrayList<Double> PublicDoubleArrayList = new ArrayList<Double>();
     @ConfigField
     public float publicFloat = (float) 68.15;
     @ConfigField
@@ -66,7 +66,7 @@ public abstract class TestConfigFile implements ConfigBase {
     @ConfigField
     public Float[] PublicFloatArray = new Float[] {(float) 115.18, (float) 91165.98, (float) 8771, (float) 511};
     @ConfigField
-    public ArrayList<Float> publicFloatList = new ArrayList<Float>();
+    public ArrayList<Float> PublicFloatArrayList = new ArrayList<Float>();
     @ConfigField
     public int publicInteger = 56159612;
     @ConfigField
@@ -76,7 +76,7 @@ public abstract class TestConfigFile implements ConfigBase {
     @ConfigField
     public Integer[] PublicIntegerArray = new Integer[] {9811, -8100, 98743, 548, -9};
     @ConfigField
-    public ArrayList<Integer> publicIntegerList = new ArrayList<Integer>();
+    public ArrayList<Integer> PublicIntegerArrayList = new ArrayList<Integer>();
     @ConfigField
     public long publicLong = 56919L;
     @ConfigField
@@ -86,7 +86,7 @@ public abstract class TestConfigFile implements ConfigBase {
     @ConfigField
     public Long[] PublicLongArray = new Long[] {8511L, 8441L, 987465L, -8711L, -874L};
     @ConfigField
-    public ArrayList<Long> publicLongList = new ArrayList<Long>();
+    public ArrayList<Long> PublicLongArrayList = new ArrayList<Long>();
     @ConfigField
     public short publicShort = 5961;
     @ConfigField
@@ -96,17 +96,17 @@ public abstract class TestConfigFile implements ConfigBase {
     @ConfigField
     public Short[] PublicShortArray = new Short[] {184, 648, 187, 328, -874};
     @ConfigField
-    public ArrayList<Short> publicShortList = new ArrayList<Short>();
+    public ArrayList<Short> PublicShortArrayList = new ArrayList<Short>();
     @ConfigField
-    public String publicString = "Test String 1";
+    public String PublicString = "Test String 1";
     @ConfigField
-    public String[] publicStringArray = new String[] {"Test String 2", "Test String 3", "Test String 4", "Test String 5"};
+    public String[] PublicStringArray = new String[] {"Test String 2", "Test String 3", "Test String 4", "Test String 5"};
     @ConfigField
-    public ArrayList<String> publicStringList = new ArrayList<String>();
-    @ConfigField
-    protected boolean protectedBoolean = true;
+    public ArrayList<String> PublicStringArrayList = new ArrayList<String>();
 
     // Protected Fields
+    @ConfigField
+    protected boolean protectedBoolean = true;
     @ConfigField
     protected Boolean ProtectedBoolean = true;
     @ConfigField
@@ -118,7 +118,7 @@ public abstract class TestConfigFile implements ConfigBase {
     @ConfigField
     protected Byte[] ProtectedByteArray = new Byte[] {(byte) 549, (byte) 871, (byte) -987, (byte) 4156};
     @ConfigField
-    protected ArrayList<Byte> protectedByteList = new ArrayList<Byte>();
+    protected ArrayList<Byte> ProtectedByteArrayList = new ArrayList<Byte>();
     @ConfigField
     protected char protectedCharacter = 9654;
     @ConfigField
@@ -132,7 +132,7 @@ public abstract class TestConfigFile implements ConfigBase {
     @ConfigField
     protected Double[] ProtectedDoubleArray = new Double[] {-54185.18, 85491.5, 4185D, -198.2};
     @ConfigField
-    protected ArrayList<Double> protectedDoubleList = new ArrayList<Double>();
+    protected ArrayList<Double> ProtectedDoubleArrayList = new ArrayList<Double>();
     @ConfigField
     protected float protectedFloat = 8542.85F;
     @ConfigField
@@ -142,7 +142,7 @@ public abstract class TestConfigFile implements ConfigBase {
     @ConfigField
     protected Float[] ProtectedFloatArray = new Float[] {-546.5F, 58455F, -515F, 54850.56F};
     @ConfigField
-    protected ArrayList<Float> protectedFloatList = new ArrayList<Float>();
+    protected ArrayList<Float> ProtectedFloatArrayList = new ArrayList<Float>();
     @ConfigField
     protected int protectedInteger = -8545;
     @ConfigField
@@ -152,7 +152,7 @@ public abstract class TestConfigFile implements ConfigBase {
     @ConfigField
     protected Integer[] ProtectedIntegerArray = new Integer[] {941, -842, 548, -9155, 5481};
     @ConfigField
-    protected ArrayList<Integer> protectedIntegerList = new ArrayList<Integer>();
+    protected ArrayList<Integer> ProtectedIntegerArrayList = new ArrayList<Integer>();
     @ConfigField
     protected long protectedLong = 910L;
     @ConfigField
@@ -162,7 +162,7 @@ public abstract class TestConfigFile implements ConfigBase {
     @ConfigField
     protected Long[] ProtectedLongArray = new Long[] {9125L, 5110L, -912L, 645L};
     @ConfigField
-    protected ArrayList<Long> protectedLongList = new ArrayList<Long>();
+    protected ArrayList<Long> ProtectedLongArrayList = new ArrayList<Long>();
     @ConfigField
     protected short protectedShort = 510;
     @ConfigField
@@ -172,86 +172,86 @@ public abstract class TestConfigFile implements ConfigBase {
     @ConfigField
     protected Short[] ProtectedShortArray = new Short[] {815, -850, 912, 315, -912};
     @ConfigField
-    protected ArrayList<Short> protectedShortList = new ArrayList<Short>();
+    protected ArrayList<Short> ProtectedShortArrayList = new ArrayList<Short>();
     @ConfigField
-    protected String protectedString = "Test String 11";
+    protected String ProtectedString = "Test String 11";
     @ConfigField
-    protected String[] protectedStringArray = new String[] {"Test String 12", "Test String 13", "Test String 14"};
+    protected String[] ProtectedStringArray = new String[] {"Test String 12", "Test String 13", "Test String 14"};
     @ConfigField
-    protected ArrayList<String> protectedStringList = new ArrayList<String>();
+    protected ArrayList<String> ProtectedStringArrayList = new ArrayList<String>();
 
     public TestConfigFile() {
-        publicByteList.add((byte) 2);
-        publicByteList.add((byte) 8);
-        publicByteList.add((byte) 12);
-        publicByteList.add((byte) 91);
-        publicByteList.add((byte) 85);
-        publicDoubleList.add(58.9);
-        publicDoubleList.add(5456.8);
-        publicDoubleList.add(9984561.5);
-        publicDoubleList.add(581.0541);
-        publicDoubleList.add(58459.54985);
-        publicFloatList.add((float) 891.5);
-        publicFloatList.add((float) 1981.63);
-        publicFloatList.add((float) 45.12);
-        publicFloatList.add((float) 4581.96);
-        publicFloatList.add((float) 5461.36);
-        publicIntegerList.add(984);
-        publicIntegerList.add(87458);
-        publicIntegerList.add(-841);
-        publicIntegerList.add(-9120000);
-        publicIntegerList.add(4981651);
-        publicLongList.add(9511L);
-        publicLongList.add(915L);
-        publicLongList.add(-98511L);
-        publicLongList.add(-110L);
-        publicLongList.add(54100L);
-        publicShortList.add((short) 198);
-        publicShortList.add((short) 9125);
-        publicShortList.add((short) 9815);
-        publicShortList.add((short) -1585);
-        publicShortList.add((short) -548);
-        publicStringList.add("Test String 6");
-        publicStringList.add("Test String 7");
-        publicStringList.add("Test String 8");
-        publicStringList.add("Test String 9");
-        publicStringList.add("Test String 10");
+        PublicByteArrayList.add((byte) 2);
+        PublicByteArrayList.add((byte) 8);
+        PublicByteArrayList.add((byte) 12);
+        PublicByteArrayList.add((byte) 91);
+        PublicByteArrayList.add((byte) 85);
+        PublicDoubleArrayList.add(58.9);
+        PublicDoubleArrayList.add(5456.8);
+        PublicDoubleArrayList.add(9984561.5);
+        PublicDoubleArrayList.add(581.0541);
+        PublicDoubleArrayList.add(58459.54985);
+        PublicFloatArrayList.add((float) 891.5);
+        PublicFloatArrayList.add((float) 1981.63);
+        PublicFloatArrayList.add((float) 45.12);
+        PublicFloatArrayList.add((float) 4581.96);
+        PublicFloatArrayList.add((float) 5461.36);
+        PublicIntegerArrayList.add(984);
+        PublicIntegerArrayList.add(87458);
+        PublicIntegerArrayList.add(-841);
+        PublicIntegerArrayList.add(-9120000);
+        PublicIntegerArrayList.add(4981651);
+        PublicLongArrayList.add(9511L);
+        PublicLongArrayList.add(915L);
+        PublicLongArrayList.add(-98511L);
+        PublicLongArrayList.add(-110L);
+        PublicLongArrayList.add(54100L);
+        PublicShortArrayList.add((short) 198);
+        PublicShortArrayList.add((short) 9125);
+        PublicShortArrayList.add((short) 9815);
+        PublicShortArrayList.add((short) -1585);
+        PublicShortArrayList.add((short) -548);
+        PublicStringArrayList.add("Test String 6");
+        PublicStringArrayList.add("Test String 7");
+        PublicStringArrayList.add("Test String 8");
+        PublicStringArrayList.add("Test String 9");
+        PublicStringArrayList.add("Test String 10");
 
-        protectedByteList.add((byte) 845);
-        protectedByteList.add((byte) 945);
-        protectedByteList.add((byte) -5641);
-        protectedByteList.add((byte) 515);
-        protectedByteList.add((byte) 942);
-        protectedDoubleList.add(-548.5);
-        protectedDoubleList.add(548.02);
-        protectedDoubleList.add(895D);
-        protectedDoubleList.add(-8574.057);
-        protectedDoubleList.add(-1854D);
-        protectedFloatList.add(-515F);
-        protectedFloatList.add(548.05F);
-        protectedFloatList.add(4585.05F);
-        protectedFloatList.add(591.05F);
-        protectedFloatList.add(891.05F);
-        protectedFloatList.add(918.0F);
-        protectedIntegerList.add(-518);
-        protectedIntegerList.add(1820);
-        protectedIntegerList.add(-1200);
-        protectedIntegerList.add(94124);
-        protectedIntegerList.add(91550);
-        protectedLongList.add(912L);
-        protectedLongList.add(-942L);
-        protectedLongList.add(-945158L);
-        protectedLongList.add(51265L);
-        protectedLongList.add(515L);
-        protectedShortList.add((short) -125);
-        protectedShortList.add((short) 54120);
-        protectedShortList.add((short) 995);
-        protectedShortList.add((short) -942);
-        protectedShortList.add((short) 1058);
-        protectedStringList.add("Test String 16");
-        protectedStringList.add("Test String 17");
-        protectedStringList.add("Test String 18");
-        protectedStringList.add("Test String 19");
+        ProtectedByteArrayList.add((byte) 845);
+        ProtectedByteArrayList.add((byte) 945);
+        ProtectedByteArrayList.add((byte) -5641);
+        ProtectedByteArrayList.add((byte) 515);
+        ProtectedByteArrayList.add((byte) 942);
+        ProtectedDoubleArrayList.add(-548.5);
+        ProtectedDoubleArrayList.add(548.02);
+        ProtectedDoubleArrayList.add(895D);
+        ProtectedDoubleArrayList.add(-8574.057);
+        ProtectedDoubleArrayList.add(-1854D);
+        ProtectedFloatArrayList.add(-515F);
+        ProtectedFloatArrayList.add(548.05F);
+        ProtectedFloatArrayList.add(4585.05F);
+        ProtectedFloatArrayList.add(591.05F);
+        ProtectedFloatArrayList.add(891.05F);
+        ProtectedFloatArrayList.add(918.0F);
+        ProtectedIntegerArrayList.add(-518);
+        ProtectedIntegerArrayList.add(1820);
+        ProtectedIntegerArrayList.add(-1200);
+        ProtectedIntegerArrayList.add(94124);
+        ProtectedIntegerArrayList.add(91550);
+        ProtectedLongArrayList.add(912L);
+        ProtectedLongArrayList.add(-942L);
+        ProtectedLongArrayList.add(-945158L);
+        ProtectedLongArrayList.add(51265L);
+        ProtectedLongArrayList.add(515L);
+        ProtectedShortArrayList.add((short) -125);
+        ProtectedShortArrayList.add((short) 54120);
+        ProtectedShortArrayList.add((short) 995);
+        ProtectedShortArrayList.add((short) -942);
+        ProtectedShortArrayList.add((short) 1058);
+        ProtectedStringArrayList.add("Test String 16");
+        ProtectedStringArrayList.add("Test String 17");
+        ProtectedStringArrayList.add("Test String 18");
+        ProtectedStringArrayList.add("Test String 19");
     }
 
 }

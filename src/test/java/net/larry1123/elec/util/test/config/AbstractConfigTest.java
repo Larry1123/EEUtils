@@ -1,6 +1,22 @@
+/*
+ * Copyright 2014 ElecEntertainment
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.larry1123.elec.util.test.config;
 
 import net.larry1123.elec.util.config.ConfigBase;
+import net.larry1123.elec.util.config.ConfigField;
 import net.larry1123.elec.util.test.AbstractTestClass;
 import net.visualillusionsent.utils.PropertiesFile;
 import org.apache.commons.lang3.ArrayUtils;
@@ -324,7 +340,7 @@ public abstract class AbstractConfigTest extends AbstractTestClass {
         }
     }
 
-    public void shortArray(String fieldName, Field testField) {
+    public void shortArrayTest(String fieldName, Field testField) {
         try {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getShortArray(fieldName), testField.get(getConfigBase())));
         }
@@ -333,7 +349,7 @@ public abstract class AbstractConfigTest extends AbstractTestClass {
         }
     }
 
-    public void ShortArray(String fieldName, Field testField) {
+    public void ShortArrayTest(String fieldName, Field testField) {
         try {
             short[] testFieldValue = ArrayUtils.toPrimitive((Short[]) testField.get(getConfigBase()));
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getShortArray(fieldName), testFieldValue));
@@ -372,7 +388,7 @@ public abstract class AbstractConfigTest extends AbstractTestClass {
         }
     }
 
-    public void StringArrayList(String fieldName, Field testField) {
+    public void StringArrayListTest(String fieldName, Field testField) {
         try {
             //noinspection unchecked,unchecked
             String[] testFieldValue = ((ArrayList<String>) testField.get(getConfigBase())).toArray(new String[((ArrayList<String>) testField.get(getConfigBase())).size()]);
@@ -401,6 +417,23 @@ public abstract class AbstractConfigTest extends AbstractTestClass {
             Assert.fail("Can't get field, " + fieldName + ", from ConfigBase!");
             return null;
         }
+    }
+
+    protected ArrayList<Field> getFields() {
+        return getFields(configBase.getClass());
+    }
+
+    protected ArrayList<Field> getFields(Class thisClass) {
+        ArrayList<Field> fields = new ArrayList<Field>();
+        while (thisClass != null) {
+            for (Field field : thisClass.getDeclaredFields()) {
+                if (field.isAnnotationPresent(ConfigField.class)) {
+                    fields.add(field);
+                }
+            }
+            thisClass = thisClass.getSuperclass();
+        }
+        return fields;
     }
 
     protected abstract ConfigBase createTestConfigBase(PropertiesFile file);

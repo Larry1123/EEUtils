@@ -23,6 +23,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -397,6 +400,35 @@ public abstract class AbstractConfigTest extends AbstractTestClass {
         catch (IllegalAccessException e) {
             assertFailFieldError(fieldName);
         }
+    }
+
+    protected void assertTest(String fieldName) throws NoSuchMethodException {
+        Field field = getField(getConfigBase(), fieldName);
+        Type type = field.getGenericType();
+        Method method = getTestMethod(fieldName);
+        method.setAccessible(true);
+        try {
+            method.invoke(this, fieldName, field);
+        }
+        catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected Method getTestMethod(String fieldName) throws NoSuchMethodException {
+        Class abstractConfigTestClass = AbstractConfigTest.class;
+        String methodName = fieldName + "Test";
+        methodName = methodName.replace("public", "");
+        methodName = methodName.replace("Public", "");
+        methodName = methodName.replace("protected", "");
+        methodName = methodName.replace("Protected", "");
+        if (fieldName.charAt(0) == 'p') {
+            methodName = (methodName.charAt(0) + "").toLowerCase() + methodName.substring(1);
+        }
+        return abstractConfigTestClass.getDeclaredMethod(methodName, String.class, Field.class);
     }
 
     protected Field getField(Object ob, String fieldName) {

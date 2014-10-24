@@ -35,343 +35,312 @@ public class PublicConfigSaveTest extends AbstractConfigTest {
     }
 
     @Test
-    public void publicBooleanLoad() {
+    public void publicBooleanSave() {
         String fieldName = FieldNames.publicBoolean.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        booleanTest(fieldName, testField);
     }
 
     @Test
-    public void PublicBooleanLoad() {
+    public void PublicBooleanSave() {
         String fieldName = FieldNames.PublicBoolean.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        BooleanTest(fieldName, testField);
     }
 
     @Test
-    public void publicByteLoad() {
+    public void publicByteSave() {
         String fieldName = FieldNames.publicByte.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        byteTest(fieldName, testField);
     }
 
     @Test
-    public void PublicByteLoad() {
+    public void PublicByteSave() {
         String fieldName = FieldNames.PublicByte.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        ByteTest(fieldName, testField);
     }
 
     @Test
-    public void publicByteArrayLoad() {
+    public void publicByteArraySave() {
         String fieldName = FieldNames.publicByteArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        byteArrayTest(fieldName, testField);
     }
 
     @Test
-    public void PublicByteArrayLoad() {
+    public void PublicByteArraySave() {
         String fieldName = FieldNames.PublicByteArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        ByteArrayTest(fieldName, testField);
     }
 
     @Test
-    public void publicByteListLoad() {
+    public void publicByteArrayListSave() {
         String fieldName = FieldNames.PublicByteArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        ByteArrayListTest(fieldName, testField);
     }
 
     @Test
-    public void publicCharacterLoad() {
+    public void publicCharacterSave() {
         String fieldName = FieldNames.publicCharacter.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        characterTest(fieldName, testField);
     }
 
     @Test
-    public void PublicCharacterLoad() {
+    public void PublicCharacterSave() {
         String fieldName = FieldNames.PublicCharacter.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        CharacterTest(fieldName, testField);
     }
 
     @Test
-    public void publicDoubleLoad() {
+    public void publicDoubleSave() {
         String fieldName = FieldNames.publicDouble.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        doubleTest(fieldName, testField);
     }
 
     @Test
-    public void PublicDoubleLoad() {
+    public void PublicDoubleSave() {
         String fieldName = FieldNames.PublicDouble.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        DoubleTest(fieldName, testField);
     }
 
     @Test
-    public void publicDoubleArrayLoad() {
+    public void publicDoubleArraySave() {
         String fieldName = FieldNames.publicDoubleArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        doubleArrayTest(fieldName, testField);
     }
 
     @Test
-    public void PublicDoubleArrayLoad() {
+    public void PublicDoubleArraySave() {
         String fieldName = FieldNames.PublicDoubleArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
 
-        DoubleArrayTest(fieldName, testField);
     }
 
     @Test
-    public void publicDoubleListLoad() {
+    public void publicDoubleArrayListSave() {
         String fieldName = FieldNames.PublicDoubleArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        DoubleArrayListTest(fieldName, testField);
     }
 
     @Test
-    public void publicFloatLoad() {
+    public void publicFloatSave() {
         String fieldName = FieldNames.publicFloat.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        floatTest(fieldName, testField);
     }
 
     @Test
-    public void PublicFloatLoad() {
+    public void PublicFloatSave() {
         String fieldName = FieldNames.PublicFloat.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        FloatTest(fieldName, testField);
     }
 
     @Test
-    public void publicFloatArrayLoad() {
+    public void publicFloatArraySave() {
         String fieldName = FieldNames.publicFloatArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        floatArrayTest(fieldName, testField);
     }
 
     @Test
-    public void PublicFloatArrayLoad() {
+    public void PublicFloatArraySave() {
         String fieldName = FieldNames.PublicFloatArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        FloatArrayTest(fieldName, testField);
     }
 
     @Test
-    public void publicFloatListLoad() {
+    public void publicFloatArrayListSave() {
         String fieldName = FieldNames.PublicFloatArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        FloatArrayListTest(fieldName, testField);
     }
 
     @Test
-    public void publicLongLoad() {
+    public void publicLongSave() {
         String fieldName = FieldNames.publicLong.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        longTest(fieldName, testField);
     }
 
     @Test
-    public void PublicLongLoad() {
+    public void PublicLongSave() {
         String fieldName = FieldNames.PublicLong.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        LongTest(fieldName, testField);
     }
 
     @Test
-    public void publicLongArrayLoad() {
+    public void publicLongArraySave() {
         String fieldName = FieldNames.publicLongArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        longArrayTest(fieldName, testField);
     }
 
     @Test
-    public void PublicLongArrayArrayLoad() {
+    public void PublicLongArrayArraySave() {
         String fieldName = FieldNames.PublicLongArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        LongArrayTest(fieldName, testField);
     }
 
     @Test
-    public void publicLongListLoad() {
+    public void publicLongArrayListSave() {
         String fieldName = FieldNames.PublicLongArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        LongArrayListTest(fieldName, testField);
     }
 
     @Test
-    public void publicIntegerLoad() {
+    public void publicIntegerSave() {
         String fieldName = FieldNames.publicInteger.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        integerTest(fieldName, testField);
     }
 
     @Test
-    public void PublicIntegerLoad() {
+    public void PublicIntegerSave() {
         String fieldName = FieldNames.PublicInteger.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        IntegerTest(fieldName, testField);
     }
 
     @Test
-    public void publicIntegerArrayLoad() {
+    public void publicIntegerArraySave() {
         String fieldName = FieldNames.publicIntegerArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        integerArrayTest(fieldName, testField);
     }
 
     @Test
-    public void PublicIntegerArrayLoad() {
+    public void PublicIntegerArraySave() {
         String fieldName = FieldNames.PublicIntegerArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        IntegerArrayTest(fieldName, testField);
     }
 
     @Test
-    public void publicIntegerListLoad() {
+    public void publicIntegerArrayListSave() {
         String fieldName = FieldNames.PublicIntegerArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        IntegerArrayListTest(fieldName, testField);
     }
 
     @Test
-    public void publicShortLoad() {
+    public void publicShortSave() {
         String fieldName = FieldNames.publicShort.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        shortTest(fieldName, testField);
     }
 
     @Test
-    public void PublicShortLoad() {
+    public void PublicShortSave() {
         String fieldName = FieldNames.PublicShort.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        ShortTest(fieldName, testField);
     }
 
     @Test
-    public void publicShortArrayLoad() {
+    public void publicShortArraySave() {
         String fieldName = FieldNames.publicShortArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        shortArrayTest(fieldName, testField);
     }
 
     @Test
-    public void PublicShortArrayLoad() {
+    public void PublicShortArraySave() {
         String fieldName = FieldNames.PublicShortArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        ShortArrayTest(fieldName, testField);
     }
 
     @Test
-    public void publicShortListLoad() {
+    public void publicShortArrayListSave() {
         String fieldName = FieldNames.PublicShortArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        ShortArrayListTest(fieldName, testField);
     }
 
     @Test
-    public void publicStringLoad() {
+    public void publicStringSave() {
         String fieldName = FieldNames.PublicString.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        StringTest(fieldName, testField);
     }
 
     @Test
-    public void publicStringArrayLoad() {
+    public void publicStringArraySave() {
         String fieldName = FieldNames.PublicStringArray.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        StringArrayTest(fieldName, testField);
     }
 
     @Test
-    public void publicStringListLoad() {
+    public void publicStringArrayListSave() {
         String fieldName = FieldNames.PublicStringArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        StringArrayListTest(fieldName, testField);
     }
 
     protected void doLogic(String fieldName, Field testField) {
         FieldHandler<?> handler = getFieldHandlerFactory().createFieldHandler(testField.getGenericType(), testField, getConfigBase());
         handler.save();
         getPropertiesFile().save();
+        try {
+            assertTest(fieldName);
+        }
+        catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

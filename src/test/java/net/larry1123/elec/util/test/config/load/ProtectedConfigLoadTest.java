@@ -40,7 +40,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        booleanTest(fieldName, testField);
     }
 
     @Test
@@ -58,7 +57,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        byteTest(fieldName, testField);
     }
 
     @Test
@@ -67,7 +65,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        ByteTest(fieldName, testField);
     }
 
     @Test
@@ -76,7 +73,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        byteArrayTest(fieldName, testField);
     }
 
     @Test
@@ -85,16 +81,14 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        ByteArrayTest(fieldName, testField);
     }
 
     @Test
-    public void protectedByteListLoad() {
+    public void protectedByteArrayListLoad() {
         String fieldName = FieldNames.ProtectedByteArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        ByteArrayListTest(fieldName, testField);
     }
 
     @Test
@@ -103,7 +97,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        characterTest(fieldName, testField);
     }
 
     @Test
@@ -112,7 +105,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        CharacterTest(fieldName, testField);
     }
 
     @Test
@@ -121,7 +113,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        doubleTest(fieldName, testField);
     }
 
     @Test
@@ -130,7 +121,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        DoubleTest(fieldName, testField);
     }
 
     @Test
@@ -139,7 +129,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        doubleArrayTest(fieldName, testField);
     }
 
     @Test
@@ -148,16 +137,14 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        DoubleArrayTest(fieldName, testField);
     }
 
     @Test
-    public void protectedDoubleListLoad() {
+    public void protectedDoubleArrayListLoad() {
         String fieldName = FieldNames.ProtectedDoubleArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        DoubleArrayListTest(fieldName, testField);
     }
 
     @Test
@@ -166,7 +153,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        floatTest(fieldName, testField);
     }
 
     @Test
@@ -175,7 +161,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        FloatTest(fieldName, testField);
     }
 
     @Test
@@ -184,7 +169,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        floatArrayTest(fieldName, testField);
     }
 
     @Test
@@ -193,16 +177,14 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        FloatArrayTest(fieldName, testField);
     }
 
     @Test
-    public void protectedFloatListLoad() {
+    public void protectedFloatArrayListLoad() {
         String fieldName = FieldNames.ProtectedFloatArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        FloatArrayListTest(fieldName, testField);
     }
 
     @Test
@@ -211,7 +193,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        longTest(fieldName, testField);
     }
 
     @Test
@@ -220,7 +201,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        LongTest(fieldName, testField);
     }
 
     @Test
@@ -229,7 +209,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        longArrayTest(fieldName, testField);
     }
 
     @Test
@@ -238,16 +217,14 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        LongArrayTest(fieldName, testField);
     }
 
     @Test
-    public void protectedLongListLoad() {
+    public void protectedLongArrayListLoad() {
         String fieldName = FieldNames.ProtectedLongArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        LongArrayListTest(fieldName, testField);
     }
 
     @Test
@@ -256,7 +233,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        integerTest(fieldName, testField);
     }
 
     @Test
@@ -265,7 +241,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        IntegerTest(fieldName, testField);
     }
 
     @Test
@@ -274,7 +249,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        integerArrayTest(fieldName, testField);
     }
 
     @Test
@@ -283,11 +257,10 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        IntegerArrayTest(fieldName, testField);
     }
 
     @Test
-    public void protectedIntegerListLoad() {
+    public void protectedIntegerArrayListLoad() {
         String fieldName = FieldNames.ProtectedIntegerArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
@@ -301,7 +274,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        shortTest(fieldName, testField);
     }
 
     @Test
@@ -319,7 +291,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        shortArrayTest(fieldName, testField);
     }
 
     @Test
@@ -332,12 +303,11 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
     }
 
     @Test
-    public void protectedShortListLoad() {
+    public void protectedShortArrayListLoad() {
         String fieldName = FieldNames.ProtectedShortArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        ShortArrayListTest(fieldName, testField);
     }
 
     @Test
@@ -346,7 +316,6 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        StringTest(fieldName, testField);
     }
 
     @Test
@@ -355,21 +324,25 @@ public class ProtectedConfigLoadTest extends AbstractConfigTest {
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        StringArrayTest(fieldName, testField);
     }
 
     @Test
-    public void protectedStringListLoad() {
+    public void protectedStringArrayListLoad() {
         String fieldName = FieldNames.ProtectedStringArrayList.name();
         Field testField = getField(getConfigBase(), fieldName);
 
         doLogic(fieldName, testField);
-        StringArrayListTest(fieldName, testField);
     }
 
     protected void doLogic(String fieldName, Field testField) {
         FieldHandler<?> handler = getFieldHandlerFactory().createFieldHandler(testField.getGenericType(), testField, getConfigBase());
         handler.load();
+        try {
+            assertTest(fieldName);
+        }
+        catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -20,11 +20,6 @@ import net.larry1123.elec.util.config.ConfigFile;
 import net.visualillusionsent.utils.PropertiesFile;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-
 /**
  * @author Larry1123
  * @since 10/24/2014 - 12:45 AM
@@ -32,7 +27,6 @@ import java.lang.reflect.Type;
 public class FullConfigTest extends AbstractConfigTest {
 
     public FullConfigTest() {
-        // TODO make new full test
         super("FullConfigLoadTest", "target/test-classes/FullTest.cfg");
     }
 
@@ -42,36 +36,7 @@ public class FullConfigTest extends AbstractConfigTest {
         for (FieldNames fieldNames : FieldNames.values()) {
             assertTest(fieldNames.name());
         }
-
-    }
-
-    protected void assertTest(String fieldName) throws NoSuchMethodException {
-        Field field = getField(getConfigBase(), fieldName);
-        Type type = field.getGenericType();
-        Method method = getTestMethod(fieldName);
-        method.setAccessible(true);
-        try {
-            method.invoke(this, fieldName, field);
-        }
-        catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-    }
-
-    protected Method getTestMethod(String fieldName) throws NoSuchMethodException {
-        Class abstractConfigTestClass = AbstractConfigTest.class;
-        String getMethod = fieldName + "Test";
-        getMethod = getMethod.replace("public", "");
-        getMethod = getMethod.replace("Public", "");
-        getMethod = getMethod.replace("protected", "");
-        getMethod = getMethod.replace("Protected", "");
-        if (fieldName.charAt(0) == 'p') {
-            getMethod = (getMethod.charAt(0) + "").toLowerCase() + getMethod.substring(1);
-        }
-        return abstractConfigTestClass.getDeclaredMethod(getMethod, String.class, Field.class);
+        // TODO Change data, save, then retest
     }
 
     @Override

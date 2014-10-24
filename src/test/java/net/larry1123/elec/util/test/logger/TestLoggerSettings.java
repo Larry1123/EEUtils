@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.larry1123.elec.util.logger.testing;
+package net.larry1123.elec.util.test.logger;
 
 import net.larry1123.elec.util.logger.FileSplits;
 import net.larry1123.elec.util.logger.LoggerSettings;

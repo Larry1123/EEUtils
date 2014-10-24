@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.larry1123.elec.util.logger.testing;
+package net.larry1123.elec.util.test.logger;
 
 import net.larry1123.elec.util.factorys.EELoggerFactory;
 import net.larry1123.elec.util.factorys.FactoryManager;
@@ -60,7 +60,7 @@ public class LoggerTest {
     public void testLogs() {
         eeLoggerFactory.setLoggerSettings(new TestLoggerSettings());
         EELogger eeLogger = eeLoggerFactory.getLogger("EEUtilLogsTest");
-        eeLogger.info("This is a test! This should be logged in " + eeLogger.getLogFile()+ ".0." + eeLoggerFactory.getLoggerSettings().getFileType());
+        eeLogger.info("This is a test! This should be logged in " + eeLogger.getLogFile() + ".0." + eeLoggerFactory.getLoggerSettings().getFileType());
         eeLogger.error("A fake ERROR!!", new Error());
         Assert.assertTrue(eeLogger.canFileLog());
     }

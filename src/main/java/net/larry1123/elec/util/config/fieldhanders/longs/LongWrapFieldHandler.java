@@ -27,11 +27,11 @@ import java.lang.reflect.Field;
  */
 public class LongWrapFieldHandler extends FieldHandler<Long> {
 
-    public LongWrapFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public LongWrapFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public LongWrapFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public LongWrapFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

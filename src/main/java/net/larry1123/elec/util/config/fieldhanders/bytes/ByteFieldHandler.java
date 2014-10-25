@@ -25,11 +25,11 @@ import java.lang.reflect.Field;
  */
 public class ByteFieldHandler extends ByteWrapFieldHandler {
 
-    public ByteFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public ByteFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public ByteFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public ByteFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

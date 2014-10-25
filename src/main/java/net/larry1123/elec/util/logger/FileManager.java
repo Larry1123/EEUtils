@@ -110,7 +110,7 @@ public class FileManager {
     }
 
     public static FileHandler getHandler(UtilFileHandler utilFileHandler) throws IOException {
-        FileHandler handler = null;
+        FileHandler handler;
         String logPath = utilFileHandler.getFilePath();
         if (!fileHandlers.containsKey(logPath)) {
             handler = new FileHandler(utilFileHandler.getFilePattern(), true);

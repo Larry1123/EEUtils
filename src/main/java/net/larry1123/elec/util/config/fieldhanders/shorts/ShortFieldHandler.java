@@ -25,11 +25,11 @@ import java.lang.reflect.Field;
  */
 public class ShortFieldHandler extends ShortWrapFieldHandler {
 
-    public ShortFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public ShortFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public ShortFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public ShortFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

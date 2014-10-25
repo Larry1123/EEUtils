@@ -27,11 +27,11 @@ import java.lang.reflect.Field;
  */
 public class CharacterWrapFieldHandler extends FieldHandler<Character> {
 
-    public CharacterWrapFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public CharacterWrapFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public CharacterWrapFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public CharacterWrapFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

@@ -32,11 +32,11 @@ import java.util.ArrayList;
  */
 public class DoubleArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Double>> {
 
-    public DoubleArrayListFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public DoubleArrayListFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public DoubleArrayListFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public DoubleArrayListFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

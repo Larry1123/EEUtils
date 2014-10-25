@@ -27,11 +27,11 @@ import java.lang.reflect.Field;
  */
 public class BooleanWrapFieldHandler extends FieldHandler<Boolean> {
 
-    public BooleanWrapFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public BooleanWrapFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public BooleanWrapFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public BooleanWrapFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

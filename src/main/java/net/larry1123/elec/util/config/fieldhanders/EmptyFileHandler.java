@@ -25,11 +25,11 @@ import java.lang.reflect.Field;
  */
 public class EmptyFileHandler extends FieldHandler<Object> {
 
-    public EmptyFileHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public EmptyFileHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public EmptyFileHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public EmptyFileHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

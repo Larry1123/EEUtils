@@ -58,7 +58,7 @@ public class AbstractTestClass {
     }
 
     public EELogger getLogger(String sub) {
-        return getEELoggerFactory().getSubLogger(sub, getLogger());
+        return getEELoggerFactory().getSubLogger(getLogger(), sub);
     }
 
 }

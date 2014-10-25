@@ -42,7 +42,7 @@ public class LoggerTest extends AbstractTestClass {
     public void testMakingSubLogger() {
         getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
         EELogger main = getEELoggerFactory().getLogger("EEUtilTest");
-        Assert.assertNotNull("Failed to create Sub-Logger.", getEELoggerFactory().getSubLogger("SubTest", main));
+        Assert.assertNotNull("Failed to create Sub-Logger.", getEELoggerFactory().getSubLogger(main, "SubTest"));
     }
 
     @Test

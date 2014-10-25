@@ -28,11 +28,11 @@ import java.lang.reflect.Field;
  */
 public class DoubleArrayWrapFieldHandler extends ArrayFieldHandler<Double[]> {
 
-    public DoubleArrayWrapFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public DoubleArrayWrapFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public DoubleArrayWrapFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public DoubleArrayWrapFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

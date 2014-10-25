@@ -28,11 +28,11 @@ import java.lang.reflect.Field;
  */
 public class LongArrayFieldHandler extends ArrayFieldHandler<long[]> {
 
-    public LongArrayFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public LongArrayFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public LongArrayFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public LongArrayFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

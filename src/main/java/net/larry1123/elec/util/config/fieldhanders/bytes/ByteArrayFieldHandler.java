@@ -28,11 +28,11 @@ import java.lang.reflect.Field;
  */
 public class ByteArrayFieldHandler extends ArrayFieldHandler<byte[]> {
 
-    public ByteArrayFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public ByteArrayFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public ByteArrayFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public ByteArrayFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

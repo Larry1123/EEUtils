@@ -32,11 +32,11 @@ import java.util.ArrayList;
  */
 public class ByteArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Byte>> {
 
-    public ByteArrayListFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public ByteArrayListFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public ByteArrayListFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public ByteArrayListFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

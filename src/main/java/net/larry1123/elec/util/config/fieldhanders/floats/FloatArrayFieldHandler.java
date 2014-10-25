@@ -28,11 +28,11 @@ import java.lang.reflect.Field;
  */
 public class FloatArrayFieldHandler extends ArrayFieldHandler<float[]> {
 
-    public FloatArrayFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public FloatArrayFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public FloatArrayFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public FloatArrayFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

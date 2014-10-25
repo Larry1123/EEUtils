@@ -47,21 +47,21 @@ public class EELogger implements Logger {
 
     protected final String path;
     protected final String logFile;
-    protected final boolean fileLogging;
+    protected boolean fileLogging;
 
     public EELogger(String name) {
         this(name, true);
     }
 
-    public EELogger(String name, Logger parent) {
-        this(name, parent, true);
+    public EELogger(Logger parent, String name) {
+        this(parent, name, true);
     }
 
     public EELogger(String name, String subName) {
         this(name, subName, true);
     }
 
-    public EELogger(String name, Logger parent, boolean fileLog) {
+    public EELogger(Logger parent, String name, boolean fileLog) {
         this(parent.getName(), name, fileLog);
     }
 
@@ -84,7 +84,7 @@ public class EELogger implements Logger {
                 fileLoggingTemp = false;
             }
         }
-        fileLogging = fileLoggingTemp;
+        setFileLogging(fileLoggingTemp);
     }
 
     public static LoggerLevel getTrace() {
@@ -555,7 +555,8 @@ public class EELogger implements Logger {
     }
 
     /**
-     * TODO
+     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will return true if it was able to post and false if it was not able to post
      *
      * @param s         the message accompanying the exception
      * @param throwable the exception (throwable) to log
@@ -568,7 +569,8 @@ public class EELogger implements Logger {
     }
 
     /**
-     * TODO
+     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will return true if it was able to post and false if it was not able to post
      *
      * @param marker    the marker data specific to this log statement
      * @param s         the message accompanying the exception
@@ -582,7 +584,8 @@ public class EELogger implements Logger {
     }
 
     /**
-     * TODO
+     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will return true if it was able to post and false if it was not able to post
      *
      * @param s         the message accompanying the exception
      * @param throwable the exception (throwable) to log
@@ -595,7 +598,8 @@ public class EELogger implements Logger {
     }
 
     /**
-     * TODO
+     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will return true if it was able to post and false if it was not able to post
      *
      * @param marker    the marker data specific to this log statement
      * @param s         the message accompanying the exception
@@ -609,7 +613,8 @@ public class EELogger implements Logger {
     }
 
     /**
-     * TODO
+     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will return true if it was able to post and false if it was not able to post
      *
      * @param s         the message accompanying the exception
      * @param throwable the exception (throwable) to log
@@ -622,7 +627,8 @@ public class EELogger implements Logger {
     }
 
     /**
-     * TODO
+     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will return true if it was able to post and false if it was not able to post
      *
      * @param marker    the marker data specific to this log statement
      * @param s         the message accompanying the exception
@@ -636,7 +642,8 @@ public class EELogger implements Logger {
     }
 
     /**
-     * TODO
+     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will return true if it was able to post and false if it was not able to post
      *
      * @param s         the message accompanying the exception
      * @param throwable the exception (throwable) to log
@@ -649,7 +656,8 @@ public class EELogger implements Logger {
     }
 
     /**
-     * TODO
+     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will return true if it was able to post and false if it was not able to post
      *
      * @param marker    the marker data specific to this log statement
      * @param s         the message accompanying the exception
@@ -663,7 +671,8 @@ public class EELogger implements Logger {
     }
 
     /**
-     * TODO
+     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will return true if it was able to post and false if it was not able to post
      *
      * @param s         the message accompanying the exception
      * @param throwable the exception (throwable) to log
@@ -676,7 +685,8 @@ public class EELogger implements Logger {
     }
 
     /**
-     * TODO
+     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will return true if it was able to post and false if it was not able to post
      *
      * @param marker    the marker data specific to this log statement
      * @param s         the message accompanying the exception
@@ -742,16 +752,6 @@ public class EELogger implements Logger {
                 wr.flush();
                 wr.close();
 
-                // int responseCode = con.getResponseCode();
-                // BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                // String inputLine;
-                // StringBuilder response = new StringBuilder();
-
-                // while ((inputLine = in.readLine()) != null) {
-                //    response.append(inputLine);
-                // }
-                // in.close();
-
                 if (con.getResponseCode() == 200) {
                     DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
                     DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -764,7 +764,6 @@ public class EELogger implements Logger {
                     eeLogger.info("Logger " + getName() + ": https://paste.larry1123.net/" + id);
                     return true;
                 }
-                // return responseCode == 200 && response.toString().contains("<id>");
                 return false;
             }
             catch (MalformedURLException e) {
@@ -826,6 +825,20 @@ public class EELogger implements Logger {
 
     public boolean canFileLog() {
         return fileLogging;
+    }
+
+    public void turnOnFileLog() {
+        if (!canFileLog()) {
+            try {
+                FileManager.setUpLogger(getFileLogger(), getLogFile());
+                setFileLogging(true);
+            }
+            catch (IOException ignored) {}
+        }
+    }
+
+    protected void setFileLogging(boolean fileLogging) {
+        this.fileLogging = fileLogging;
     }
 
 }

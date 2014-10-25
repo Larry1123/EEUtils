@@ -25,11 +25,11 @@ import java.lang.reflect.Field;
  */
 public class FloatFieldHandler extends FloatWrapFieldHandler {
 
-    public FloatFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public FloatFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public FloatFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public FloatFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

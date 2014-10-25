@@ -30,11 +30,11 @@ import java.util.ArrayList;
  */
 public class StringArrayListFieldHandler extends ArrayFieldHandler<ArrayList<String>> {
 
-    public StringArrayListFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public StringArrayListFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public StringArrayListFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public StringArrayListFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

@@ -32,11 +32,11 @@ import java.util.ArrayList;
  */
 public class IntegerArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Integer>> {
 
-    public IntegerArrayListFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public IntegerArrayListFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public IntegerArrayListFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public IntegerArrayListFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

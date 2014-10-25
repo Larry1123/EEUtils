@@ -40,10 +40,8 @@ public abstract class FieldHandler<T> {
      * @param field       The Field to be handled
      * @param configBase  The object containing the field
      * @param propertyKey The name of the key to get from the PropertiesFile
-     *
-     * @throws NoSuchFieldException is thrown if the config object does not contain the given Field
      */
-    public FieldHandler(Field field, ConfigBase configBase, String propertyKey) throws NoSuchFieldException {
+    public FieldHandler(Field field, ConfigBase configBase, String propertyKey) {
         this.field = field;
         // Ensure we can use the field
         this.getField().setAccessible(true);
@@ -56,10 +54,8 @@ public abstract class FieldHandler<T> {
     /**
      * @param field      The Field to be handled
      * @param configBase The object containing the field
-     *
-     * @throws NoSuchFieldException is thrown if the config object does not contain the given Field
      */
-    public FieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public FieldHandler(Field field, ConfigBase configBase) {
         this.field = field;
         // Ensure we can use the field
         this.getField().setAccessible(true);

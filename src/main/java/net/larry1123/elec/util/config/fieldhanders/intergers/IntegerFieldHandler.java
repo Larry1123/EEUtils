@@ -25,11 +25,11 @@ import java.lang.reflect.Field;
  */
 public class IntegerFieldHandler extends IntegerWrapFieldHandler {
 
-    public IntegerFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public IntegerFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public IntegerFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public IntegerFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

@@ -32,11 +32,11 @@ import java.util.ArrayList;
  */
 public class ShortArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Short>> {
 
-    public ShortArrayListFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public ShortArrayListFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public ShortArrayListFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public ShortArrayListFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

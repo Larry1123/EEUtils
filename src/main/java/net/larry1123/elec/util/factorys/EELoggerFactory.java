@@ -62,14 +62,33 @@ public class EELoggerFactory {
      * @return the EELogger for the given
      */
     public EELogger getLogger(String name) {
-        if (!loggers.containsKey(name)) {
-            EELogger logMan = new EELogger(name);
-            loggers.put(logMan.getName(), logMan);
-        }
-        return loggers.get(name);
+        return getLogger(name, true);
     }
 
     /**
+     * Gets the EELogger for the given name
+     *
+     * @param name Name of the Logger
+     * @param fileLog {@code true} to log to file; {@code false} to not log to file
+     *
+     * @return the EELogger for the given
+     */
+    public EELogger getLogger(String name, boolean fileLog) {
+        EELogger logger;
+        if (!loggers.containsKey(name)) {
+            logger = new EELogger(name, fileLog);
+            loggers.put(logger.getName(), logger);
+        }
+        else {
+            logger = loggers.get(name);
+        }
+        setupFileLogging(fileLog, logger);
+        return logger;
+    }
+
+    /**
+     * @deprecated {@link EELoggerFactory#getSubLogger(EELogger, String)}
+     *
      * Gets the EELogger for the given name
      *
      * @param name    Name of the Logger
@@ -77,15 +96,18 @@ public class EELoggerFactory {
      *
      * @return the EELogger for the given
      */
+    @Deprecated
     public EELogger getSubLogger(String name, String subName) {
-        if (!loggers.containsKey(name + "." + name)) {
+        if (!loggers.containsKey(getName(name, subName))) {
             EELogger logMan = new EELogger(name, subName);
             loggers.put(logMan.getName(), logMan);
         }
-        return loggers.get(name + "." + name);
+        return loggers.get(getName(name, subName));
     }
 
     /**
+     * @deprecated {@link EELoggerFactory#getSubLogger(EELogger, String)}
+     *
      * Gets the EELogger for the given name as a sub of the given parent
      *
      * @param name   Name of the sub-Logger
@@ -93,12 +115,57 @@ public class EELoggerFactory {
      *
      * @return The EELogger for the requested sub-Logger
      */
+    @Deprecated
     public EELogger getSubLogger(String name, EELogger parent) {
-        if (!loggers.containsKey(parent.getName() + "." + name)) {
-            EELogger logger = new EELogger(name, parent);
+        return getSubLogger(parent, name);
+    }
+
+    /**
+     * Gets the EELogger for the given name as a sub of the given parent
+     *
+     * @param parent What EELogger to create a sub-Logger under
+     * @param name   Name of the sub-Logger
+     *
+     * @return The EELogger for the requested sub-Logger
+     */
+    public EELogger getSubLogger(EELogger parent, String name) {
+        return getSubLogger(parent, name, true);
+    }
+
+    /**
+     * Gets the EELogger for the given name as a sub of the given parent
+     *
+     * @param parent What EELogger to create a sub-Logger under
+     * @param name   Name of the sub-Logger
+     * @param fileLog {@code true} to log to file; {@code false} to not log to file
+     *
+     * @return The EELogger for the requested sub-Logger
+     */
+    public EELogger getSubLogger(EELogger parent, String name, boolean fileLog) {
+        EELogger logger;
+        if (!loggers.containsKey(getName(parent, name))) {
+            logger = new EELogger(parent, name, fileLog);
             loggers.put(logger.getName(), logger);
         }
-        return loggers.get(parent.getName() + "." + name);
+        else {
+            logger = loggers.get(getName(parent, name));
+        }
+        setupFileLogging(fileLog, logger);
+        return logger;
+    }
+
+    protected void setupFileLogging(boolean fileLog, EELogger logger) {
+        if (fileLog && !logger.canFileLog()) {
+            logger.turnOnFileLog();
+        }
+    }
+
+    protected String getName(EELogger parent, String sub) {
+        return getName(parent.getName(), sub);
+    }
+
+    protected String getName(String parent, String sub) {
+        return parent + "." + sub;
     }
 
     /**

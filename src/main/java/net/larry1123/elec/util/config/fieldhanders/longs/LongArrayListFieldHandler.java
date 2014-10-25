@@ -32,11 +32,11 @@ import java.util.ArrayList;
  */
 public class LongArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Long>> {
 
-    public LongArrayListFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public LongArrayListFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public LongArrayListFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public LongArrayListFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

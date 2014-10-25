@@ -13,11 +13,11 @@ import java.lang.reflect.Field;
  */
 public class ByteArrayWrapFieldHandler extends ArrayFieldHandler<Byte[]> {
 
-    public ByteArrayWrapFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public ByteArrayWrapFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public ByteArrayWrapFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public ByteArrayWrapFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

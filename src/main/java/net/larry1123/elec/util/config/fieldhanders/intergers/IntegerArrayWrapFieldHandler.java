@@ -28,11 +28,11 @@ import java.lang.reflect.Field;
  */
 public class IntegerArrayWrapFieldHandler extends ArrayFieldHandler<Integer[]> {
 
-    public IntegerArrayWrapFieldHandler(Field field, ConfigBase configBase, String fieldName) throws NoSuchFieldException {
+    public IntegerArrayWrapFieldHandler(Field field, ConfigBase configBase, String fieldName) {
         super(field, configBase, fieldName);
     }
 
-    public IntegerArrayWrapFieldHandler(Field field, ConfigBase configBase) throws NoSuchFieldException {
+    public IntegerArrayWrapFieldHandler(Field field, ConfigBase configBase) {
         super(field, configBase);
     }
 

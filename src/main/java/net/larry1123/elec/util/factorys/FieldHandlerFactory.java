@@ -97,13 +97,7 @@ public class FieldHandlerFactory {
     }
 
     protected FieldHandler<?> createEmptyFileHandler(Type type, Field field, ConfigBase configBase) {
-        try {
-            return new EmptyFileHandler(field, configBase);
-        }
-        catch (NoSuchFieldException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return new EmptyFileHandler(field, configBase);
     }
 
     protected Field getField(Object ob, String fieldName, Class lastClass) {

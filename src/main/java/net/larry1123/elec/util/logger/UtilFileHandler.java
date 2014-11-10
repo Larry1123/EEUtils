@@ -28,27 +28,24 @@ import java.util.logging.*;
 public class UtilFileHandler extends Handler {
 
     protected final String filePath;
-    protected FileHandler fileHandler;
+    protected StreamHandler fileHandler;
 
-    protected volatile Filter filter;
-    protected volatile Formatter formatter;
+    protected volatile Filter filter = null;
+    protected volatile Formatter formatter = new UtilsLogFormat();
     protected volatile Level logLevel = Level.ALL;
     protected volatile ErrorManager errorManager = new ErrorManager();
-    protected volatile String encoding;
+    protected volatile String encoding = "UTF-8";
 
     public UtilFileHandler(String filePath) throws IOException {
-        if (filePath == null) { throw new NullPointerException(); }
+        if (filePath == null) { throw new NullPointerException("File path can not be null"); }
         this.filePath = filePath;
-        filter = new UtilFilter();
-        ((UtilFilter) filter).setLogAll(true);
-        formatter = new UtilsLogFormat();
-        encoding = "UTF-8";
         fileHandler = FileManager.getHandler(this);
     }
 
     @Override
     public synchronized void publish(LogRecord record) {
         getFileHandler().publish(record);
+        flush();
     }
 
     @Override
@@ -63,9 +60,8 @@ public class UtilFileHandler extends Handler {
 
     /**
      * Returns the filePath along with the file's name and extension.
-     * This pattern has %g added to the file's name.
      * A return could look like this:
-     * logs/LoggerName.%u.log
+     * logs/LoggerName.log
      *
      * @return path_SplitDateTime.%g.FileType
      */
@@ -74,7 +70,7 @@ public class UtilFileHandler extends Handler {
         if (!getConfig().getSplit().equals(FileSplits.NONE)) {
             path += "_" + FileManager.dateTime();
         }
-        path += ".%u." + getConfig().getFileType();
+        path += "." + getConfig().getFileType();
         return path;
     }
 
@@ -98,7 +94,7 @@ public class UtilFileHandler extends Handler {
      */
     public boolean updateFileHandler() {
         try {
-            FileHandler tempFileHandler = FileManager.getHandler(this);
+            StreamHandler tempFileHandler = FileManager.getHandler(this);
             if (tempFileHandler.equals(fileHandler)) {
                 return false;
             }
@@ -112,7 +108,7 @@ public class UtilFileHandler extends Handler {
         }
     }
 
-    protected FileHandler getFileHandler() {
+    protected StreamHandler getFileHandler() {
         if (fileHandler == null) {
             updateFileHandler();
         }

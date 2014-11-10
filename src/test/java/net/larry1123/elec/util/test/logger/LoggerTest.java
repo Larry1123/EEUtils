@@ -16,11 +16,13 @@
 package net.larry1123.elec.util.test.logger;
 
 import net.larry1123.elec.util.logger.EELogger;
+import net.larry1123.elec.util.logger.FileManager;
 import net.larry1123.elec.util.test.AbstractTestClass;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Larry1123
@@ -49,7 +51,7 @@ public class LoggerTest extends AbstractTestClass {
     public void testFileCreation() {
         getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
         EELogger makeAFile = getEELoggerFactory().getLogger("EEUtilFileTest");
-        File logFile = new File(makeAFile.getLogFile() + ".0." + getEELoggerFactory().getLoggerSettings().getFileType());
+        File logFile = new File(makeAFile.getLogFile() + "." + getEELoggerFactory().getLoggerSettings().getFileType());
         Assert.assertTrue("Logger File failed to be made.", logFile.exists());
     }
 
@@ -61,9 +63,39 @@ public class LoggerTest extends AbstractTestClass {
     public void testLogs() {
         getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
         EELogger eeLogger = getEELoggerFactory().getLogger("EEUtilLogsTest");
-        eeLogger.info("This is a test! This should be logged in " + eeLogger.getLogFile() + ".0." + getEELoggerFactory().getLoggerSettings().getFileType());
+        eeLogger.info("This is a test! This should be logged in " + eeLogger.getLogFile() + "." + getEELoggerFactory().getLoggerSettings().getFileType());
         eeLogger.error("A fake ERROR!!", new Error());
         Assert.assertTrue(eeLogger.canFileLog());
+    }
+
+    @Test
+    public void testSubLogs() {
+        getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
+        EELogger eeLogger = getEELoggerFactory().getLogger("EEUtilLogsParentTest");
+        eeLogger.info("This is a test! This should be logged in " + eeLogger.getLogFile() + "." + getEELoggerFactory().getLoggerSettings().getFileType());
+        eeLogger.error("A fake ERROR!!", new Error());
+        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "SubLogger");
+        eeLogger.info("This is a test of the sub-logger");
+        eeLogger.error("This is the sub-logger throwing an error", new Error());
+        // Lets get a little meta with this test
+        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "SuperSubLogger");
+        eeLogger.info("This is a test of the super-sub-logger");
+        eeLogger.error("This is the super-sub-logger throwing an error", new Error());
+    }
+
+    @Test
+    public void testZipping() throws IOException {
+        getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
+        EELogger eeLogger = getEELoggerFactory().getLogger("EEUtilZipTest");
+        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "Test2");
+        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "Test3");
+        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "Test4");
+        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "Test5");
+        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "Test6");
+        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "Test7");
+        eeLogger.info("This is a test! This should be logged in " + eeLogger.getLogFile() + "." + getEELoggerFactory().getLoggerSettings().getFileType());
+        eeLogger.error("A fake ERROR!!", new Error());
+        FileManager.updateFileHandlers();
     }
 
 }

@@ -54,4 +54,5 @@ final class UtilsLogFormat extends SimpleFormatter {
         }
         return message.toString();
     }
+
 }

@@ -19,7 +19,6 @@ import net.larry1123.elec.util.logger.FileSplits;
 import net.larry1123.elec.util.logger.LoggerSettings;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 /**
  * @author Larry1123
@@ -32,7 +31,6 @@ public class TestLoggerSettings implements LoggerSettings {
     private FileSplits split = FileSplits.NONE;
     private String currentSplit = "";
     private String fileType = "log";
-    private Logger parentLogger = null;
 
     /**
      * {@inheritDoc}

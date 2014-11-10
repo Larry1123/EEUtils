@@ -16,7 +16,6 @@
 package net.larry1123.elec.util.logger;
 
 import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
@@ -31,28 +30,18 @@ public class FileLogger extends Logger {
     }
 
     /**
+     * Will send the logRecord to this logger's handlers and to FileLogger parent loggers
+     * <p/>
      * {@inheritDoc}
      */
     @Override
     public void log(LogRecord logRecord) {
-        Level level = logRecord.getLevel();
-        if (!isLoggable(level)) {
-            return;
-        }
-        if (getFilter() != null && !getFilter().isLoggable(logRecord)) {
-            return;
-        }
-        StringBuilder message = new StringBuilder();
-        if (level instanceof LoggerLevel) {
-            LoggerLevel handle = (LoggerLevel) level;
-            if (!handle.getPrefix().isEmpty()) {
-                message.append("[").append(handle.getPrefix()).append("] ");
+        FileLogger fileLogger = this;
+        while (fileLogger != null) {
+            for (Handler handler : fileLogger.getHandlers()) {
+                handler.publish(logRecord);
             }
-        }
-        message.append("[").append(getName()).append("] ").append(logRecord.getMessage());
-        logRecord.setMessage(message.toString());
-        for (Handler handler : getHandlers()) {
-            handler.publish(logRecord);
+            fileLogger = fileLogger.getParent() instanceof FileLogger ? (FileLogger) fileLogger.getParent() : null;
         }
     }
 

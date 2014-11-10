@@ -44,47 +44,55 @@ public class EELogger implements Logger {
 
     protected final org.slf4j.Logger logger;
     protected final FileLogger fileLogger;
-
     protected final String path;
     protected final String logFile;
+    protected final EELogger parent;
+
     protected boolean fileLogging;
 
     public EELogger(String name) {
-        this(name, true);
+        this((EELogger) null, name);
     }
 
-    public EELogger(Logger parent, String name) {
-        this(parent, name, true);
-    }
-
+    @Deprecated
     public EELogger(String name, String subName) {
         this(name, subName, true);
     }
 
-    public EELogger(Logger parent, String name, boolean fileLog) {
-        this(parent.getName(), name, fileLog);
-    }
-
+    @Deprecated
     public EELogger(String name, String subName, boolean fileLog) {
         this(name + "." + subName, fileLog);
     }
 
     public EELogger(String name, boolean fileLog) {
-        boolean fileLoggingTemp = fileLog;
-        logger = LoggerFactory.getLogger(name);
+        this((EELogger) null, name, fileLog);
+    }
+
+    public EELogger(EELogger parent, String name) {
+        this(parent, name, true);
+    }
+
+    public EELogger(EELogger parent, String name, boolean fileLog) {
+        this.parent = parent;
+        logger = LoggerFactory.getLogger((hasParent() ? getParent().getName() + "." : "") + name);
         fileLogger = new FileLogger(getName());
-        path = getConfig().getLoggerPath() + getName() + File.separatorChar;
-        logFile = getPath() + getName().replace('.', File.separatorChar);
-        if (fileLog) {
+        path = hasParent() ? parent.getPath() : getConfig().getLoggerPath() + getName() + File.separatorChar;
+        logFile = getPath() + (hasParent() ? getName().substring(getName().indexOf(".") + 1) : "latest");
+        boolean fileLoggingTemp = fileLog;
+        if (fileLoggingTemp) {
             try {
                 FileManager.setUpLogger(getFileLogger(), getLogFile());
                 fileLoggingTemp = true;
             }
             catch (IOException e) {
+                error("Unable to setup file logging!", e);
                 fileLoggingTemp = false;
             }
         }
         setFileLogging(fileLoggingTemp);
+        if (hasParent()) {
+            getFileLogger().setParent(getParent().getFileLogger());
+        }
     }
 
     public static LoggerLevel getTrace() {
@@ -821,6 +829,14 @@ public class EELogger implements Logger {
 
     public FileLogger getFileLogger() {
         return fileLogger;
+    }
+
+    public EELogger getParent() {
+        return parent;
+    }
+
+    public boolean hasParent() {
+        return getParent() != null;
     }
 
     public boolean canFileLog() {

@@ -29,7 +29,7 @@ public class TestLoggerSettings implements LoggerSettings {
     private String loggerPath = "target" + File.separator + "tests" + File.separator;
     private boolean pastingAllowed = false;
     private FileSplits split = FileSplits.NONE;
-    private String currentSplit = "";
+    private long currentSplit = 0;
     private String fileType = "log";
 
     /**
@@ -84,7 +84,7 @@ public class TestLoggerSettings implements LoggerSettings {
      * {@inheritDoc}
      */
     @Override
-    public String getCurrentSplit() {
+    public long getCurrentSplit() {
         return currentSplit;
     }
 
@@ -92,7 +92,7 @@ public class TestLoggerSettings implements LoggerSettings {
      * {@inheritDoc}
      */
     @Override
-    public void setCurrentSplit(String current) {
+    public void setCurrentSplit(long current) {
         currentSplit = current;
     }
 

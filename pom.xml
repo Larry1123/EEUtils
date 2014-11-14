@@ -8,6 +8,7 @@
     <inceptionYear>2013</inceptionYear>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <build.number/>
         <author>Larry1123</author>
         <VIutil.groupID>net.visualillusionsent</VIutil.groupID>
@@ -99,12 +100,10 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.4</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
-            <version>1.9</version>
         </dependency>
         <!-- Test Dependencies -->
         <dependency>
@@ -166,9 +165,6 @@
                             <Specification-Title>${project.name}</Specification-Title>
                             <Specification-Vendor>${author}</Specification-Vendor>
                             <Specification-Vendor-Id>${project.groupId}</Specification-Vendor-Id>
-                            <authors>
-                                <author>${author}</author>
-                            </authors>
                             <Sealed>true</Sealed>
                         </manifestEntries>
                         <manifestSections>
@@ -182,11 +178,92 @@
                     </archive>
                 </configuration>
             </plugin>
+
+            <!--  Dependency inclusion plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <shadedArtifactAttached>true</shadedArtifactAttached>
+                    <shadedArtifactId>${project.artifactId}-Shaded</shadedArtifactId>
+                    <finalName>${project.artifactId}-Shaded-${project.version}${build.number}</finalName>
+                    <filters>
+                        <filter>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
-    <!-- Add Build number to a Jenkins build -->
     <profiles>
+        <!-- Source and JavaDocs -->
+        <profile>
+            <id>attach-sources-javadoc</id>
+            <build>
+                <plugins>
+                    <!-- Source plugin -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!--  JavaDoc Creation plugin -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>javadoc-jar</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <linksource>true</linksource>
+                                    <doctitle>${project.name} ${project.version}</doctitle>
+                                    <header>Generated: ${maven.build.timestamp}</header>
+                                    <footer>
+                                        <![CDATA[Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache v2 License</a>]]></footer>
+                                    <javaApiLinks>
+                                        <property>
+                                            <name>api_1.8</name>
+                                            <fieldValue>http://download.java.net/jdk8/docs/api/</fieldValue>
+                                        </property>
+                                    </javaApiLinks>
+                                    <includeDependencySources>true</includeDependencySources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!-- Add Build number to a Jenkins build -->
         <profile>
             <id>jenkins</id>
             <activation>
@@ -209,6 +286,24 @@
                 <scope>compile</scope>
             </dependency>
             <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.7</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>14.0.1</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.4</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.1</version>
@@ -221,15 +316,9 @@
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>14.0.1</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.7.7</version>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>1.9</version>
                 <scope>compile</scope>
             </dependency>
             <!-- Test Dependencies -->

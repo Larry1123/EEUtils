@@ -79,9 +79,10 @@ public class EELogger implements Logger {
         path = hasParent() ? parent.getPath() : getConfig().getLoggerPath() + getName() + File.separatorChar;
         logFile = getPath() + (hasParent() ? getName().substring(getName().indexOf(".") + 1) : "latest");
         boolean fileLoggingTemp = fileLog;
+        FileManager.trackLogger(this);
         if (fileLoggingTemp) {
             try {
-                FileManager.setUpLogger(getFileLogger(), getLogFile());
+                FileManager.fileLog(this);
                 fileLoggingTemp = true;
             }
             catch (IOException e) {
@@ -846,7 +847,7 @@ public class EELogger implements Logger {
     public void turnOnFileLog() {
         if (!canFileLog()) {
             try {
-                FileManager.setUpLogger(getFileLogger(), getLogFile());
+                FileManager.fileLog(this);
                 setFileLogging(true);
             }
             catch (IOException ignored) {}

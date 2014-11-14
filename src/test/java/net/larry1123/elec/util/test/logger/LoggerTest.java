@@ -51,7 +51,7 @@ public class LoggerTest extends AbstractTestClass {
     public void testFileCreation() {
         getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
         EELogger makeAFile = getEELoggerFactory().getLogger("EEUtilFileTest");
-        File logFile = new File(makeAFile.getLogFile() + "." + getEELoggerFactory().getLoggerSettings().getFileType());
+        File logFile = new File(getEELoggerFactory().getLoggerSettings().getLoggerPath()).toPath().resolve(makeAFile.getName()).resolve(makeAFile.getName() + "." + getEELoggerFactory().getLoggerSettings().getFileType()).toFile();
         Assert.assertTrue("Logger File failed to be made.", logFile.exists());
     }
 
@@ -63,7 +63,6 @@ public class LoggerTest extends AbstractTestClass {
     public void testLogs() {
         getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
         EELogger eeLogger = getEELoggerFactory().getLogger("EEUtilLogsTest");
-        eeLogger.info("This is a test! This should be logged in " + eeLogger.getLogFile() + "." + getEELoggerFactory().getLoggerSettings().getFileType());
         eeLogger.error("A fake ERROR!!", new Error());
         Assert.assertTrue(eeLogger.canFileLog());
     }
@@ -72,7 +71,6 @@ public class LoggerTest extends AbstractTestClass {
     public void testSubLogs() {
         getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
         EELogger eeLogger = getEELoggerFactory().getLogger("EEUtilLogsParentTest");
-        eeLogger.info("This is a test! This should be logged in " + eeLogger.getLogFile() + "." + getEELoggerFactory().getLoggerSettings().getFileType());
         eeLogger.error("A fake ERROR!!", new Error());
         eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "SubLogger");
         eeLogger.info("This is a test of the sub-logger");
@@ -93,7 +91,6 @@ public class LoggerTest extends AbstractTestClass {
         eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "Test5");
         eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "Test6");
         eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "Test7");
-        eeLogger.info("This is a test! This should be logged in " + eeLogger.getLogFile() + "." + getEELoggerFactory().getLoggerSettings().getFileType());
         eeLogger.error("A fake ERROR!!", new Error());
         FileManager.updateFileHandlers();
     }

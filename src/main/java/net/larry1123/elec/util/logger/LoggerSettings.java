@@ -64,14 +64,14 @@ public interface LoggerSettings {
      *
      * @return Currently used timestamp
      */
-    public String getCurrentSplit();
+    public long getCurrentSplit();
 
     /**
      * To be used by Logger Only Do not Change
      *
      * @param current Set the current Split files are logging with
      */
-    public void setCurrentSplit(String current);
+    public void setCurrentSplit(long current);
 
     /**
      * Get what to set the File Type as

@@ -68,7 +68,7 @@ public class EELoggerFactory {
     /**
      * Gets the EELogger for the given name
      *
-     * @param name Name of the Logger
+     * @param name    Name of the Logger
      * @param fileLog {@code true} to log to file; {@code false} to not log to file
      *
      * @return the EELogger for the given
@@ -87,14 +87,14 @@ public class EELoggerFactory {
     }
 
     /**
-     * @deprecated {@link EELoggerFactory#getSubLogger(EELogger, String)}
-     *
-     * Gets the EELogger for the given name
-     *
      * @param name    Name of the Logger
      * @param subName SubName of logger
      *
      * @return the EELogger for the given
+     *
+     * @deprecated {@link EELoggerFactory#getSubLogger(EELogger, String)}
+     * <p/>
+     * Gets the EELogger for the given name
      */
     @Deprecated
     public EELogger getSubLogger(String name, String subName) {
@@ -106,14 +106,14 @@ public class EELoggerFactory {
     }
 
     /**
-     * @deprecated {@link EELoggerFactory#getSubLogger(EELogger, String)}
-     *
-     * Gets the EELogger for the given name as a sub of the given parent
-     *
      * @param name   Name of the sub-Logger
      * @param parent What EELogger to create a sub-Logger under
      *
      * @return The EELogger for the requested sub-Logger
+     *
+     * @deprecated {@link EELoggerFactory#getSubLogger(EELogger, String)}
+     * <p/>
+     * Gets the EELogger for the given name as a sub of the given parent
      */
     @Deprecated
     public EELogger getSubLogger(String name, EELogger parent) {
@@ -135,8 +135,8 @@ public class EELoggerFactory {
     /**
      * Gets the EELogger for the given name as a sub of the given parent
      *
-     * @param parent What EELogger to create a sub-Logger under
-     * @param name   Name of the sub-Logger
+     * @param parent  What EELogger to create a sub-Logger under
+     * @param name    Name of the sub-Logger
      * @param fileLog {@code true} to log to file; {@code false} to not log to file
      *
      * @return The EELogger for the requested sub-Logger

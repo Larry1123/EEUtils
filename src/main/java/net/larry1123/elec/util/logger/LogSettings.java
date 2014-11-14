@@ -26,7 +26,7 @@ public class LogSettings implements LoggerSettings {
     protected String loggerPath = "logs/";
     protected boolean pastingAllowed = false;
     protected FileSplits split = FileSplits.NONE;
-    protected String currentSplit = "";
+    protected long currentSplit = 0;
     protected String fileType = "log";
 
     /**
@@ -81,7 +81,7 @@ public class LogSettings implements LoggerSettings {
      * {@inheritDoc}
      */
     @Override
-    public String getCurrentSplit() {
+    public long getCurrentSplit() {
         return currentSplit;
     }
 
@@ -89,7 +89,7 @@ public class LogSettings implements LoggerSettings {
      * {@inheritDoc}
      */
     @Override
-    public void setCurrentSplit(String current) {
+    public void setCurrentSplit(long current) {
         currentSplit = current;
     }
 

@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.StreamHandler;
@@ -128,7 +129,7 @@ public class LoggerDirectoryHandler {
      * @return the Path for the main logging location
      */
     protected Path getMainLoggerPath() {
-        return new File(getConfig().getLoggerPath()).toPath();
+        return Paths.get(getConfig().getLoggerPath());
     }
 
     public void zipLogs() throws IOException {

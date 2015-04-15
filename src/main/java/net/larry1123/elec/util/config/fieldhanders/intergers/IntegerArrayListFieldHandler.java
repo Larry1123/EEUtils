@@ -19,7 +19,6 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -46,7 +45,7 @@ public class IntegerArrayListFieldHandler extends ArrayFieldHandler<ArrayList<In
     @Override
     public void setToFile(ArrayList<Integer> value) {
         if (CollectionUtils.isNotEmpty(value)) {
-            getPropertiesFile().setIntArray(getPropertyKey(), Ints.toArray(value), getSpacer());
+            getPropertiesFile().setIntArray(getKey(), Ints.toArray(value), getSpacer());
         }
     }
 
@@ -55,10 +54,10 @@ public class IntegerArrayListFieldHandler extends ArrayFieldHandler<ArrayList<In
      */
     @Override
     public ArrayList<Integer> getFromFile() {
-        try {
-            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getIntArray(getPropertyKey(), getSpacer())));
+        if (getPropertiesFile().containsKey(getKey())) {
+            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getIntArray(getKey(), getSpacer())));
         }
-        catch (UtilityException utilityException) {
+        else {
             return Lists.newArrayList(new Integer[0]);
         }
     }

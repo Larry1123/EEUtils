@@ -15,9 +15,9 @@
  */
 package net.larry1123.elec.util.test.logger;
 
+import net.larry1123.elec.util.factorys.EELoggerFactory;
 import net.larry1123.elec.util.logger.EELogger;
-import net.larry1123.elec.util.logger.FileManager;
-import net.larry1123.elec.util.test.AbstractTestClass;
+import net.larry1123.elec.util.test.AbstractTest;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -28,30 +28,33 @@ import java.io.IOException;
  * @author Larry1123
  * @since 1/30/14 - 7:33 AM
  */
-public class LoggerTest extends AbstractTestClass {
+public class LoggerTest extends AbstractTest {
+
+    protected EELoggerFactory eeLoggerFactory = new EELoggerFactory();
 
     public LoggerTest() {
         super("LoggerTest");
+        getTestEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
     }
 
     @Test
     public void testMakingLogger() {
-        getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
-        Assert.assertNotNull("Failed to create Sub-Logger.", getEELoggerFactory().getLogger("EEUtilTest"));
+        getTestEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
+        Assert.assertNotNull("Failed to create Sub-Logger.", getTestEELoggerFactory().getLogger("EEUtilTest"));
     }
 
     @Test
     public void testMakingSubLogger() {
-        getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
-        EELogger main = getEELoggerFactory().getLogger("EEUtilTest");
-        Assert.assertNotNull("Failed to create Sub-Logger.", getEELoggerFactory().getSubLogger(main, "SubTest"));
+        getTestEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
+        EELogger main = getTestEELoggerFactory().getLogger("EEUtilTest");
+        Assert.assertNotNull("Failed to create Sub-Logger.", getTestEELoggerFactory().getSubLogger(main, "SubTest"));
     }
 
     @Test
     public void testFileCreation() {
-        getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
-        EELogger makeAFile = getEELoggerFactory().getLogger("EEUtilFileTest");
-        File logFile = new File(getEELoggerFactory().getLoggerSettings().getLoggerPath()).toPath().resolve(makeAFile.getName()).resolve(makeAFile.getName() + "." + getEELoggerFactory().getLoggerSettings().getFileType()).toFile();
+        getTestEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
+        EELogger makeAFile = getTestEELoggerFactory().getLogger("EEUtilFileTest");
+        File logFile = new File(getTestEELoggerFactory().getLoggerSettings().getLoggerPath()).toPath().resolve(makeAFile.getName()).resolve(makeAFile.getName() + "." + getTestEELoggerFactory().getLoggerSettings().getFileType()).toFile();
         Assert.assertTrue("Logger File failed to be made.", logFile.exists());
     }
 
@@ -61,38 +64,47 @@ public class LoggerTest extends AbstractTestClass {
      */
     @Test
     public void testLogs() {
-        getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
-        EELogger eeLogger = getEELoggerFactory().getLogger("EEUtilLogsTest");
+        getTestEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
+        EELogger eeLogger = getTestEELoggerFactory().getLogger("EEUtilLogsTest");
         eeLogger.error("A fake ERROR!!", new Error());
-        Assert.assertTrue(eeLogger.canFileLog());
     }
 
     @Test
     public void testSubLogs() {
-        getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
-        EELogger eeLogger = getEELoggerFactory().getLogger("EEUtilLogsParentTest");
+        getTestEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
+        EELogger eeLogger = getTestEELoggerFactory().getLogger("EEUtilLogsParentTest");
         eeLogger.error("A fake ERROR!!", new Error());
-        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "SubLogger");
+        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "SubLogger");
         eeLogger.info("This is a test of the sub-logger");
         eeLogger.error("This is the sub-logger throwing an error", new Error());
-        // Lets get a little meta with this test
-        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "SuperSubLogger");
+        // Lets _get a little meta with this test
+        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "SuperSubLogger");
         eeLogger.info("This is a test of the super-sub-logger");
         eeLogger.error("This is the super-sub-logger throwing an error", new Error());
     }
 
     @Test
-    public void testZipping() throws IOException {
-        getEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
-        EELogger eeLogger = getEELoggerFactory().getLogger("EEUtilZipTest");
-        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "Test2");
-        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "Test3");
-        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "Test4");
-        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "Test5");
-        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "Test6");
-        eeLogger = getEELoggerFactory().getSubLogger(eeLogger, "Test7");
+    public void testZipping() {
+        getTestEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
+        EELogger eeLogger = getTestEELoggerFactory().getLogger("EEUtilZipTest");
+        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "Test2");
+        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "Test3");
+        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "Test4");
+        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "Test5");
+        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "Test6");
+        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "Test7");
         eeLogger.error("A fake ERROR!!", new Error());
-        FileManager.updateFileHandlers();
+
+        try {
+            getTestEELoggerFactory().getFileManager().updateFileHandlers();
+        }
+        catch (IOException e) {
+            assertFailWithThrowable("Failed to update the file handlers.", e);
+        }
+    }
+
+    protected EELoggerFactory getTestEELoggerFactory() {
+        return eeLoggerFactory;
     }
 
 }

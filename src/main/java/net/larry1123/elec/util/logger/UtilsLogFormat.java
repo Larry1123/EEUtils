@@ -22,7 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 
-final class UtilsLogFormat extends SimpleFormatter {
+public class UtilsLogFormat extends SimpleFormatter {
 
     private final SimpleDateFormat dateform = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     private final String linesep = System.getProperty("line.separator");

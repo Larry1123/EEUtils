@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.bytes;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
@@ -42,7 +41,7 @@ public class ByteArrayFieldHandler extends ArrayFieldHandler<byte[]> {
     @Override
     public void setToFile(byte[] value) {
         if (ArrayUtils.isNotEmpty(value)) {
-            getPropertiesFile().setByteArray(getPropertyKey(), value, getSpacer());
+            getPropertiesFile().setByteArray(getKey(), value, getSpacer());
         }
     }
 
@@ -51,10 +50,10 @@ public class ByteArrayFieldHandler extends ArrayFieldHandler<byte[]> {
      */
     @Override
     public byte[] getFromFile() {
-        try {
-            return getPropertiesFile().getByteArray(getPropertyKey(), getSpacer());
+        if (getPropertiesFile().containsKey(getKey())) {
+            return getPropertiesFile().getByteArray(getKey(), getSpacer());
         }
-        catch (UtilityException utilityException) {
+        else {
             return new byte[0];
         }
     }

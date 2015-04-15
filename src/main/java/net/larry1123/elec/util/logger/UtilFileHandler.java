@@ -21,6 +21,7 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.logging.ErrorManager;
+import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;
 
 /**
@@ -37,12 +38,22 @@ public class UtilFileHandler extends StreamHandler {
     }
 
     @Override
+    public synchronized void publish(LogRecord record) {
+        super.publish(record);
+        // Lets make sure that we write to the OutputStream
+        flush();
+    }
+
+    @Override
     public synchronized void setOutputStream(OutputStream out) throws SecurityException {
         if (out == null) {
+            // Can't let this be null
             throw new NullPointerException();
         }
         try {
+            // Need to write what we have in the buffer to the new OutputStream
             memoryOutputStream.writeTo(out);
+            memoryOutputStream.reset();
         }
         catch (IOException e) {
             reportError("Unable to move temp buffer!", e, ErrorManager.WRITE_FAILURE);
@@ -54,8 +65,11 @@ public class UtilFileHandler extends StreamHandler {
         return FactoryManager.getFactoryManager().getEELoggerFactory().getLoggerSettings();
     }
 
-    public void close() {
+    @Override
+    public synchronized void close() {
+        // Close up shop on the old OutputStream
         super.close();
+        // Give the StreamHandler the buffer OutputStream so we don't lose anything
         setOutputStream(memoryOutputStream);
     }
 

@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.intergers;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.FieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 
 import java.lang.reflect.Field;
 
@@ -40,7 +39,7 @@ public class IntegerWrapFieldHandler extends FieldHandler<Integer> {
      */
     @Override
     public void setToFile(Integer value) {
-        getPropertiesFile().setInt(getPropertyKey(), value);
+        getPropertiesFile().setInt(getKey(), value);
     }
 
     /**
@@ -48,10 +47,10 @@ public class IntegerWrapFieldHandler extends FieldHandler<Integer> {
      */
     @Override
     public Integer getFromFile() {
-        try {
-            return getPropertiesFile().getInt(getPropertyKey());
+        if (getPropertiesFile().containsKey(getKey())) {
+            return getPropertiesFile().getInt(getKey());
         }
-        catch (UtilityException utilityException) {
+        else {
             return 0;
         }
     }

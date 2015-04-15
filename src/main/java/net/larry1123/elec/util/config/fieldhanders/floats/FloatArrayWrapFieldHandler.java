@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.floats;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
@@ -43,7 +42,7 @@ public class FloatArrayWrapFieldHandler extends ArrayFieldHandler<Float[]> {
     public void setToFile(Float[] value) {
         if (ArrayUtils.isNotEmpty(value)) {
             float[] temp = ArrayUtils.toPrimitive(value);
-            getPropertiesFile().setFloatArray(getPropertyKey(), temp, getSpacer());
+            getPropertiesFile().setFloatArray(getKey(), temp, getSpacer());
         }
     }
 
@@ -52,11 +51,11 @@ public class FloatArrayWrapFieldHandler extends ArrayFieldHandler<Float[]> {
      */
     @Override
     public Float[] getFromFile() {
-        try {
-            float[] temp = getPropertiesFile().getFloatArray(getPropertyKey(), getSpacer());
+        if (getPropertiesFile().containsKey(getKey())) {
+            float[] temp = getPropertiesFile().getFloatArray(getKey(), getSpacer());
             return ArrayUtils.toObject(temp);
         }
-        catch (UtilityException utilityException) {
+        else {
             return new Float[0];
         }
     }

@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.longs;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.FieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 
 import java.lang.reflect.Field;
 
@@ -40,7 +39,7 @@ public class LongWrapFieldHandler extends FieldHandler<Long> {
      */
     @Override
     public void setToFile(Long value) {
-        getPropertiesFile().setLong(getPropertyKey(), value);
+        getPropertiesFile().setLong(getKey(), value);
     }
 
     /**
@@ -48,10 +47,10 @@ public class LongWrapFieldHandler extends FieldHandler<Long> {
      */
     @Override
     public Long getFromFile() {
-        try {
-            return getPropertiesFile().getLong(getPropertyKey());
+        if (getPropertiesFile().containsKey(getKey())) {
+            return getPropertiesFile().getLong(getKey());
         }
-        catch (UtilityException utilityException) {
+        else {
             return 0L;
         }
     }

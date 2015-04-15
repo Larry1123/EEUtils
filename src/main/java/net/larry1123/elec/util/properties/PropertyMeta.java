@@ -13,39 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.larry1123.elec.util.logger;
+package net.larry1123.elec.util.properties;
 
-public enum FileSplits {
+/**
+ * @author Larry1123
+ * @since 3/31/2015 - 4:49 AM
+ */
+public abstract class PropertyMeta<T> extends Property<T> implements Commented {
 
-    NONE("None"),
-    //
-    DAY("Day"),
-    //
-    HOUR("Hour"),
-    //
-    MONTH("Month"),
-    //
-    WEEK("Week")
-    //
-    ;
-
-    private final String ths;
-
-    FileSplits(String type) {
-        ths = type;
-    }
-
-    public static FileSplits getFromString(String type) {
-        for (FileSplits t : FileSplits.values()) {
-            if (t.getValue().toLowerCase().equals(type.toLowerCase())) {
-                return t;
-            }
-        }
-        return NONE;
-    }
-
-    public String getValue() {
-        return ths;
+    public PropertyMeta(String key) {
+        super(key);
     }
 
 }

@@ -107,7 +107,6 @@ public class LoggerLevels {
      */
     @Deprecated
     public static void removeLoggerLevel(String name) {
-        LoggerLevels.remove(name);
     }
 
     /**
@@ -117,7 +116,6 @@ public class LoggerLevels {
      */
     @Deprecated
     public static void removeLoggerLevel(LoggerLevel lvl) {
-        // Point less to remove a LoggerLevel each level has an uid...
     }
 
 }

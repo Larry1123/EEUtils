@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.intergers;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
@@ -42,7 +41,7 @@ public class IntegerArrayFieldHandler extends ArrayFieldHandler<int[]> {
     @Override
     public void setToFile(int[] value) {
         if (ArrayUtils.isNotEmpty(value)) {
-            getPropertiesFile().setIntArray(getPropertyKey(), value, getSpacer());
+            getPropertiesFile().setIntArray(getKey(), value, getSpacer());
         }
     }
 
@@ -51,10 +50,10 @@ public class IntegerArrayFieldHandler extends ArrayFieldHandler<int[]> {
      */
     @Override
     public int[] getFromFile() {
-        try {
-            return getPropertiesFile().getIntArray(getPropertyKey(), getSpacer());
+        if (getPropertiesFile().containsKey(getKey())) {
+            return getPropertiesFile().getIntArray(getKey(), getSpacer());
         }
-        catch (UtilityException utilityException) {
+        else {
             return new int[0];
         }
     }

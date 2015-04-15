@@ -13,39 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.larry1123.elec.util.logger;
+package net.larry1123.elec.util.properties;
 
-public enum FileSplits {
+import org.apache.commons.collections4.KeyValue;
 
-    NONE("None"),
-    //
-    DAY("Day"),
-    //
-    HOUR("Hour"),
-    //
-    MONTH("Month"),
-    //
-    WEEK("Week")
-    //
-    ;
+/**
+ * @author Larry1123
+ * @since 10/24/2014 - 11:46 PM
+ */
+public abstract class Property<T> implements KeyValue<String, T> {
 
-    private final String ths;
+    protected final String key;
 
-    FileSplits(String type) {
-        ths = type;
+    public Property(String key) {
+        this.key = key;
     }
 
-    public static FileSplits getFromString(String type) {
-        for (FileSplits t : FileSplits.values()) {
-            if (t.getValue().toLowerCase().equals(type.toLowerCase())) {
-                return t;
-            }
-        }
-        return NONE;
+    @Override
+    public String getKey() {
+        return key;
     }
 
-    public String getValue() {
-        return ths;
-    }
+    @Override
+    public abstract T getValue();
 
 }

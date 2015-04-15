@@ -20,17 +20,22 @@ import net.larry1123.elec.util.factorys.FactoryManager;
 import net.larry1123.elec.util.factorys.FieldHandlerFactory;
 import net.larry1123.elec.util.factorys.ParameterizedTypeFactory;
 import net.larry1123.elec.util.logger.EELogger;
+import net.larry1123.elec.util.logger.LoggerSettings;
+import org.junit.Assert;
 
 /**
  * @author Larry1123
  * @since 10/23/2014 - 8:08 PM
  */
-public class AbstractTestClass {
+public class AbstractTest {
+
+    private static LoggerSettings testLoggerSettings = new TestLoggerSettings();
 
     protected final String name;
 
-    public AbstractTestClass(String name) {
+    public AbstractTest(String name) {
         this.name = name;
+        getEELoggerFactory().setLoggerSettings(testLoggerSettings);
     }
 
     public String getName() {
@@ -54,11 +59,16 @@ public class AbstractTestClass {
     }
 
     public EELogger getLogger() {
-        return getEELoggerFactory().getLogger(getName());
+        return getEELoggerFactory().getLogger(getName(), true);
     }
 
     public EELogger getLogger(String sub) {
-        return getEELoggerFactory().getSubLogger(getLogger(), sub);
+        return getEELoggerFactory().getSubLogger(getLogger(), sub, true);
+    }
+
+    protected void assertFailWithThrowable(String message, Throwable throwable) {
+        getLogger().error(message, throwable);
+        Assert.fail(message);
     }
 
 }

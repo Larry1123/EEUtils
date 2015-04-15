@@ -70,8 +70,8 @@ public class ParameterizedTypeImpl implements ParameterizedType {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object o) {
-        return o instanceof ParameterizedType && (rawType == null ? ((ParameterizedType) o).getRawType() == null : rawType.equals(((ParameterizedType) o).getRawType())) && (ownerType == null ? ((ParameterizedType) o).getOwnerType() == null : ownerType.equals(((ParameterizedType) o).getOwnerType())) && (Arrays.equals(typeArguments, ((ParameterizedType) o).getActualTypeArguments()));
+    public boolean equals(Object object) {
+        return object instanceof ParameterizedType && (rawType == null ? ((ParameterizedType) object).getRawType() == null : rawType.equals(((ParameterizedType) object).getRawType())) && (ownerType == null ? ((ParameterizedType) object).getOwnerType() == null : ownerType.equals(((ParameterizedType) object).getOwnerType())) && (Arrays.equals(typeArguments, ((ParameterizedType) object).getActualTypeArguments()));
     }
 
 }

@@ -15,55 +15,54 @@
  */
 package net.larry1123.elec.util.config.fieldhanders;
 
+import com.google.common.collect.Lists;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.ConfigField;
+import net.larry1123.elec.util.properties.PropertyMeta;
 import net.visualillusionsent.utils.PropertiesFile;
 import net.visualillusionsent.utils.UtilityException;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.util.Collection;
 
 /**
  * @author Larry1123
  * @since 4/28/2014 - 2:33 AM
  */
-public abstract class FieldHandler<T> {
+public abstract class FieldHandler<T> extends PropertyMeta<T> {
 
     protected final Field field;
-    protected final String propertyKey;
     protected final ConfigBase config;
-    protected final PropertiesFile propertiesFile;
     protected final ConfigField ano;
-    protected T value;
 
-    /**
-     * @param field       The Field to be handled
-     * @param configBase  The object containing the field
-     * @param propertyKey The name of the key to get from the PropertiesFile
-     */
-    public FieldHandler(Field field, ConfigBase configBase, String propertyKey) {
+    protected FieldHandler(Field field, ConfigBase configBase, ConfigField ano, String key) {
+        super(key);
         this.field = field;
         // Ensure we can use the field
         this.getField().setAccessible(true);
-        ano = this.getField().getAnnotation(ConfigField.class);
-        this.propertiesFile = configBase.getPropertiesFile();
         this.config = configBase;
-        this.propertyKey = propertyKey;
+        this.ano = ano;
+    }
+
+    // Not the best constructor to call
+    protected FieldHandler(Field field, ConfigBase configBase, String key) {
+        this(field, configBase, field.getAnnotation(ConfigField.class), key);
+    }
+
+    protected FieldHandler(Field field, ConfigBase configBase, ConfigField ano) {
+        this(field, configBase, ano, ano.name().equals("") ? field.getName() : ano.name());
     }
 
     /**
+     * This should be the only constructor used
+     *
      * @param field      The Field to be handled
      * @param configBase The object containing the field
      */
     public FieldHandler(Field field, ConfigBase configBase) {
-        this.field = field;
-        // Ensure we can use the field
-        this.getField().setAccessible(true);
-        ano = this.getField().getAnnotation(ConfigField.class);
-        this.propertiesFile = configBase.getPropertiesFile();
-        this.config = configBase;
-        // Lets give this thing a name
-        this.propertyKey = (getAno().name().equals("")) ? field.getName() : getAno().name();
+        this(field, configBase, field.getAnnotation(ConfigField.class));
     }
 
     public ConfigField getAno() {
@@ -76,19 +75,15 @@ public abstract class FieldHandler<T> {
 
     @Deprecated
     public String getFieldName() {
-        return getPropertyKey();
+        return getKey();
     }
 
-    public String getPropertyKey() {
-        return propertyKey;
-    }
-
-    public Object getConfig() {
+    public ConfigBase getConfig() {
         return config;
     }
 
     public PropertiesFile getPropertiesFile() {
-        return propertiesFile;
+        return getConfig().getPropertiesFile();
     }
 
     /**
@@ -115,11 +110,13 @@ public abstract class FieldHandler<T> {
      */
     public boolean load() {
         T pass;
-        try {
+        if (getPropertiesFile().containsKey(getKey())) {
             pass = getFromFile();
         }
-        catch (UtilityException utilityException) {
-            if (getFromField() == null) { return false; }
+        else {
+            if (getFromField() == null) {
+                return false;
+            }
             setToFile(pass = getFromField());
         }
         return setToField(pass);
@@ -164,42 +161,34 @@ public abstract class FieldHandler<T> {
      * Does nothing if the file does not contain the field
      */
     public void setComments() {
-        if (getAno() == null) { throw new NullPointerException("Annotation can not be null when setting"); }
+        if (getAno() == null) {
+            throw new NullPointerException("Annotation can not be null when setting");
+        }
         // Make Exception for throwing at making
-        if (!getPropertiesFile().containsKey(getPropertyKey())) { return; }
-        if ((getAno().comments().length != 1 || !getAno().comments()[0].equals(""))) {
-            getPropertiesFile().setComments(getPropertyKey(), getAno().comments());
+        if (!getPropertiesFile().containsKey(getKey())) {
+            return;
+        }
+        Collection<String> comments = getComments();
+        if (CollectionUtils.isNotEmpty((Collection) comments)) {
+            getPropertiesFile().setComments(getKey(), comments.toArray(new String[comments.size()]));
         }
     }
 
     public Type getType() {
-        return field.getGenericType();
+        return getField().getGenericType();
     }
 
-    /**
-     * Searches an object's class for a field with a given name.
-     * If it does not find the field it will search the superclass.
-     * It will keep doing this until there is no more superclasses to search or it finds the field.
-     *
-     * @param ob        Object to search search for fields in
-     * @param fieldName Name of the field to search for
-     * @param lastClass The last class searched {@code null} if first search try
-     *
-     * @return The field reference
-     */
-    protected Field getField(Object ob, String fieldName, Class lastClass) {
-        Class currentClass = lastClass == null ? ob.getClass() : lastClass.getSuperclass();
-        try {
-            Field ret = currentClass.getDeclaredField(fieldName);
-            ret.setAccessible(true);
-            return ret;
+    @Override
+    public Collection<String> getComments() {
+        if (getAno().comments().length != 1 || !getAno().comments()[0].equals("")) {
+            return Lists.newArrayList(getPropertiesFile().getComments(getKey()));
         }
-        catch (NoSuchFieldException e) {
-            return getField(ob, fieldName, currentClass);
-        }
-        catch (NullPointerException e) {
-            return null;
-        }
+        return Lists.newArrayList();
+    }
+
+    @Override
+    public T getValue() {
+        return getFromField();
     }
 
 }

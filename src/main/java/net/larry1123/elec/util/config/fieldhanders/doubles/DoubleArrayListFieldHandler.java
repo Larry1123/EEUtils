@@ -19,7 +19,6 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -46,7 +45,7 @@ public class DoubleArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Dou
     @Override
     public void setToFile(ArrayList<Double> value) {
         if (CollectionUtils.isNotEmpty(value)) {
-            getPropertiesFile().setDoubleArray(getPropertyKey(), Doubles.toArray(value), getSpacer());
+            getPropertiesFile().setDoubleArray(getKey(), Doubles.toArray(value), getSpacer());
         }
     }
 
@@ -55,10 +54,10 @@ public class DoubleArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Dou
      */
     @Override
     public ArrayList<Double> getFromFile() {
-        try {
-            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getDoubleArray(getPropertyKey(), getSpacer())));
+        if (getPropertiesFile().containsKey(getKey())) {
+            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getDoubleArray(getKey(), getSpacer())));
         }
-        catch (UtilityException utilityException) {
+        else {
             return Lists.newArrayList(new Double[0]);
         }
     }

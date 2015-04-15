@@ -16,7 +16,6 @@
 package net.larry1123.elec.util.logger;
 
 import net.larry1123.elec.util.factorys.EELoggerFactory;
-import net.larry1123.elec.util.factorys.FactoryManager;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -29,11 +28,16 @@ import java.util.HashSet;
 
 public class FileManager {
 
-    private static EELoggerFactory eeLoggerFactory = FactoryManager.getFactoryManager().getEELoggerFactory();
-    private static HashMap<EELogger, LoggerDirectoryHandler> loggerDirectoryHandlerHashMap = new HashMap<EELogger, LoggerDirectoryHandler>();
-    private static HashSet<LoggerDirectoryHandler> directoryHandlerHashSet = new HashSet<LoggerDirectoryHandler>();
+    private HashMap<EELogger, LoggerDirectoryHandler> loggerDirectoryHandlerHashMap = new HashMap<EELogger, LoggerDirectoryHandler>();
+    private HashSet<LoggerDirectoryHandler> directoryHandlerHashSet = new HashSet<LoggerDirectoryHandler>();
 
-    public static long getSplitTime() {
+    private final EELoggerFactory eeLoggerFactory;
+
+    public FileManager(EELoggerFactory eeLoggerFactory) {
+        this.eeLoggerFactory = eeLoggerFactory;
+    }
+
+    public long getSplitTime() {
         long set = System.currentTimeMillis();
         try {
             Date currentTime = DateUtils.parseDate(getDateFormatFromMilli(System.currentTimeMillis()), DateFormatUtils.SMTP_DATETIME_FORMAT.getPattern());
@@ -78,8 +82,8 @@ public class FileManager {
         return set;
     }
 
-    public static void updateSplit() {
-        if (isSplitng()) {
+    public void updateSplit() {
+        if (isSplitting()) {
             if (isNotCurrent()) {
                 getConfig().setCurrentSplit(getSplitTime());
             }
@@ -96,53 +100,88 @@ public class FileManager {
      *
      * @return The formatted String
      */
-    public static String getDateFormatFromMilli(long milli) {
+    public String getDateFormatFromMilli(long milli) {
         return DateFormatUtils.SMTP_DATETIME_FORMAT.format(milli);
     }
 
-    public static void trackLogger(EELogger logger) {
-        if (!loggerDirectoryHandlerHashMap.containsKey(logger)) {
+    /**
+     * Track a {@link EELogger} with the file manager
+     *
+     * @param logger    What {@link EELogger} to try to track
+     */
+    public void trackLogger(EELogger logger) {
+        if (!isLoggerTracked(logger)) {
             if (logger.hasParent()) {
                 EELogger parent = logger.getParent();
-                if (!loggerDirectoryHandlerHashMap.containsKey(parent)) {
+                if (!isLoggerTracked(parent)) {
                     trackLogger(parent);
                 }
                 LoggerDirectoryHandler directoryHandler = loggerDirectoryHandlerHashMap.get(parent);
                 loggerDirectoryHandlerHashMap.put(logger, directoryHandler);
             }
             else {
-                LoggerDirectoryHandler loggerDirectoryHandler = new LoggerDirectoryHandler(logger);
+                LoggerDirectoryHandler loggerDirectoryHandler = new LoggerDirectoryHandler(this, logger);
                 directoryHandlerHashSet.add(loggerDirectoryHandler);
                 loggerDirectoryHandlerHashMap.put(logger, loggerDirectoryHandler);
             }
         }
     }
 
-    public static void fileLog(EELogger logger) throws IOException {
+    /**
+     * Fine out if a given {@link EELogger} is currently tracked
+     *
+     * @param logger    What {@link EELogger} to check
+     * @return {@code true} if it is currency tracked; {@code false} if it is not tracked
+     */
+    public boolean isLoggerTracked(EELogger logger) {
+        return loggerDirectoryHandlerHashMap.containsKey(logger);
+    }
+
+    public void fileLog(EELogger logger) throws IOException {
         trackLogger(logger);
         LoggerDirectoryHandler directoryHandler = loggerDirectoryHandlerHashMap.get(logger);
         directoryHandler.setupLogger(logger);
     }
 
-    public synchronized static void updateFileHandlers() throws IOException {
+    /**
+     * Stop using current files being logged to and zip them up then set up new files to be used
+     *
+     * @throws IOException
+     */
+    public synchronized void updateFileHandlers() throws IOException {
         for (LoggerDirectoryHandler directoryHandler : directoryHandlerHashSet) {
             directoryHandler.zipLogs();
         }
     }
 
-    public static boolean isSplitng() {
+    /**
+     * Check if files should be split after given amounts of time
+     *
+     * @return {@code true} if files should be split; {@code false} otherwise
+     */
+    public boolean isSplitting() {
         return !getConfig().getSplit().equals(FileSplits.NONE);
     }
 
-    public static boolean hasCurrentSplit() {
+    /**
+     * Check if there is a known last split
+     *
+     * @return {@code true} if there is a known last split; {@code false} otherwise
+     */
+    public boolean hasCurrentSplit() {
         return getConfig().getCurrentSplit() != 0;
     }
 
-    public static boolean isNotCurrent() {
-        return isSplitng() && !hasCurrentSplit() && getConfig().getCurrentSplit() == getSplitTime();
+    /**
+     * Check if the last split is out of date
+     *
+     * @return {@code true} if the current time to split is the last time; {@code false} otherwise
+     */
+    public boolean isNotCurrent() {
+        return isSplitting() && !hasCurrentSplit() && getConfig().getCurrentSplit() == getSplitTime();
     }
 
-    private static LoggerSettings getConfig() {
+    public LoggerSettings getConfig() {
         return eeLoggerFactory.getLoggerSettings();
     }
 

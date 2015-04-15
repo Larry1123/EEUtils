@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.doubles;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
@@ -42,7 +41,7 @@ public class DoubleArrayWrapFieldHandler extends ArrayFieldHandler<Double[]> {
     @Override
     public void setToFile(Double[] value) {
         if (ArrayUtils.isNotEmpty(value)) {
-            getPropertiesFile().setDoubleArray(getPropertyKey(), ArrayUtils.toPrimitive(value), getSpacer());
+            getPropertiesFile().setDoubleArray(getKey(), ArrayUtils.toPrimitive(value), getSpacer());
         }
     }
 
@@ -51,11 +50,11 @@ public class DoubleArrayWrapFieldHandler extends ArrayFieldHandler<Double[]> {
      */
     @Override
     public Double[] getFromFile() {
-        try {
-            double[] temp = getPropertiesFile().getDoubleArray(getPropertyKey(), getSpacer());
+        if (getPropertiesFile().containsKey(getKey())) {
+            double[] temp = getPropertiesFile().getDoubleArray(getKey(), getSpacer());
             return ArrayUtils.toObject(temp);
         }
-        catch (UtilityException utilityException) {
+        else {
             return new Double[0];
         }
     }

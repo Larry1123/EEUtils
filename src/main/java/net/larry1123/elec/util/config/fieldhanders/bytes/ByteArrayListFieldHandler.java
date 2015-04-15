@@ -19,7 +19,6 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Bytes;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -46,7 +45,7 @@ public class ByteArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Byte>
     @Override
     public void setToFile(ArrayList<Byte> value) {
         if (CollectionUtils.isNotEmpty(value)) {
-            getPropertiesFile().setByteArray(getPropertyKey(), Bytes.toArray(value), getSpacer());
+            getPropertiesFile().setByteArray(getKey(), Bytes.toArray(value), getSpacer());
         }
     }
 
@@ -55,10 +54,10 @@ public class ByteArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Byte>
      */
     @Override
     public ArrayList<Byte> getFromFile() {
-        try {
-            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getByteArray(getPropertyKey(), getSpacer())));
+        if (getPropertiesFile().containsKey(getKey())) {
+            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getByteArray(getKey(), getSpacer())));
         }
-        catch (UtilityException utilityException) {
+        else {
             return Lists.newArrayList(new Byte[0]);
         }
     }

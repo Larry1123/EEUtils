@@ -16,23 +16,24 @@
 package net.larry1123.elec.util.test.config;
 
 import net.larry1123.elec.util.config.ConfigBase;
-import net.larry1123.elec.util.config.ConfigField;
-import net.larry1123.elec.util.test.AbstractTestClass;
+import net.larry1123.elec.util.test.AbstractTest;
 import net.visualillusionsent.utils.PropertiesFile;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
  * @author Larry1123
  * @since 10/23/2014 - 7:21 PM
  */
-public abstract class AbstractConfigTest extends AbstractTestClass {
+public abstract class AbstractConfigTest extends AbstractTest {
 
     private final String path;
     private final PropertiesFile propertiesFile;
@@ -41,385 +42,384 @@ public abstract class AbstractConfigTest extends AbstractTestClass {
     public AbstractConfigTest(String name, String path) {
         super(name);
         this.path = path;
-        propertiesFile = new PropertiesFile(getPath());
+        File file = new File(getPath());
+        try {
+            FileUtils.touch(file);
+        }
+        catch (IOException e) {
+            assertFailWithThrowable(getName() + " failed to create test config file at " + getPath(), e);
+        }
+        propertiesFile = new PropertiesFile(file);
         configBase = createTestConfigBase(getPropertiesFile());
     }
 
-    public void assertFailFieldError(String fieldName) {
-        Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
-    }
-
-    public void booleanTest(String fieldName, Field testField) {
+    public void booleanTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue((getPropertiesFile().getBoolean(fieldName) == testField.getBoolean(getConfigBase())));
+            Assert.assertTrue((getPropertiesFile().getBoolean(fieldName) == field.getBoolean(getConfigBase())));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void BooleanTest(String fieldName, Field testField) {
+    public void BooleanTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue((getPropertiesFile().getBoolean(fieldName) == (Boolean) testField.get(getConfigBase())));
+            Assert.assertTrue((getPropertiesFile().getBoolean(fieldName) == (Boolean) field.get(getConfigBase())));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void byteTest(String fieldName, Field testField) {
+    public void byteTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue((getPropertiesFile().getByte(fieldName) == testField.getByte(getConfigBase())));
+            Assert.assertTrue((getPropertiesFile().getByte(fieldName) == field.getByte(getConfigBase())));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void ByteTest(String fieldName, Field testField) {
+    public void ByteTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue((getPropertiesFile().getByte(fieldName) == (Byte) testField.get(getConfigBase())));
+            Assert.assertTrue((getPropertiesFile().getByte(fieldName) == (Byte) field.get(getConfigBase())));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void byteArrayTest(String fieldName, Field testField) {
+    public void byteArrayTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getByteArray(fieldName), testField.get(getConfigBase())));
+            Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getByteArray(fieldName), field.get(getConfigBase())));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void ByteArrayTest(String fieldName, Field testField) {
+    public void ByteArrayTest(String fieldName, Field field) {
         try {
-            byte[] testFieldValue = ArrayUtils.toPrimitive((Byte[]) testField.get(getConfigBase()));
+            byte[] testFieldValue = ArrayUtils.toPrimitive((Byte[]) field.get(getConfigBase()));
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getByteArray(fieldName), testFieldValue));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void ByteArrayListTest(String fieldName, Field testField) {
+    public void ByteArrayListTest(String fieldName, Field field) {
         try {
             //noinspection unchecked
-            byte[] testFieldValue = ArrayUtils.toPrimitive(((ArrayList<Byte>) testField.get(getConfigBase())).toArray(ArrayUtils.EMPTY_BYTE_OBJECT_ARRAY));
+            byte[] testFieldValue = ArrayUtils.toPrimitive(((ArrayList<Byte>) field.get(getConfigBase())).toArray(ArrayUtils.EMPTY_BYTE_OBJECT_ARRAY));
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getByteArray(fieldName), testFieldValue));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void characterTest(String fieldName, Field testField) {
+    public void characterTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(getPropertiesFile().getCharacter(fieldName) == testField.getChar(getConfigBase()));
+            Assert.assertTrue(getPropertiesFile().getCharacter(fieldName) == field.getChar(getConfigBase()));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void CharacterTest(String fieldName, Field testField) {
+    public void CharacterTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(getPropertiesFile().getCharacter(fieldName) == (Character) testField.get(getConfigBase()));
+            Assert.assertTrue(getPropertiesFile().getCharacter(fieldName) == (Character) field.get(getConfigBase()));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void doubleTest(String fieldName, Field testField) {
+    public void doubleTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(getPropertiesFile().getDouble(fieldName) == testField.getDouble(getConfigBase()));
+            Assert.assertTrue(getPropertiesFile().getDouble(fieldName) == field.getDouble(getConfigBase()));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void DoubleTest(String fieldName, Field testField) {
+    public void DoubleTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(getPropertiesFile().getDouble(fieldName) == (Double) testField.get(getConfigBase()));
+            Assert.assertTrue(getPropertiesFile().getDouble(fieldName) == (Double) field.get(getConfigBase()));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void doubleArrayTest(String fieldName, Field testField) {
+    public void doubleArrayTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getDoubleArray(fieldName), testField.get(getConfigBase())));
+            Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getDoubleArray(fieldName), field.get(getConfigBase())));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void DoubleArrayTest(String fieldName, Field testField) {
+    public void DoubleArrayTest(String fieldName, Field field) {
         try {
-            double[] testFieldValue = ArrayUtils.toPrimitive((Double[]) testField.get(getConfigBase()));
+            double[] testFieldValue = ArrayUtils.toPrimitive((Double[]) field.get(getConfigBase()));
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getDoubleArray(fieldName), testFieldValue));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void DoubleArrayListTest(String fieldName, Field testField) {
+    public void DoubleArrayListTest(String fieldName, Field field) {
         try {
             //noinspection unchecked,unchecked
-            double[] testFieldValue = ArrayUtils.toPrimitive(((ArrayList<Double>) testField.get(getConfigBase())).toArray(new Double[((ArrayList<Double>) testField.get(getConfigBase())).size()]));
+            double[] testFieldValue = ArrayUtils.toPrimitive(((ArrayList<Double>) field.get(getConfigBase())).toArray(new Double[((ArrayList<Double>) field.get(getConfigBase())).size()]));
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getDoubleArray(fieldName), testFieldValue));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void floatTest(String fieldName, Field testField) {
+    public void floatTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(getPropertiesFile().getFloat(fieldName) == testField.getFloat(getConfigBase()));
+            Assert.assertTrue(getPropertiesFile().getFloat(fieldName) == field.getFloat(getConfigBase()));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void FloatTest(String fieldName, Field testField) {
+    public void FloatTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(getPropertiesFile().getFloat(fieldName) == (Float) testField.get(getConfigBase()));
+            Assert.assertTrue(getPropertiesFile().getFloat(fieldName) == (Float) field.get(getConfigBase()));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void floatArrayTest(String fieldName, Field testField) {
+    public void floatArrayTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getFloatArray(fieldName), testField.get(getConfigBase())));
+            Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getFloatArray(fieldName), field.get(getConfigBase())));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void FloatArrayTest(String fieldName, Field testField) {
+    public void FloatArrayTest(String fieldName, Field field) {
         try {
-            float[] testFieldValue = ArrayUtils.toPrimitive((Float[]) testField.get(getConfigBase()));
+            float[] testFieldValue = ArrayUtils.toPrimitive((Float[]) field.get(getConfigBase()));
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getFloatArray(fieldName), testFieldValue));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void FloatArrayListTest(String fieldName, Field testField) {
+    public void FloatArrayListTest(String fieldName, Field field) {
         try {
             //noinspection unchecked,unchecked
-            float[] testFieldValue = ArrayUtils.toPrimitive(((ArrayList<Float>) testField.get(getConfigBase())).toArray(new Float[((ArrayList<Float>) testField.get(getConfigBase())).size()]));
+            float[] testFieldValue = ArrayUtils.toPrimitive(((ArrayList<Float>) field.get(getConfigBase())).toArray(new Float[((ArrayList<Float>) field.get(getConfigBase())).size()]));
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getFloatArray(fieldName), testFieldValue));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void longTest(String fieldName, Field testField) {
+    public void longTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(getPropertiesFile().getLong(fieldName) == testField.getLong(getConfigBase()));
+            Assert.assertTrue(getPropertiesFile().getLong(fieldName) == field.getLong(getConfigBase()));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void LongTest(String fieldName, Field testField) {
+    public void LongTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(getPropertiesFile().getLong(fieldName) == (Long) testField.get(getConfigBase()));
+            Assert.assertTrue(getPropertiesFile().getLong(fieldName) == (Long) field.get(getConfigBase()));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void longArrayTest(String fieldName, Field testField) {
+    public void longArrayTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getLongArray(fieldName), testField.get(getConfigBase())));
+            Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getLongArray(fieldName), field.get(getConfigBase())));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void LongArrayTest(String fieldName, Field testField) {
+    public void LongArrayTest(String fieldName, Field field) {
         try {
-            long[] testFieldValue = ArrayUtils.toPrimitive((Long[]) testField.get(getConfigBase()));
+            long[] testFieldValue = ArrayUtils.toPrimitive((Long[]) field.get(getConfigBase()));
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getLongArray(fieldName), testFieldValue));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void LongArrayListTest(String fieldName, Field testField) {
+    public void LongArrayListTest(String fieldName, Field field) {
         try {
             //noinspection unchecked,unchecked
-            long[] testFieldValue = ArrayUtils.toPrimitive(((ArrayList<Long>) testField.get(getConfigBase())).toArray(new Long[((ArrayList<Long>) testField.get(getConfigBase())).size()]));
+            long[] testFieldValue = ArrayUtils.toPrimitive(((ArrayList<Long>) field.get(getConfigBase())).toArray(new Long[((ArrayList<Long>) field.get(getConfigBase())).size()]));
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getLongArray(fieldName), testFieldValue));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void integerTest(String fieldName, Field testField) {
+    public void integerTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(getPropertiesFile().getInt(fieldName) == testField.getInt(getConfigBase()));
+            Assert.assertTrue(getPropertiesFile().getInt(fieldName) == field.getInt(getConfigBase()));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void IntegerTest(String fieldName, Field testField) {
+    public void IntegerTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(getPropertiesFile().getInt(fieldName) == (Integer) testField.get(getConfigBase()));
+            Assert.assertTrue(getPropertiesFile().getInt(fieldName) == (Integer) field.get(getConfigBase()));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void integerArrayTest(String fieldName, Field testField) {
+    public void integerArrayTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getIntArray(fieldName), testField.get(getConfigBase())));
+            Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getIntArray(fieldName), field.get(getConfigBase())));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void IntegerArrayTest(String fieldName, Field testField) {
+    public void IntegerArrayTest(String fieldName, Field field) {
         try {
-            int[] testFieldValue = ArrayUtils.toPrimitive((Integer[]) testField.get(getConfigBase()));
+            int[] testFieldValue = ArrayUtils.toPrimitive((Integer[]) field.get(getConfigBase()));
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getIntArray(fieldName), testFieldValue));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void IntegerArrayListTest(String fieldName, Field testField) {
+    public void IntegerArrayListTest(String fieldName, Field field) {
         try {
             //noinspection unchecked,unchecked
-            int[] testFieldValue = ArrayUtils.toPrimitive(((ArrayList<Integer>) testField.get(getConfigBase())).toArray(new Integer[((ArrayList<Integer>) testField.get(getConfigBase())).size()]));
+            int[] testFieldValue = ArrayUtils.toPrimitive(((ArrayList<Integer>) field.get(getConfigBase())).toArray(new Integer[((ArrayList<Integer>) field.get(getConfigBase())).size()]));
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getIntArray(fieldName), testFieldValue));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void shortTest(String fieldName, Field testField) {
+    public void shortTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(getPropertiesFile().getShort(fieldName) == testField.getShort(getConfigBase()));
+            Assert.assertTrue(getPropertiesFile().getShort(fieldName) == field.getShort(getConfigBase()));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void ShortTest(String fieldName, Field testField) {
+    public void ShortTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(getPropertiesFile().getShort(fieldName) == (Short) testField.get(getConfigBase()));
+            Assert.assertTrue(getPropertiesFile().getShort(fieldName) == (Short) field.get(getConfigBase()));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void shortArrayTest(String fieldName, Field testField) {
+    public void shortArrayTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getShortArray(fieldName), testField.get(getConfigBase())));
+            Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getShortArray(fieldName), field.get(getConfigBase())));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void ShortArrayTest(String fieldName, Field testField) {
+    public void ShortArrayTest(String fieldName, Field field) {
         try {
-            short[] testFieldValue = ArrayUtils.toPrimitive((Short[]) testField.get(getConfigBase()));
+            short[] testFieldValue = ArrayUtils.toPrimitive((Short[]) field.get(getConfigBase()));
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getShortArray(fieldName), testFieldValue));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void ShortArrayListTest(String fieldName, Field testField) {
+    public void ShortArrayListTest(String fieldName, Field field) {
         try {
             //noinspection unchecked,unchecked
-            short[] testFieldValue = ArrayUtils.toPrimitive(((ArrayList<Short>) testField.get(getConfigBase())).toArray(new Short[((ArrayList<Short>) testField.get(getConfigBase())).size()]));
+            short[] testFieldValue = ArrayUtils.toPrimitive(((ArrayList<Short>) field.get(getConfigBase())).toArray(new Short[((ArrayList<Short>) field.get(getConfigBase())).size()]));
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getShortArray(fieldName), testFieldValue));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void StringTest(String fieldName, Field testField) {
+    public void StringTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(getPropertiesFile().getString(fieldName).equals(testField.get(getConfigBase())));
+            Assert.assertTrue(getPropertiesFile().getString(fieldName).equals(field.get(getConfigBase())));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void StringArrayTest(String fieldName, Field testField) {
+    public void StringArrayTest(String fieldName, Field field) {
         try {
-            Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getStringArray(fieldName), testField.get(getConfigBase())));
+            Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getStringArray(fieldName), field.get(getConfigBase())));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    public void StringArrayListTest(String fieldName, Field testField) {
+    public void StringArrayListTest(String fieldName, Field field) {
         try {
-            //noinspection unchecked,unchecked
-            String[] testFieldValue = ((ArrayList<String>) testField.get(getConfigBase())).toArray(new String[((ArrayList<String>) testField.get(getConfigBase())).size()]);
+            //noinspection unchecked, unchecked
+            String[] testFieldValue = ((ArrayList<String>) field.get(getConfigBase())).toArray(new String[((ArrayList<String>) field.get(getConfigBase())).size()]);
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getStringArray(fieldName), testFieldValue));
         }
-        catch (IllegalAccessException e) {
-            assertFailFieldError(fieldName);
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailFieldThrowable(fieldName, illegalAccessException);
         }
     }
 
-    protected void assertTest(String fieldName) throws NoSuchMethodException {
-        Field field = getField(getConfigBase(), fieldName);
-        Type type = field.getGenericType();
+    protected void assertTest(String fieldName, Field field) {
         Method method = getTestMethod(fieldName);
-        method.setAccessible(true);
         try {
             method.invoke(this, fieldName, field);
         }
-        catch (IllegalAccessException e) {
-            e.printStackTrace();
+        catch (IllegalAccessException illegalAccessException) {
+            assertFailWithThrowable(getName() + " could not access " + method.getName() + " test Method.", illegalAccessException);
         }
-        catch (InvocationTargetException e) {
-            e.printStackTrace();
+        catch (InvocationTargetException invocationTargetException) {
+            assertFailWithThrowable(getName() + " had an error thrown trying to use the " + method.getName() + " test Method.", invocationTargetException.getCause());
         }
     }
 
-    protected Method getTestMethod(String fieldName) throws NoSuchMethodException {
-        Class abstractConfigTestClass = AbstractConfigTest.class;
+    protected Method getTestMethod(String fieldName) {
         String methodName = fieldName + "Test";
         methodName = methodName.replace("public", "");
         methodName = methodName.replace("Public", "");
@@ -428,44 +428,62 @@ public abstract class AbstractConfigTest extends AbstractTestClass {
         if (fieldName.charAt(0) == 'p') {
             methodName = (methodName.charAt(0) + "").toLowerCase() + methodName.substring(1);
         }
-        return abstractConfigTestClass.getDeclaredMethod(methodName, String.class, Field.class);
+        try {
+            return getTestMethod(methodName, null);
+        }
+        catch (NoSuchMethodException e) {
+            assertFailWithThrowable(getName() + " does not support " + fieldName + " test. Was looking for method " + methodName + " in " + this.getClass() + " and it's superclasses.", e);
+            throw new Error("Throw error as this should have never been reached");
+        }
     }
 
-    protected Field getField(Object ob, String fieldName) {
-        return getField(ob, fieldName, null);
+    protected Method getTestMethod(String methodName, Class<?> lastClass) throws NoSuchMethodException {
+        Class<?> currentClass = lastClass == null ? this.getClass() : lastClass.getSuperclass();
+        if (currentClass == null) {
+            // This should throw a NoSuchMethodException for getTestMethod(String) to catch
+            return lastClass != null ? lastClass.getDeclaredMethod(methodName, String.class, Field.class) : null;
+        }
+        try {
+            //noinspection ConstantConditions
+            Method ret = currentClass.getDeclaredMethod(methodName, String.class, Field.class);
+            ret.setAccessible(true);
+            return ret;
+        }
+        catch (NoSuchMethodException e) {
+            // Send this to look in the superclass if any
+            return getTestMethod(methodName, currentClass);
+        }
     }
 
-    protected Field getField(Object ob, String fieldName, Class lastClass) {
-        Class currentClass = lastClass == null ? ob.getClass() : lastClass.getSuperclass();
+    protected Field getField(String fieldName) {
+        try {
+            return getField(fieldName, null);
+        }
+        catch (NoSuchFieldException e) {
+            assertFailFieldThrowable(fieldName, e);
+            throw new Error("Throw error as this should have never been reached");
+        }
+    }
+
+    protected Field getField(String fieldName, Class lastClass) throws NoSuchFieldException {
+        Class currentClass = lastClass == null ? getConfigBase().getClass() : lastClass.getSuperclass();
+        if (currentClass == null) {
+            // This should throw a NoSuchMethodException for getTestMethod(String) to catch
+            return lastClass != null ? lastClass.getDeclaredField(fieldName) : null;
+        }
         try {
             Field ret = currentClass.getDeclaredField(fieldName);
             ret.setAccessible(true);
             return ret;
         }
         catch (NoSuchFieldException e) {
-            return getField(ob, fieldName, currentClass);
-        }
-        catch (NullPointerException e) {
-            Assert.fail("Can't get field, " + fieldName + ", from ConfigBase!");
-            return null;
+            // Send this to look in the superclass if any
+            return getField(fieldName, currentClass);
         }
     }
 
-    protected ArrayList<Field> getFields() {
-        return getFields(configBase.getClass());
-    }
-
-    protected ArrayList<Field> getFields(Class thisClass) {
-        ArrayList<Field> fields = new ArrayList<Field>();
-        while (thisClass != null) {
-            for (Field field : thisClass.getDeclaredFields()) {
-                if (field.isAnnotationPresent(ConfigField.class)) {
-                    fields.add(field);
-                }
-            }
-            thisClass = thisClass.getSuperclass();
-        }
-        return fields;
+    protected void assertFailFieldThrowable(String fieldName, Throwable throwable) {
+        assertFailWithThrowable(getName() + " could not read the field " + fieldName + " from the ConfigBase " + getConfigBase().getClass().getSimpleName() + " or it's superclasses.", throwable);
     }
 
     protected abstract ConfigBase createTestConfigBase(PropertiesFile file);

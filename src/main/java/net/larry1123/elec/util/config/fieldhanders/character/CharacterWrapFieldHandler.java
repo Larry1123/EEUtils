@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.character;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.FieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 
 import java.lang.reflect.Field;
 
@@ -40,7 +39,7 @@ public class CharacterWrapFieldHandler extends FieldHandler<Character> {
      */
     @Override
     public void setToFile(Character value) {
-        getPropertiesFile().setCharacter(getPropertyKey(), value);
+        getPropertiesFile().setCharacter(getKey(), value);
     }
 
     /**
@@ -48,10 +47,10 @@ public class CharacterWrapFieldHandler extends FieldHandler<Character> {
      */
     @Override
     public Character getFromFile() {
-        try {
-            return getPropertiesFile().getCharacter(getPropertyKey());
+        if (getPropertiesFile().containsKey(getKey())) {
+            return getPropertiesFile().getCharacter(getKey());
         }
-        catch (UtilityException utilityException) {
+        else {
             return 0;
         }
     }

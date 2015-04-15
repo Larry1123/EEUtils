@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.shorts;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
@@ -42,7 +41,7 @@ public class ShortArrayFieldHandler extends ArrayFieldHandler<short[]> {
     @Override
     public void setToFile(short[] value) {
         if (ArrayUtils.isNotEmpty(value)) {
-            getPropertiesFile().setShortArray(getPropertyKey(), value, getSpacer());
+            getPropertiesFile().setShortArray(getKey(), value, getSpacer());
         }
     }
 
@@ -51,10 +50,10 @@ public class ShortArrayFieldHandler extends ArrayFieldHandler<short[]> {
      */
     @Override
     public short[] getFromFile() {
-        try {
-            return getPropertiesFile().getShortArray(getPropertyKey(), getSpacer());
+        if (getPropertiesFile().containsKey(getKey())) {
+            return getPropertiesFile().getShortArray(getKey(), getSpacer());
         }
-        catch (UtilityException utilityException) {
+        else {
             return new short[0];
         }
     }

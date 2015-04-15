@@ -19,7 +19,6 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Shorts;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -46,7 +45,7 @@ public class ShortArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Shor
     @Override
     public void setToFile(ArrayList<Short> value) {
         if (CollectionUtils.isNotEmpty(value)) {
-            getPropertiesFile().setShortArray(getPropertyKey(), Shorts.toArray(value), getSpacer());
+            getPropertiesFile().setShortArray(getKey(), Shorts.toArray(value), getSpacer());
         }
     }
 
@@ -55,10 +54,10 @@ public class ShortArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Shor
      */
     @Override
     public ArrayList<Short> getFromFile() {
-        try {
-            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getShortArray(getPropertyKey(), getSpacer())));
+        if (getPropertiesFile().containsKey(getKey())) {
+            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getShortArray(getKey(), getSpacer())));
         }
-        catch (UtilityException utilityException) {
+        else {
             return Lists.newArrayList(new Short[0]);
         }
     }

@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.booleans;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.FieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 
 import java.lang.reflect.Field;
 
@@ -40,7 +39,7 @@ public class BooleanWrapFieldHandler extends FieldHandler<Boolean> {
      */
     @Override
     public void setToFile(Boolean value) {
-        getPropertiesFile().setBoolean(getPropertyKey(), value);
+        getPropertiesFile().setBoolean(getKey(), value);
     }
 
     /**
@@ -48,10 +47,10 @@ public class BooleanWrapFieldHandler extends FieldHandler<Boolean> {
      */
     @Override
     public Boolean getFromFile() {
-        try {
-            return getPropertiesFile().getBoolean(getPropertyKey());
+        if (getPropertiesFile().containsKey(getKey())) {
+            return getPropertiesFile().getBoolean(getKey());
         }
-        catch (UtilityException utilityException) {
+        else {
             return false;
         }
     }

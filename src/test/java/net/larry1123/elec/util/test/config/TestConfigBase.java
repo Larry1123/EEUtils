@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * @author Larry1123
  * @since 10/24/2014 - 1:55 AM
  */
-public abstract class FullTestConfigFile implements ConfigBase {
+public abstract class TestConfigBase implements ConfigBase {
 
     // Public fields
     @ConfigField
@@ -179,7 +179,7 @@ public abstract class FullTestConfigFile implements ConfigBase {
     protected ArrayList<String> ProtectedStringArrayList = new ArrayList<String>();
 
 
-    public FullTestConfigFile() {
+    public TestConfigBase() {
         PublicByteArrayList.add((byte) 82);
         PublicByteArrayList.add((byte) 85);
         PublicByteArrayList.add((byte) 129);

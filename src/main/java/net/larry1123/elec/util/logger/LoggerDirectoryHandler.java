@@ -15,7 +15,6 @@
  */
 package net.larry1123.elec.util.logger;
 
-import net.larry1123.elec.util.factorys.FactoryManager;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.utils.IOUtils;
@@ -27,8 +26,6 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.StreamHandler;
 
 /**
  * @author Larry1123
@@ -36,12 +33,81 @@ import java.util.logging.StreamHandler;
  */
 public class LoggerDirectoryHandler {
 
-    protected final Logger mainLogger;
-    protected final HashMap<Logger, OutputStream> loggerOutputStreamHashMap = new HashMap<Logger, OutputStream>();
-    protected final HashMap<Logger, Path> loggerPathHashMap = new HashMap<Logger, Path>();
-    protected final HashMap<Logger, UtilFileHandler> streamHandlerHashMap = new HashMap<Logger, UtilFileHandler>();
+    public class LoggerStuff {
 
-    public LoggerDirectoryHandler(Logger logger) {
+        private final Logger logger;
+        private Path path;
+        private UtilFileHandler utilFileHandler;
+
+        public LoggerStuff(Logger logger) throws IOException {
+            this.logger = logger;
+            path = makePathForLogger();
+            utilFileHandler = new UtilFileHandler(makeFileOutputStream());
+        }
+
+        public Logger getLogger() {
+            return logger;
+        }
+
+        public Path getPath() {
+            updatePath();
+            return path;
+        }
+
+        public File getFile() {
+            return getPath().toFile();
+        }
+
+        public void updateUtilFileHandlerOutputStream() throws IOException {
+            getUtilFileHandler().setOutputStream(makeFileOutputStream());
+        }
+
+        public void closeUtilFileHandler() {
+            getUtilFileHandler().close();
+        }
+
+        protected UtilFileHandler getUtilFileHandler() {
+            return utilFileHandler;
+        }
+
+        protected void updatePath() {
+            if (!isPathCurrent()) {
+                path = makePathForLogger();
+            }
+        }
+
+        protected OutputStream makeFileOutputStream() throws IOException {
+            FileOutputStream fileOutputStream = FileUtils.openOutputStream(getFile());
+            return new BufferedOutputStream(fileOutputStream);
+        }
+
+        /**
+         * Checks if the path is not null and is in the right directory
+         *
+         * @return {@code true} if path is right; {@code false} if path is not current
+         */
+        protected boolean isPathCurrent() {
+            return path.startsWith(getMainLoggerPath().resolve(mainLogger.getName()));
+        }
+
+        /**
+         * Make a path object for the given logger
+         *
+         * @return The Path for the logger
+         */
+        protected Path makePathForLogger() {
+            return getDirectoryPath().resolve(getLogger().getName() + "." + getConfig().getFileType());
+        }
+
+    }
+
+    protected final FileManager fileManager;
+
+    protected final Logger mainLogger;
+    protected final HashMap<Logger, LoggerStuff> loggerLoggerStuffHashMap = new HashMap<Logger, LoggerStuff>();
+
+    public LoggerDirectoryHandler(FileManager fileManager, Logger logger) {
+        this.fileManager = fileManager;
         mainLogger = logger;
     }
 
@@ -53,65 +119,13 @@ public class LoggerDirectoryHandler {
      * @throws IOException
      */
     public void setupLogger(EELogger logger) throws IOException {
-        logger.getFileLogger().addHandler(getFileStreamHandlerForLogger(logger));
-    }
-
-    public StreamHandler getFileStreamHandlerForLogger(Logger logger) throws IOException {
-        if (!streamHandlerHashMap.containsKey(logger)) {
-            UtilFileHandler streamHandler = new UtilFileHandler(getOutputSteamForLogger(logger));
-            streamHandlerHashMap.put(logger, streamHandler);
-        }
-        return streamHandlerHashMap.get(logger);
-    }
-
-    public OutputStream getOutputSteamForLogger(Logger logger) throws IOException {
-        if (!loggerOutputStreamHashMap.containsKey(logger)) {
-            loggerOutputStreamHashMap.put(logger, makeFileOutputStreamForLogger(logger));
-        }
-        return loggerOutputStreamHashMap.get(logger);
-    }
-
-    protected OutputStream makeFileOutputStreamForLogger(Logger logger) throws IOException {
-        File file = getFileForLogger(logger);
-        FileOutputStream fileOutputStream = FileUtils.openOutputStream(file);
-        return new BufferedOutputStream(fileOutputStream);
-    }
-
-    public File getFileForLogger(Logger logger) {
-        return getPathForLogger(logger).toFile();
-    }
-
-    public Path getPathForLogger(Logger logger) {
-        updatePathForLogger(logger);
-        return loggerPathHashMap.get(logger);
-    }
-
-    public void updatePathForLogger(Logger logger) {
-        if (!isPathCurrent(loggerPathHashMap.get(logger))) {
-            loggerPathHashMap.put(logger, makePathForLogger(logger));
+        if (!loggerLoggerStuffHashMap.containsKey(logger)) {
+            loggerLoggerStuffHashMap.put(logger, new LoggerStuff(logger));
         }
     }
 
-    /**
-     * Checks if the path is not null and is in the right directory
-     *
-     * @param path What path to check
-     *
-     * @return {@code true} if path is right; {@code false} if path is not current
-     */
-    public boolean isPathCurrent(Path path) {
-        return path != null && path.startsWith(getMainLoggerPath().resolve(mainLogger.getName()));
-    }
-
-    /**
-     * Make a path object for the given logger
-     *
-     * @param logger The logger to get a path for
-     *
-     * @return The Path for the logger
-     */
-    public Path makePathForLogger(Logger logger) {
-        return getDirectoryPath().resolve(logger.getName() + "." + getConfig().getFileType());
+    public boolean isLoggerSetup(Logger logger) {
+        return loggerLoggerStuffHashMap.containsKey(logger);
     }
 
     /**
@@ -135,19 +149,11 @@ public class LoggerDirectoryHandler {
     public void zipLogs() throws IOException {
         File zipFile = getDirectoryPath().resolve(getDateFormatFromMilli(System.currentTimeMillis()) + ".zip").toFile();
         ZipArchiveOutputStream archiveOutputStream = new ZipArchiveOutputStream(zipFile);
-        // Collection<File> files = FileUtils.listFiles(directory, new String[] {getConfig().getFileType()}, false);
-        // for (File file : files) {
-        //     packFile(file, archiveOutputStream);
-        // }
-        for (Map.Entry<Logger, UtilFileHandler> loggerUtilFileHandlerEntry: streamHandlerHashMap.entrySet()) {
-            Logger logger = loggerUtilFileHandlerEntry.getKey();
-            UtilFileHandler utilFileHandler = loggerUtilFileHandlerEntry.getValue();
-            // Stop the steam and make sure it is all to disk first
-            utilFileHandler.close();
-            File file = getFileForLogger(logger);
-            packFile(file, archiveOutputStream);
-            // Restart the stream
-            utilFileHandler.setOutputStream(makeFileOutputStreamForLogger(logger));
+
+        for (LoggerStuff loggerStuff : loggerLoggerStuffHashMap.values()) {
+            loggerStuff.closeUtilFileHandler();
+            packFile(loggerStuff.getFile(), archiveOutputStream);
+            loggerStuff.updateUtilFileHandlerOutputStream();
         }
         archiveOutputStream.finish();
         archiveOutputStream.close();
@@ -165,7 +171,7 @@ public class LoggerDirectoryHandler {
     }
 
     protected LoggerSettings getConfig() {
-        return FactoryManager.getFactoryManager().getEELoggerFactory().getLoggerSettings();
+        return fileManager.getConfig();
     }
 
     /**

@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.strings;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.FieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 
 import java.lang.reflect.Field;
 
@@ -40,7 +39,7 @@ public class StringFieldHandler extends FieldHandler<String> {
      */
     @Override
     public void setToFile(String value) {
-        getPropertiesFile().setString(getPropertyKey(), value);
+        getPropertiesFile().setString(getKey(), value);
     }
 
     /**
@@ -48,10 +47,10 @@ public class StringFieldHandler extends FieldHandler<String> {
      */
     @Override
     public String getFromFile() {
-        try {
-            return getPropertiesFile().getString(getPropertyKey());
+        if (getPropertiesFile().containsKey(getKey())) {
+            return getPropertiesFile().getString(getKey());
         }
-        catch (UtilityException utilityException) {
+        else {
             return "";
         }
     }

@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.bytes;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.FieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 
 import java.lang.reflect.Field;
 
@@ -40,7 +39,7 @@ public class ByteWrapFieldHandler extends FieldHandler<Byte> {
      */
     @Override
     public void setToFile(Byte value) {
-        getPropertiesFile().setByte(getPropertyKey(), value);
+        getPropertiesFile().setByte(getKey(), value);
     }
 
     /**
@@ -48,10 +47,10 @@ public class ByteWrapFieldHandler extends FieldHandler<Byte> {
      */
     @Override
     public Byte getFromFile() {
-        try {
-            return getPropertiesFile().getByte(getPropertyKey());
+        if (getPropertiesFile().containsKey(getKey())) {
+            return getPropertiesFile().getByte(getKey());
         }
-        catch (UtilityException utilityException) {
+        else {
             return 0;
         }
     }

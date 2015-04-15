@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.longs;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
@@ -42,7 +41,7 @@ public class LongArrayWrapFieldHandler extends ArrayFieldHandler<Long[]> {
     @Override
     public void setToFile(Long[] value) {
         if (ArrayUtils.isNotEmpty(value)) {
-            getPropertiesFile().setLongArray(getPropertyKey(), ArrayUtils.toPrimitive(value), getSpacer());
+            getPropertiesFile().setLongArray(getKey(), ArrayUtils.toPrimitive(value), getSpacer());
         }
     }
 
@@ -51,11 +50,10 @@ public class LongArrayWrapFieldHandler extends ArrayFieldHandler<Long[]> {
      */
     @Override
     public Long[] getFromFile() {
-        try {
-
-            return ArrayUtils.toObject(getPropertiesFile().getLongArray(getPropertyKey(), getSpacer()));
+        if (getPropertiesFile().containsKey(getKey())) {
+            return ArrayUtils.toObject(getPropertiesFile().getLongArray(getKey(), getSpacer()));
         }
-        catch (UtilityException utilityException) {
+        else {
             return new Long[0];
         }
     }

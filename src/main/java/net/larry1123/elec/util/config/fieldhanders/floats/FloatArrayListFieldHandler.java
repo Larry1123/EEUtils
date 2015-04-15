@@ -19,7 +19,6 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Floats;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -46,7 +45,7 @@ public class FloatArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Floa
     @Override
     public void setToFile(ArrayList<Float> value) {
         if (CollectionUtils.isNotEmpty(value)) {
-            getPropertiesFile().setFloatArray(getPropertyKey(), Floats.toArray(value), getSpacer());
+            getPropertiesFile().setFloatArray(getKey(), Floats.toArray(value), getSpacer());
         }
     }
 
@@ -55,10 +54,10 @@ public class FloatArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Floa
      */
     @Override
     public ArrayList<Float> getFromFile() {
-        try {
-            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getFloatArray(getPropertyKey(), getSpacer())));
+        if (getPropertiesFile().containsKey(getKey())) {
+            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getFloatArray(getKey(), getSpacer())));
         }
-        catch (UtilityException utilityException) {
+        else {
             return Lists.newArrayList(new Float[0]);
         }
     }

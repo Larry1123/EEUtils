@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.doubles;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.FieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 
 import java.lang.reflect.Field;
 
@@ -40,7 +39,7 @@ public class DoubleWrapFieldHandler extends FieldHandler<Double> {
      */
     @Override
     public void setToFile(Double value) {
-        getPropertiesFile().setDouble(getPropertyKey(), value);
+        getPropertiesFile().setDouble(getKey(), value);
     }
 
     /**
@@ -48,10 +47,10 @@ public class DoubleWrapFieldHandler extends FieldHandler<Double> {
      */
     @Override
     public Double getFromFile() {
-        try {
-            return getPropertiesFile().getDouble(getPropertyKey());
+        if (getPropertiesFile().containsKey(getKey())) {
+            return getPropertiesFile().getDouble(getKey());
         }
-        catch (UtilityException utilityException) {
+        else {
             return 0D;
         }
     }

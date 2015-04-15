@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.larry1123.elec.util.test.config.save;
+package net.larry1123.elec.util.test.config;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.ConfigField;
@@ -25,12 +25,11 @@ import java.util.ArrayList;
  * @since 1/31/14 - 9:02 AM
  */
 @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection", "MismatchedReadAndWriteOfArray"})
-public abstract class TestConfigFile implements ConfigBase {
-
-    @ConfigField
-    public boolean publicBoolean = true;
+public abstract class SavingTestConfigBase implements ConfigBase {
 
     // Public fields
+    @ConfigField
+    public boolean publicBoolean = true;
     @ConfigField
     public Boolean PublicBoolean = true;
     @ConfigField
@@ -180,7 +179,7 @@ public abstract class TestConfigFile implements ConfigBase {
     @ConfigField
     protected ArrayList<String> ProtectedStringArrayList = new ArrayList<String>();
 
-    public TestConfigFile() {
+    public SavingTestConfigBase() {
         PublicByteArrayList.add((byte) 2);
         PublicByteArrayList.add((byte) 8);
         PublicByteArrayList.add((byte) 12);

@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.strings;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
@@ -42,7 +41,7 @@ public class StringArrayFieldHandler extends ArrayFieldHandler<String[]> {
     @Override
     public void setToFile(String[] value) {
         if (ArrayUtils.isNotEmpty(value)) {
-            getPropertiesFile().setStringArray(getPropertyKey(), value, getSpacer());
+            getPropertiesFile().setStringArray(getKey(), value, getSpacer());
         }
     }
 
@@ -51,10 +50,10 @@ public class StringArrayFieldHandler extends ArrayFieldHandler<String[]> {
      */
     @Override
     public String[] getFromFile() {
-        try {
-            return getPropertiesFile().getStringArray(getPropertyKey(), getSpacer());
+        if (getPropertiesFile().containsKey(getKey())) {
+            return getPropertiesFile().getStringArray(getKey(), getSpacer());
         }
-        catch (UtilityException utilityException) {
+        else {
             return new String[0];
         }
     }

@@ -16,9 +16,11 @@
 package net.larry1123.elec.util.factorys;
 
 import net.larry1123.elec.util.logger.EELogger;
+import net.larry1123.elec.util.logger.FileManager;
 import net.larry1123.elec.util.logger.LogSettings;
 import net.larry1123.elec.util.logger.LoggerSettings;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -33,6 +35,7 @@ public class EELoggerFactory {
     private final HashMap<String, EELogger> loggers = new HashMap<String, EELogger>();
 
     protected LoggerSettings loggerSettings = new LogSettings();
+    private final FileManager fileManager = new FileManager(this);
 
     /**
      * Gets the currently used LoggerSettings.
@@ -87,22 +90,15 @@ public class EELoggerFactory {
     }
 
     /**
+     * Gets the EELogger for the given name
+     *
      * @param name    Name of the Logger
      * @param subName SubName of logger
      *
      * @return the EELogger for the given
-     *
-     * @deprecated {@link EELoggerFactory#getSubLogger(EELogger, String)}
-     * <p/>
-     * Gets the EELogger for the given name
      */
-    @Deprecated
     public EELogger getSubLogger(String name, String subName) {
-        if (!loggers.containsKey(getName(name, subName))) {
-            EELogger logMan = new EELogger(name, subName);
-            loggers.put(logMan.getName(), logMan);
-        }
-        return loggers.get(getName(name, subName));
+        return getSubLogger(getLogger(name), subName);
     }
 
     /**
@@ -154,9 +150,19 @@ public class EELoggerFactory {
         return logger;
     }
 
+    public synchronized void updateFileHandlers() throws IOException {
+
+    }
+
     protected void setupFileLogging(boolean fileLog, EELogger logger) {
-        if (fileLog && !logger.canFileLog()) {
-            logger.turnOnFileLog();
+        getFileManager().trackLogger(logger);
+        if (fileLog) {
+            try {
+                getFileManager().fileLog(logger);
+            }
+            catch (IOException e) {
+                logger.error("Unable to setup file logging!", e);
+            }
         }
     }
 
@@ -181,6 +187,10 @@ public class EELoggerFactory {
                 }
             }
         }
+    }
+
+    public FileManager getFileManager() {
+        return fileManager;
     }
 
 }

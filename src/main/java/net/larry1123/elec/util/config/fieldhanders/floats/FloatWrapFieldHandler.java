@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.floats;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.FieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 
 import java.lang.reflect.Field;
 
@@ -40,7 +39,7 @@ public class FloatWrapFieldHandler extends FieldHandler<Float> {
      */
     @Override
     public void setToFile(Float value) {
-        getPropertiesFile().setFloat(getPropertyKey(), value);
+        getPropertiesFile().setFloat(getKey(), value);
     }
 
     /**
@@ -48,10 +47,10 @@ public class FloatWrapFieldHandler extends FieldHandler<Float> {
      */
     @Override
     public Float getFromFile() {
-        try {
-            return getPropertiesFile().getFloat(getPropertyKey());
+        if (getPropertiesFile().containsKey(getKey())) {
+            return getPropertiesFile().getFloat(getKey());
         }
-        catch (UtilityException utilityException) {
+        else {
             return 0F;
         }
     }

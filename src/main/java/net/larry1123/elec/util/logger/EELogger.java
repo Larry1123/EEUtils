@@ -16,6 +16,7 @@
 package net.larry1123.elec.util.logger;
 
 import net.larry1123.elec.util.factorys.FactoryManager;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -48,52 +49,39 @@ public class EELogger implements Logger {
     protected final String logFile;
     protected final EELogger parent;
 
-    protected boolean fileLogging;
-
     public EELogger(String name) {
         this((EELogger) null, name);
     }
 
     @Deprecated
     public EELogger(String name, String subName) {
-        this(name, subName, true);
+        this(name  + "." + subName);
     }
 
     @Deprecated
     public EELogger(String name, String subName, boolean fileLog) {
-        this(name + "." + subName, fileLog);
+        this(name + "." + subName);
     }
 
+    @Deprecated
     public EELogger(String name, boolean fileLog) {
-        this((EELogger) null, name, fileLog);
+        this((EELogger) null, name);
     }
 
     public EELogger(EELogger parent, String name) {
-        this(parent, name, true);
-    }
-
-    public EELogger(EELogger parent, String name, boolean fileLog) {
         this.parent = parent;
         logger = LoggerFactory.getLogger((hasParent() ? getParent().getName() + "." : "") + name);
         fileLogger = new FileLogger(getName());
         path = hasParent() ? parent.getPath() : getConfig().getLoggerPath() + getName() + File.separatorChar;
         logFile = getPath() + (hasParent() ? getName().substring(getName().indexOf(".") + 1) : "latest");
-        boolean fileLoggingTemp = fileLog;
-        FileManager.trackLogger(this);
-        if (fileLoggingTemp) {
-            try {
-                FileManager.fileLog(this);
-                fileLoggingTemp = true;
-            }
-            catch (IOException e) {
-                error("Unable to setup file logging!", e);
-                fileLoggingTemp = false;
-            }
-        }
-        setFileLogging(fileLoggingTemp);
         if (hasParent()) {
             getFileLogger().setParent(getParent().getFileLogger());
         }
+    }
+
+    @Deprecated
+    public EELogger(EELogger parent, String name, boolean fileLog) {
+        this(parent, name);
     }
 
     public static LoggerLevel getTrace() {
@@ -564,13 +552,13 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param s         the message accompanying the exception
      * @param throwable the exception (throwable) to log
      *
-     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code false} if it failed for any reason
      */
     public boolean traceToPasteBin(String s, Throwable throwable) {
         trace(s, throwable);
@@ -578,14 +566,14 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param marker    the marker data specific to this log statement
      * @param s         the message accompanying the exception
      * @param throwable the exception (throwable) to log
      *
-     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code false} if it failed for any reason
      */
     public boolean traceToPasteBin(Marker marker, String s, Throwable throwable) {
         trace(marker, s, throwable);
@@ -593,13 +581,13 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param s         the message accompanying the exception
      * @param throwable the exception (throwable) to log
      *
-     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code false} if it failed for any reason
      */
     public boolean debugToPasteBin(String s, Throwable throwable) {
         trace(s, throwable);
@@ -607,14 +595,14 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param marker    the marker data specific to this log statement
      * @param s         the message accompanying the exception
      * @param throwable the exception (throwable) to log
      *
-     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code false} if it failed for any reason
      */
     public boolean debugToPasteBin(Marker marker, String s, Throwable throwable) {
         debug(marker, s, throwable);
@@ -622,13 +610,13 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param s         the message accompanying the exception
      * @param throwable the exception (throwable) to log
      *
-     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code false} if it failed for any reason
      */
     public boolean infoToPasteBin(String s, Throwable throwable) {
         info(s, throwable);
@@ -636,14 +624,14 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param marker    the marker data specific to this log statement
      * @param s         the message accompanying the exception
      * @param throwable the exception (throwable) to log
      *
-     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code false} if it failed for any reason
      */
     public boolean infoToPasteBin(Marker marker, String s, Throwable throwable) {
         info(marker, s, throwable);
@@ -651,13 +639,13 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param s         the message accompanying the exception
      * @param throwable the exception (throwable) to log
      *
-     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code false} if it failed for any reason
      */
     public boolean warnToPasteBin(String s, Throwable throwable) {
         warn(s, throwable);
@@ -665,14 +653,14 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param marker    the marker data specific to this log statement
      * @param s         the message accompanying the exception
      * @param throwable the exception (throwable) to log
      *
-     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code false} if it failed for any reason
      */
     public boolean warnToPasteBin(Marker marker, String s, Throwable throwable) {
         warn(marker, s, throwable);
@@ -680,13 +668,13 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param s         the message accompanying the exception
      * @param throwable the exception (throwable) to log
      *
-     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code false} if it failed for any reason
      */
     public boolean errorToPasteBin(String s, Throwable throwable) {
         error(s, throwable);
@@ -694,14 +682,14 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param marker    the marker data specific to this log statement
      * @param s         the message accompanying the exception
      * @param throwable the exception (throwable) to log
      *
-     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code false} if it failed for any reason
      */
     public boolean errorToPasteBin(Marker marker, String s, Throwable throwable) {
         error(marker, s, throwable);
@@ -709,7 +697,7 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      * Throws with the LoggerLevel Given
      *
@@ -717,7 +705,7 @@ public class EELogger implements Logger {
      * @param message Message to be Logged
      * @param thrown  Throwable Error To be logged
      *
-     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code false} if it failed for any reason
      */
     public boolean logStackTraceToPasteBin(LoggerLevel lvl, String message, Throwable thrown) {
         if (!lvl.getPrefix().isEmpty()) {
@@ -727,7 +715,7 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will Log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      * Throws with the Level given
      *
@@ -735,7 +723,7 @@ public class EELogger implements Logger {
      * @param message Message to be Logged
      * @param thrown  Throwable Error To be logged
      *
-     * @return {@code true} if paste was made of stackTrace; {@code falase} if it failed for any reason
+     * @return {@code true} if paste was made of stackTrace; {@code false} if it failed for any reason
      */
     public boolean logStackTraceToPasteBin(Level lvl, String message, Throwable thrown) {
         if (getConfig().isPastingAllowed()) {
@@ -747,7 +735,7 @@ public class EELogger implements Logger {
                 con.setRequestProperty("User-Agent", "Mozilla/5.0");
                 con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
-                String urlParameters = "data=" + "[" + lvl.getName() + "] " + message + "\n" + org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(thrown);
+                String urlParameters = "data=" + "[" + lvl.getName() + "] " + message + "\n" + ExceptionUtils.getStackTrace(thrown);
                 urlParameters += "&";
                 String title = "[" + lvl.getName() + "] " + message;
                 urlParameters += "title=" + (title.length() > 30 ? title.substring(0, 30) : title);
@@ -838,24 +826,6 @@ public class EELogger implements Logger {
 
     public boolean hasParent() {
         return getParent() != null;
-    }
-
-    public boolean canFileLog() {
-        return fileLogging;
-    }
-
-    public void turnOnFileLog() {
-        if (!canFileLog()) {
-            try {
-                FileManager.fileLog(this);
-                setFileLogging(true);
-            }
-            catch (IOException ignored) {}
-        }
-    }
-
-    protected void setFileLogging(boolean fileLogging) {
-        this.fileLogging = fileLogging;
     }
 
 }

@@ -18,7 +18,6 @@ package net.larry1123.elec.util.config.fieldhanders.strings;
 import com.google.common.collect.Lists;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.lang.reflect.Field;
@@ -44,7 +43,7 @@ public class StringArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Str
     @Override
     public void setToFile(ArrayList<String> value) {
         if (CollectionUtils.isNotEmpty(value)) {
-            getPropertiesFile().setStringArray(getPropertyKey(), value.toArray(new String[value.size()]), getSpacer());
+            getPropertiesFile().setStringArray(getKey(), value.toArray(new String[value.size()]), getSpacer());
         }
     }
 
@@ -53,10 +52,10 @@ public class StringArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Str
      */
     @Override
     public ArrayList<String> getFromFile() {
-        try {
-            return Lists.newArrayList(getPropertiesFile().getStringArray(getPropertyKey(), getSpacer()));
+        if (getPropertiesFile().containsKey(getKey())) {
+            return Lists.newArrayList(getPropertiesFile().getStringArray(getKey(), getSpacer()));
         }
-        catch (UtilityException utilityException) {
+        else {
             return Lists.newArrayList(new String[0]);
         }
     }

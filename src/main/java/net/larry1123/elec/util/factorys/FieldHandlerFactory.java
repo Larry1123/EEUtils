@@ -50,7 +50,7 @@ public class FieldHandlerFactory {
     }
 
     public FieldHandler<?> createFieldHandler(Type type, Field field, ConfigBase configBase) {
-        if (getField(configBase, field.getName(), null) == null) {
+        if (getField(configBase, field.getName()) == null) {
             return createEmptyFileHandler(type, field, configBase);
         }
         if (containsType(type)) {
@@ -100,18 +100,29 @@ public class FieldHandlerFactory {
         return new EmptyFileHandler(field, configBase);
     }
 
-    protected Field getField(Object ob, String fieldName, Class lastClass) {
-        Class currentClass = lastClass == null ? ob.getClass() : lastClass.getSuperclass();
+    protected Field getField(Object object, String fieldName) {
+        try {
+            return getField(object, fieldName, null);
+        }
+        catch (NoSuchFieldException e) {
+            return null;
+        }
+    }
+
+    protected Field getField(Object object, String fieldName, Class lastClass) throws NoSuchFieldException {
+        Class currentClass = lastClass == null ? object.getClass() : lastClass.getSuperclass();
+        if (currentClass == null) {
+            // This should throw a NoSuchMethodException for getTestMethod(String) to catch
+            return lastClass != null ? lastClass.getDeclaredField(fieldName) : null;
+        }
         try {
             Field ret = currentClass.getDeclaredField(fieldName);
             ret.setAccessible(true);
             return ret;
         }
         catch (NoSuchFieldException e) {
-            return getField(ob, fieldName, currentClass);
-        }
-        catch (NullPointerException e) {
-            return null;
+            // Send this to look in the superclass if any
+            return getField(object, fieldName, currentClass);
         }
     }
 

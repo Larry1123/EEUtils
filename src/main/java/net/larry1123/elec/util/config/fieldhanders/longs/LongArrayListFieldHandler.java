@@ -19,7 +19,6 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Longs;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.ArrayFieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -46,7 +45,7 @@ public class LongArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Long>
     @Override
     public void setToFile(ArrayList<Long> value) {
         if (CollectionUtils.isNotEmpty(value)) {
-            getPropertiesFile().setLongArray(getPropertyKey(), Longs.toArray(value), getSpacer());
+            getPropertiesFile().setLongArray(getKey(), Longs.toArray(value), getSpacer());
         }
     }
 
@@ -55,10 +54,10 @@ public class LongArrayListFieldHandler extends ArrayFieldHandler<ArrayList<Long>
      */
     @Override
     public ArrayList<Long> getFromFile() {
-        try {
-            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getLongArray(getPropertyKey(), getSpacer())));
+        if (getPropertiesFile().containsKey(getKey())) {
+            return Lists.newArrayList(ArrayUtils.toObject(getPropertiesFile().getLongArray(getKey(), getSpacer())));
         }
-        catch (UtilityException utilityException) {
+        else {
             return Lists.newArrayList(new Long[0]);
         }
     }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.larry1123.elec.util.io;
+package net.larry1123.elec.util.io.stream.out;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.io.output.ThresholdingOutputStream;

@@ -25,12 +25,7 @@ import java.lang.reflect.Field;
 
 public class ConfigFile {
 
-    protected final FieldHandlerFactory factory = FactoryManager.getFactoryManager().getMainFieldHandlerFactory();
-
-    /**
-     * The ConfigBase to base the PropertiesFile on
-     */
-    protected final ConfigBase config;
+    private final ConfigBase config;
 
     /**
      * Holds a list of usable Fields
@@ -45,7 +40,7 @@ public class ConfigFile {
      */
     public ConfigFile(ConfigBase config) {
         this.config = config;
-        collectFields(this.config, null);
+        collectFields(getConfigBase(), null);
         load();
     }
 
@@ -71,14 +66,14 @@ public class ConfigFile {
      * @return PropertiesFile being controlled
      */
     public PropertiesFile getPropFile() {
-        return config.getPropertiesFile();
+        return getConfigBase().getPropertiesFile();
     }
 
     /**
      * Updates the ConfigBase to match the current file without saving first
      */
     public void reload() {
-        config.getPropertiesFile().reload();
+        getPropFile().reload();
         load();
     }
 
@@ -87,12 +82,12 @@ public class ConfigFile {
      */
     public void load() {
         for (Field field : configFields) {
-            FieldHandler<?> fieldHandler = factory.createFieldHandler(field.getGenericType(), field, config);
+            FieldHandler<?> fieldHandler = getFieldHandlerFactory().createFieldHandler(field.getGenericType(), field, getConfigBase());
             fieldHandler.load();
             fieldHandler.setComments();
         }
         // Well lets SAVE!!!
-        config.getPropertiesFile().save();
+        getPropFile().save();
     }
 
     /**
@@ -100,11 +95,23 @@ public class ConfigFile {
      */
     public void save() {
         for (Field field : configFields) {
-            FieldHandler<?> fieldHandler = factory.createFieldHandler(field.getGenericType(), field, config);
+            FieldHandler<?> fieldHandler = getFieldHandlerFactory().createFieldHandler(field.getGenericType(), field, getConfigBase());
             fieldHandler.save();
             fieldHandler.setComments();
         }
         // Well lets SAVE!!!
-        config.getPropertiesFile().save();
+        getPropFile().save();
     }
+
+    protected FieldHandlerFactory getFieldHandlerFactory() {
+        return FactoryManager.getFactoryManager().getMainFieldHandlerFactory();
+    }
+
+    /**
+     * The ConfigBase to base the PropertiesFile on
+     */
+    public ConfigBase getConfigBase() {
+        return config;
+    }
+
 }

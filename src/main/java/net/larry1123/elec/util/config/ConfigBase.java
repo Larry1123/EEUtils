@@ -24,6 +24,6 @@ import net.visualillusionsent.utils.PropertiesFile;
  */
 public interface ConfigBase {
 
-    public PropertiesFile getPropertiesFile();
+    PropertiesFile getPropertiesFile();
 
 }

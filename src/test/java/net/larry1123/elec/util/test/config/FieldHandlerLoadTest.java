@@ -16,32 +16,32 @@
 package net.larry1123.elec.util.test.config;
 
 import net.larry1123.elec.util.config.ConfigBase;
-import net.larry1123.elec.util.config.ConfigFile;
+import net.larry1123.elec.util.config.fieldhanders.FieldHandler;
 import net.visualillusionsent.utils.PropertiesFile;
-import org.junit.Test;
+
+import java.lang.reflect.Field;
 
 /**
  * @author Larry1123
- * @since 10/24/2014 - 12:45 AM
+ * @since 6/20/2014 - 10:36 PM
  */
-public class FullConfigTest extends AbstractConfigTest {
+public class FieldHandlerLoadTest extends AbstractConfigFieldTest {
 
-    public FullConfigTest() {
-        super("FullConfigLoadTest", "target/test-classes/FullTest.cfg");
+    public FieldHandlerLoadTest() {
+        super("FieldHandlerLoadTest", "target/test-classes/FieldHandlerLoadTest.cfg");
     }
 
-    @Test
-    public void fullConfigTest() throws NoSuchMethodException {
-        ConfigFile configFile = new ConfigFile(getConfigBase());
-        for (FieldNames fieldNames : FieldNames.values()) {
-            assertTest(fieldNames.name());
-        }
-        // TODO Change data, save, then retest
+    @Override
+    protected void assertTest(String fieldName, Field field) {
+        FieldHandler<?> handler = getFieldHandlerFactory().createFieldHandler(field.getGenericType(), field, getConfigBase());
+        handler.load();
+
+        super.assertTest(fieldName, field);
     }
 
     @Override
     protected ConfigBase createTestConfigBase(final PropertiesFile file) {
-        return new FullTestConfigFile() {
+        return new LoadingTestConfigBase() {
 
             @Override
             public PropertiesFile getPropertiesFile() {

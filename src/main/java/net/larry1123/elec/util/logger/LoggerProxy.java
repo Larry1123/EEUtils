@@ -15,33 +15,16 @@
  */
 package net.larry1123.elec.util.logger;
 
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 
 /**
  * @author Larry1123
- * @since 10/19/2014 - 3:36 AM
+ * @since 4/15/2015 - 6:29 AM
  */
-public class FileLogger extends Logger {
+public interface LoggerProxy {
 
-    public FileLogger(String name) {
-        super(name, null);
-    }
+    void log(String message);
 
-    /**
-     * Will send the logRecord to this logger's handlers and to FileLogger parent loggers
-     * <p/>
-     * {@inheritDoc}
-     */
-    @Override
-    public void log(LogRecord logRecord) {
-        for (Handler handler : getHandlers()) {
-            handler.publish(logRecord);
-        }
-        if (getParent() != null && getParent() instanceof FileLogger) {
-            getParent().log(logRecord);
-        }
-    }
+    Logger getLogger();
 
 }

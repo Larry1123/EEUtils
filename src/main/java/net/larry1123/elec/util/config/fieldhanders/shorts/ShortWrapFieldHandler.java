@@ -17,7 +17,6 @@ package net.larry1123.elec.util.config.fieldhanders.shorts;
 
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.FieldHandler;
-import net.visualillusionsent.utils.UtilityException;
 
 import java.lang.reflect.Field;
 
@@ -40,7 +39,7 @@ public class ShortWrapFieldHandler extends FieldHandler<Short> {
      */
     @Override
     public void setToFile(Short value) {
-        getPropertiesFile().setShort(getPropertyKey(), value);
+        getPropertiesFile().setShort(getKey(), value);
     }
 
     /**
@@ -48,10 +47,10 @@ public class ShortWrapFieldHandler extends FieldHandler<Short> {
      */
     @Override
     public Short getFromFile() {
-        try {
-            return getPropertiesFile().getShort(getPropertyKey());
+        if (getPropertiesFile().containsKey(getKey())) {
+            return getPropertiesFile().getShort(getKey());
         }
-        catch (UtilityException utilityException) {
+        else {
             return 0;
         }
     }

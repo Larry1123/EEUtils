@@ -31,8 +31,8 @@ Maven
 Java Docs
 -------------
 
-Primary: https://repo.larry1123.net/content/sites/eeutils_site/apidocs/
-Jenkins: https://ci.larry1123.net/job/EEUtils/javadocs/
+Primary: https://repo.larry1123.net/content/sites/eeutils_site/apidocs/  
+Jenkins: https://ci.larry1123.net/job/EEUtils/javadocs/  
 
 Compilation
 =============

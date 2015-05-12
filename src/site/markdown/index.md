@@ -27,7 +27,7 @@ Maven
         <repository>
             <id>repo1123</id>
             <name>Larry1123's Repo</name>
-            <url>http://repo.larry1123.net/content/groups/public/</url>
+            <url>http://public.repo.larry1123.net/</url>
         </repository>        
 
 

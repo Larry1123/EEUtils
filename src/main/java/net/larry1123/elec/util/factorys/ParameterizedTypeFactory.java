@@ -76,7 +76,7 @@ public class ParameterizedTypeFactory extends Factory {
      *
      * @return A ParameterizedType that will equal one created from reflection
      *
-     * @deprecated {@@link #makeParameterizedType(Class, Type, Type[])}
+     * @deprecated {@link #makeParameterizedType(Class, Type, Type[])}
      */
     @Deprecated
     public ParameterizedType MakeParameterizedType(Class<?> rawType, Type ownerType, Type[] typeArguments) {

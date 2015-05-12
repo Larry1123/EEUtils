@@ -25,10 +25,19 @@ Maven
         <repository>
             <id>repo1123</id>
             <name>Larry1123's Repo</name>
-            <url>http://repo.larry1123.net/content/groups/public/</url>
+            <url>http://public.repo.larry1123.net/</url>
         </repository>
 
 Java Docs
 -------------
 
-Primary: https://docs.larry1123.net/eeutils/
+Primary: https://repo.larry1123.net/content/sites/eeutils_site/apidocs/
+Jenkins: https://ci.larry1123.net/job/EEUtils/javadocs/
+
+Compilation
+=============
+
+Use maven to handle dependencies.
+
+* Install [Maven 3](http://maven.apache.org/download.html)
+* Check out the repo and: `mvn clean install`

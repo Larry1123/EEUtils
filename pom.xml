@@ -59,7 +59,7 @@
         <site>
             <id>repo1123</id>
             <name>EEUtils Site</name>
-            <url>http://repo.larry1123.net/content/sites/eeutils_site/</url>
+            <url>dav:http://repo.larry1123.net/content/sites/eeutils_site/</url>
         </site>
         <repository>
             <id>repo1123</id>

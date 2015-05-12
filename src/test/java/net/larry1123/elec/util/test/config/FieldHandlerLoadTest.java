@@ -18,7 +18,10 @@ package net.larry1123.elec.util.test.config;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.FieldHandler;
 import net.visualillusionsent.utils.PropertiesFile;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 /**
@@ -28,7 +31,7 @@ import java.lang.reflect.Field;
 public class FieldHandlerLoadTest extends AbstractConfigFieldTest {
 
     public FieldHandlerLoadTest() {
-        super("FieldHandlerLoadTest", "target/test-classes/FieldHandlerLoadTest.cfg");
+        super("FieldHandlerLoadTest");
     }
 
     @Override
@@ -48,6 +51,11 @@ public class FieldHandlerLoadTest extends AbstractConfigFieldTest {
                 return file;
             }
         };
+    }
+
+    @Override
+    protected File getFile() throws IOException {
+        return FileUtils.getFile("target/test-classes/FieldHandlerLoadTest.cfg");
     }
 
 }

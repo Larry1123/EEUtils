@@ -29,9 +29,17 @@ import java.util.HashMap;
  * @author Larry1123
  * @since 4/28/2014 - 2:31 AM
  */
-public class FieldHandlerFactory {
+public class FieldHandlerFactory extends Factory {
 
     protected final HashMap<Type, Class<? extends FieldHandler<?>>> providedHandlers = new HashMap<Type, Class<? extends FieldHandler<?>>>();
+
+    public FieldHandlerFactory() {
+        this("FieldHandlerFactory" + System.nanoTime());
+    }
+
+    public FieldHandlerFactory(String name) {
+        super(name);
+    }
 
     public void addHandler(Type type, Class<? extends FieldHandler<?>> handler) {
         if (!providedHandlers.containsKey(type)) {

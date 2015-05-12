@@ -17,612 +17,390 @@ package net.larry1123.elec.util.test.config;
 
 import org.junit.Test;
 
-import java.lang.reflect.Field;
-
 /**
+ * This class just holds methods to define what test cases to run
+ * They are no included in {@link AbstractConfigTest} because their may be other test cases that the logic can be useful for
+ *
  * @author Larry1123
  * @since 4/8/2015 - 3:36 AM
  */
 public abstract class AbstractConfigFieldTest extends AbstractConfigTest {
 
-    public AbstractConfigFieldTest(String name, String path) {
-        super(name, path);
+    public AbstractConfigFieldTest(String name) {
+        super(name);
     }
 
     // Public
 
     @Test
-    public void publicBooleanLoad() {
-        String fieldName = FieldNames.publicBoolean.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void publicBoolean() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void PublicBooleanLoad() {
-        String fieldName = FieldNames.PublicBoolean.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicBoolean() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicByteLoad() {
-        String fieldName = FieldNames.publicByte.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void publicByte() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void PublicByteLoad() {
-        String fieldName = FieldNames.PublicByte.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicByte() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicByteArrayLoad() {
-        String fieldName = FieldNames.publicByteArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void publicByteArray() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void PublicByteArrayLoad() {
-        String fieldName = FieldNames.PublicByteArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicByteArray() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicByteArrayListLoad() {
-        String fieldName = FieldNames.PublicByteArrayList.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicByteArrayList() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicCharacterLoad() {
-        String fieldName = FieldNames.publicCharacter.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void publicCharacter() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void PublicCharacterLoad() {
-        String fieldName = FieldNames.PublicCharacter.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicCharacter() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicDoubleLoad() {
-        String fieldName = FieldNames.publicDouble.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void publicDouble() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void PublicDoubleLoad() {
-        String fieldName = FieldNames.PublicDouble.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicDouble() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicDoubleArrayLoad() {
-        String fieldName = FieldNames.publicDoubleArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void publicDoubleArray() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void PublicDoubleArrayLoad() {
-        String fieldName = FieldNames.PublicDoubleArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicDoubleArray() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicDoubleArrayListLoad() {
-        String fieldName = FieldNames.PublicDoubleArrayList.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicDoubleArrayList() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicFloatLoad() {
-        String fieldName = FieldNames.publicFloat.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void publicFloat() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void PublicFloatLoad() {
-        String fieldName = FieldNames.PublicFloat.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicFloat() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicFloatArrayLoad() {
-        String fieldName = FieldNames.publicFloatArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void publicFloatArray() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void PublicFloatArrayLoad() {
-        String fieldName = FieldNames.PublicFloatArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicFloatArray() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicFloatArrayListLoad() {
-        String fieldName = FieldNames.PublicFloatArrayList.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicFloatArrayList() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicLongLoad() {
-        String fieldName = FieldNames.publicLong.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void publicLong() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void PublicLongLoad() {
-        String fieldName = FieldNames.PublicLong.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicLong() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicLongArrayLoad() {
-        String fieldName = FieldNames.publicLongArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void publicLongArray() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void PublicLongArrayArrayLoad() {
-        String fieldName = FieldNames.PublicLongArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicLongArray() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicLongArrayListLoad() {
-        String fieldName = FieldNames.PublicLongArrayList.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicLongArrayList() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicIntegerLoad() {
-        String fieldName = FieldNames.publicInteger.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void publicInteger() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void PublicIntegerLoad() {
-        String fieldName = FieldNames.PublicInteger.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicInteger() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicIntegerArrayLoad() {
-        String fieldName = FieldNames.publicIntegerArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void publicIntegerArray() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void PublicIntegerArrayLoad() {
-        String fieldName = FieldNames.PublicIntegerArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicIntegerArray() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicIntegerArrayListLoad() {
-        String fieldName = FieldNames.PublicIntegerArrayList.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicIntegerArrayList() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicShortLoad() {
-        String fieldName = FieldNames.publicShort.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void publicShort() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void PublicShortLoad() {
-        String fieldName = FieldNames.PublicShort.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicShort() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicShortArrayLoad() {
-        String fieldName = FieldNames.publicShortArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void publicShortArray() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void PublicShortArrayLoad() {
-        String fieldName = FieldNames.PublicShortArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicShortArray() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicShortArrayListLoad() {
-        String fieldName = FieldNames.PublicShortArrayList.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicShortArrayList() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicStringLoad() {
-        String fieldName = FieldNames.PublicString.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicString() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void publicStringArrayLoad() {
-        String fieldName = FieldNames.PublicStringArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
-    }
+    public void PublicStringArray() {
+        assertTest(getFieldName(), getField());           }
 
     @Test
-    public void publicStringArrayList() {
-        String fieldName = FieldNames.PublicStringArrayList.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void PublicStringArrayList() {
+        assertTest(getFieldName(), getField());
     }
 
     // Protected
 
     @Test
     public void protectedBoolean() {
-        String fieldName = FieldNames.protectedBoolean.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void ProtectedBoolean() {
-        String fieldName = FieldNames.ProtectedBoolean.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void protectedByte() {
-        String fieldName = FieldNames.protectedByte.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void ProtectedByte() {
-        String fieldName = FieldNames.ProtectedByte.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void protectedByteArray() {
-        String fieldName = FieldNames.protectedByteArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void ProtectedByteArray() {
-        String fieldName = FieldNames.ProtectedByteArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void protectedByteArrayList() {
-        String fieldName = FieldNames.ProtectedByteArrayList.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void ProtectedByteArrayList() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void protectedCharacter() {
-        String fieldName = FieldNames.protectedCharacter.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void ProtectedCharacter() {
-        String fieldName = FieldNames.ProtectedCharacter.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void protectedDouble() {
-        String fieldName = FieldNames.protectedDouble.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void ProtectedDouble() {
-        String fieldName = FieldNames.ProtectedDouble.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void protectedDoubleArray() {
-        String fieldName = FieldNames.protectedDoubleArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void ProtectedDoubleArray() {
-        String fieldName = FieldNames.ProtectedDoubleArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void protectedDoubleArrayList() {
-        String fieldName = FieldNames.ProtectedDoubleArrayList.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void ProtectedDoubleArrayList() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void protectedFloat() {
-        String fieldName = FieldNames.protectedFloat.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void ProtectedFloat() {
-        String fieldName = FieldNames.ProtectedFloat.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void protectedFloatArray() {
-        String fieldName = FieldNames.protectedFloatArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void ProtectedFloatArray() {
-        String fieldName = FieldNames.ProtectedFloatArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void protectedFloatArrayList() {
-        String fieldName = FieldNames.ProtectedFloatArrayList.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void ProtectedFloatArrayList() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void protectedLong() {
-        String fieldName = FieldNames.protectedLong.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void ProtectedLong() {
-        String fieldName = FieldNames.ProtectedLong.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void protectedLongArray() {
-        String fieldName = FieldNames.protectedLongArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void ProtectedLongArray() {
-        String fieldName = FieldNames.ProtectedLongArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void protectedLongArrayList() {
-        String fieldName = FieldNames.ProtectedLongArrayList.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void ProtectedLongArrayList() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void protectedInteger() {
-        String fieldName = FieldNames.protectedInteger.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void ProtectedInteger() {
-        String fieldName = FieldNames.ProtectedInteger.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void protectedIntegerArray() {
-        String fieldName = FieldNames.protectedIntegerArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void ProtectedIntegerArray() {
-        String fieldName = FieldNames.ProtectedIntegerArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void protectedIntegerArrayList() {
-        String fieldName = FieldNames.ProtectedIntegerArrayList.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void ProtectedIntegerArrayList() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void protectedShort() {
-        String fieldName = FieldNames.protectedShort.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void ProtectedShort() {
-        String fieldName = FieldNames.ProtectedShort.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void protectedShortArray() {
-        String fieldName = FieldNames.protectedShortArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
     public void ProtectedShortArray() {
-        String fieldName = FieldNames.ProtectedShortArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void protectedShortArrayList() {
-        String fieldName = FieldNames.ProtectedShortArrayList.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void ProtectedShortArrayList() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void protectedString() {
-        String fieldName = FieldNames.ProtectedString.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void ProtectedString() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void protectedStringArray() {
-        String fieldName = FieldNames.ProtectedStringArray.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void ProtectedStringArray() {
+        assertTest(getFieldName(), getField());
     }
 
     @Test
-    public void protectedStringArrayList() {
-        String fieldName = FieldNames.ProtectedStringArrayList.name();
-        Field field = getField(fieldName);
-
-        assertTest(fieldName, field);
+    public void ProtectedStringArrayList() {
+        assertTest(getFieldName(), getField());
     }
 
 }

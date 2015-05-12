@@ -19,6 +19,8 @@ import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.fieldhanders.FieldHandler;
 import net.visualillusionsent.utils.PropertiesFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 /**
@@ -28,7 +30,7 @@ import java.lang.reflect.Field;
 public class FieldHandlerSaveTest extends AbstractConfigFieldTest {
 
     public FieldHandlerSaveTest() {
-        super("FieldHandlerSaveTest", "target/tests/FieldHandlerSaveTest.cfg");
+        super("FieldHandlerSaveTest");
     }
 
     @Override
@@ -49,6 +51,11 @@ public class FieldHandlerSaveTest extends AbstractConfigFieldTest {
                 return file;
             }
         };
+    }
+
+    @Override
+    protected File getFile() throws IOException {
+        return getTemporaryFolder().newFile();
     }
 
 }

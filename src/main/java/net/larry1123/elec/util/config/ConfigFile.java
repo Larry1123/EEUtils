@@ -18,8 +18,8 @@ package net.larry1123.elec.util.config;
 import net.larry1123.elec.util.config.fieldhanders.FieldHandler;
 import net.larry1123.elec.util.factorys.FactoryManager;
 import net.larry1123.elec.util.factorys.FieldHandlerFactory;
+import net.larry1123.elec.util.reflection.search.members.FieldFinder;
 import net.visualillusionsent.utils.PropertiesFile;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
 
@@ -40,24 +40,9 @@ public class ConfigFile {
      */
     public ConfigFile(ConfigBase config) {
         this.config = config;
-        collectFields(getConfigBase(), null);
+        FieldFinder fieldFinder = new FieldFinder(getConfigBase().getClass(), true);
+        configFields = fieldFinder.get(ConfigField.class);
         load();
-    }
-
-    /**
-     * Will search Class and super Classes to find fields for use and add them to our known field list.
-     *
-     * @param config    The Object to use to search
-     * @param lastClass Mostly an internal PlaceHolder
-     */
-    protected void collectFields(ConfigBase config, Class lastClass) {
-        Class currentClass = lastClass == null ? config.getClass() : lastClass.getSuperclass();
-        for (Field field : currentClass.getDeclaredFields()) {
-            if (field.isAnnotationPresent(ConfigField.class)) {
-                configFields = ArrayUtils.add(configFields, field);
-            }
-        }
-        if (currentClass.getSuperclass() != null) { collectFields(config, currentClass); }
     }
 
     /**

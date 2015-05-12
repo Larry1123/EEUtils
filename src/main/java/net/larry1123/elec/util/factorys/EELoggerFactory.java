@@ -27,15 +27,49 @@ import java.util.HashMap;
  * @author Larry1123
  * @since 1/30/14 - 7:02 AM
  */
-public class EELoggerFactory {
+public class EELoggerFactory extends Factory {
 
-    /**
-     * Holds All EELoggers
-     */
+    public static class EELoggerFactorySetup extends FactorySetup<EELoggerFactory> {
+
+        private LoggerSettings loggerSettings = null;
+
+        public EELoggerFactorySetup() {
+        }
+
+        public EELoggerFactorySetup(LoggerSettings loggerSettings) {
+            setLoggerSettings(loggerSettings);
+        }
+
+        public LoggerSettings getLoggerSettings() {
+            return loggerSettings;
+        }
+
+        public void setLoggerSettings(LoggerSettings loggerSettings) {
+            this.loggerSettings = loggerSettings;
+        }
+
+        @Override
+        public void configFactory(EELoggerFactory factory) {
+            if (getLoggerSettings() != null) {
+                factory.setLoggerSettings(loggerSettings);
+            }
+        }
+
+    }
+
     private final HashMap<String, EELogger> loggers = new HashMap<String, EELogger>();
 
-    protected LoggerSettings loggerSettings = new LogSettings();
+    private LoggerSettings loggerSettings = new LogSettings();
     private final FileManager fileManager = new FileManager(this);
+
+    @Deprecated
+    public EELoggerFactory() {
+        this("EELoggerFactory" + System.nanoTime());
+    }
+
+    public EELoggerFactory(String name) {
+        super(name);
+    }
 
     /**
      * Gets the currently used LoggerSettings.
@@ -43,7 +77,9 @@ public class EELoggerFactory {
      * @return The current LoggerSettings
      */
     public LoggerSettings getLoggerSettings() {
-        if (loggerSettings == null) { throw new NullPointerException("LoggerSettings is null"); }
+        if (loggerSettings == null) {
+            throw new NullPointerException("LoggerSettings is null");
+        }
         return loggerSettings;
     }
 
@@ -53,7 +89,9 @@ public class EELoggerFactory {
      * @param loggerSettings The LoggerSettings to set
      */
     public void setLoggerSettings(LoggerSettings loggerSettings) {
-        if (loggerSettings == null) { throw new NullPointerException("LoggerSettings can not be null"); }
+        if (loggerSettings == null) {
+            throw new NullPointerException("LoggerSettings can not be null");
+        }
         this.loggerSettings = loggerSettings;
     }
 
@@ -71,19 +109,19 @@ public class EELoggerFactory {
     /**
      * Gets the EELogger for the given name
      *
-     * @param name    Name of the Logger
+     * @param name Name of the Logger
      * @param fileLog {@code true} to log to file; {@code false} to not log to file
      *
      * @return the EELogger for the given
      */
     public EELogger getLogger(String name, boolean fileLog) {
         EELogger logger;
-        if (!loggers.containsKey(name)) {
-            logger = new EELogger(name, fileLog);
-            loggers.put(logger.getName(), logger);
+        if (!containsLogger(name)) {
+            logger = new EELogger(name);
+            getLoggers().put(logger.getName(), logger);
         }
         else {
-            logger = loggers.get(name);
+            logger = getLoggers().get(name);
         }
         setupFileLogging(fileLog, logger);
         return logger;
@@ -92,7 +130,7 @@ public class EELoggerFactory {
     /**
      * Gets the EELogger for the given name
      *
-     * @param name    Name of the Logger
+     * @param name Name of the Logger
      * @param subName SubName of logger
      *
      * @return the EELogger for the given
@@ -102,7 +140,7 @@ public class EELoggerFactory {
     }
 
     /**
-     * @param name   Name of the sub-Logger
+     * @param name Name of the sub-Logger
      * @param parent What EELogger to create a sub-Logger under
      *
      * @return The EELogger for the requested sub-Logger
@@ -120,7 +158,7 @@ public class EELoggerFactory {
      * Gets the EELogger for the given name as a sub of the given parent
      *
      * @param parent What EELogger to create a sub-Logger under
-     * @param name   Name of the sub-Logger
+     * @param name Name of the sub-Logger
      *
      * @return The EELogger for the requested sub-Logger
      */
@@ -131,27 +169,27 @@ public class EELoggerFactory {
     /**
      * Gets the EELogger for the given name as a sub of the given parent
      *
-     * @param parent  What EELogger to create a sub-Logger under
-     * @param name    Name of the sub-Logger
+     * @param parent What EELogger to create a sub-Logger under
+     * @param name Name of the sub-Logger
      * @param fileLog {@code true} to log to file; {@code false} to not log to file
      *
      * @return The EELogger for the requested sub-Logger
      */
     public EELogger getSubLogger(EELogger parent, String name, boolean fileLog) {
         EELogger logger;
-        if (!loggers.containsKey(getName(parent, name))) {
-            logger = new EELogger(parent, name, fileLog);
-            loggers.put(logger.getName(), logger);
+        if (!containsLogger(getName(parent, name))) {
+            logger = new EELogger(parent, name);
+            getLoggers().put(logger.getName(), logger);
         }
         else {
-            logger = loggers.get(getName(parent, name));
+            logger = getLoggers().get(getName(parent, name));
         }
         setupFileLogging(fileLog, logger);
         return logger;
     }
 
     public synchronized void updateFileHandlers() throws IOException {
-
+        getFileManager().updateFileHandlers();
     }
 
     protected void setupFileLogging(boolean fileLog, EELogger logger) {
@@ -174,19 +212,36 @@ public class EELoggerFactory {
         return parent + "." + sub;
     }
 
+    public boolean containsLogger(EELogger logger) {
+        return containsLogger(logger.getName());
+    }
+
+    public boolean containsLogger(String name) {
+        return getLoggers().containsKey(name);
+    }
+
     /**
      * Remove a logger from the held logger list.
      *
      * @param logger What Logger to remove
      */
     public void removeLogger(EELogger logger) {
-        if (loggers.containsValue(logger)) {
-            for (String key : loggers.keySet()) {
-                if (loggers.get(key) == logger) {
-                    loggers.remove(key);
+        if (getLoggers().containsValue(logger)) {
+            // Make sure that this logger was made by this factory
+            if (getLogger(logger.getName()) == logger) {
+                getLoggers().remove(logger.getName());
+                if (getFileManager().doesLoggerFileLog(logger)) {
+                    getFileManager().stopFileLog(logger);
                 }
             }
         }
+    }
+
+    /**
+     * Holds All EELoggers
+     */
+    protected HashMap<String, EELogger> getLoggers() {
+        return loggers;
     }
 
     public FileManager getFileManager() {

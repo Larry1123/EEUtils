@@ -16,11 +16,14 @@
 package net.larry1123.elec.util.test.config;
 
 import net.larry1123.elec.util.config.ConfigBase;
+import net.larry1123.elec.util.reflection.search.members.FieldFinder;
+import net.larry1123.elec.util.reflection.search.members.MemberNotFoundException;
+import net.larry1123.elec.util.reflection.search.members.MethodFinder;
 import net.larry1123.elec.util.test.AbstractTest;
 import net.visualillusionsent.utils.PropertiesFile;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
+import org.junit.Before;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,22 +38,30 @@ import java.util.ArrayList;
  */
 public abstract class AbstractConfigTest extends AbstractTest {
 
-    private final String path;
-    private final PropertiesFile propertiesFile;
-    private final ConfigBase configBase;
+    private final MethodFinder methodFinder = new MethodFinder(this.getClass(), true, String.class, Field.class);
+    private final FieldFinder fieldFinder;
 
-    public AbstractConfigTest(String name, String path) {
+    private Field field;
+    private String fieldName;
+    private PropertiesFile propertiesFile;
+    private ConfigBase configBase;
+
+    @Before
+    public void initialize() {
+        fieldName = getTestName().getMethodName();
+        field = getField(fieldName);
+    }
+
+    public AbstractConfigTest(String name) {
         super(name);
-        this.path = path;
-        File file = new File(getPath());
         try {
-            FileUtils.touch(file);
+            propertiesFile = new PropertiesFile(getFile());
         }
         catch (IOException e) {
-            assertFailWithThrowable(getName() + " failed to create test config file at " + getPath(), e);
+            assumeNoThrowableField("Unable to get the file!", e);
         }
-        propertiesFile = new PropertiesFile(file);
         configBase = createTestConfigBase(getPropertiesFile());
+        fieldFinder = new FieldFinder(getConfigBase().getClass(), true);
     }
 
     public void booleanTest(String fieldName, Field field) {
@@ -58,7 +69,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue((getPropertiesFile().getBoolean(fieldName) == field.getBoolean(getConfigBase())));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -67,7 +78,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue((getPropertiesFile().getBoolean(fieldName) == (Boolean) field.get(getConfigBase())));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -76,7 +87,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue((getPropertiesFile().getByte(fieldName) == field.getByte(getConfigBase())));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -85,7 +96,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue((getPropertiesFile().getByte(fieldName) == (Byte) field.get(getConfigBase())));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -94,7 +105,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getByteArray(fieldName), field.get(getConfigBase())));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -104,7 +115,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getByteArray(fieldName), testFieldValue));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -115,7 +126,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getByteArray(fieldName), testFieldValue));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -124,7 +135,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(getPropertiesFile().getCharacter(fieldName) == field.getChar(getConfigBase()));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -133,7 +144,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(getPropertiesFile().getCharacter(fieldName) == (Character) field.get(getConfigBase()));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -142,7 +153,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(getPropertiesFile().getDouble(fieldName) == field.getDouble(getConfigBase()));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -151,7 +162,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(getPropertiesFile().getDouble(fieldName) == (Double) field.get(getConfigBase()));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -160,7 +171,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getDoubleArray(fieldName), field.get(getConfigBase())));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -170,7 +181,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getDoubleArray(fieldName), testFieldValue));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -181,7 +192,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getDoubleArray(fieldName), testFieldValue));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -190,7 +201,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(getPropertiesFile().getFloat(fieldName) == field.getFloat(getConfigBase()));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -199,7 +210,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(getPropertiesFile().getFloat(fieldName) == (Float) field.get(getConfigBase()));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -208,7 +219,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getFloatArray(fieldName), field.get(getConfigBase())));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -218,7 +229,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getFloatArray(fieldName), testFieldValue));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -229,7 +240,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getFloatArray(fieldName), testFieldValue));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -238,7 +249,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(getPropertiesFile().getLong(fieldName) == field.getLong(getConfigBase()));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -247,7 +258,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(getPropertiesFile().getLong(fieldName) == (Long) field.get(getConfigBase()));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -256,7 +267,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getLongArray(fieldName), field.get(getConfigBase())));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -266,7 +277,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getLongArray(fieldName), testFieldValue));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -277,7 +288,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getLongArray(fieldName), testFieldValue));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -286,7 +297,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(getPropertiesFile().getInt(fieldName) == field.getInt(getConfigBase()));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -295,7 +306,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(getPropertiesFile().getInt(fieldName) == (Integer) field.get(getConfigBase()));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -304,7 +315,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getIntArray(fieldName), field.get(getConfigBase())));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -314,7 +325,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getIntArray(fieldName), testFieldValue));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -325,7 +336,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getIntArray(fieldName), testFieldValue));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -334,7 +345,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(getPropertiesFile().getShort(fieldName) == field.getShort(getConfigBase()));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -343,7 +354,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(getPropertiesFile().getShort(fieldName) == (Short) field.get(getConfigBase()));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -352,7 +363,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getShortArray(fieldName), field.get(getConfigBase())));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -362,7 +373,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getShortArray(fieldName), testFieldValue));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -373,7 +384,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getShortArray(fieldName), testFieldValue));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -382,7 +393,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(getPropertiesFile().getString(fieldName).equals(field.get(getConfigBase())));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -391,7 +402,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getStringArray(fieldName), field.get(getConfigBase())));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -402,7 +413,7 @@ public abstract class AbstractConfigTest extends AbstractTest {
             Assert.assertTrue(ArrayUtils.isEquals(getPropertiesFile().getStringArray(fieldName), testFieldValue));
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailFieldThrowable(fieldName, illegalAccessException);
+            assumeNoThrowableField(fieldName, illegalAccessException);
         }
     }
 
@@ -412,10 +423,10 @@ public abstract class AbstractConfigTest extends AbstractTest {
             method.invoke(this, fieldName, field);
         }
         catch (IllegalAccessException illegalAccessException) {
-            assertFailWithThrowable(getName() + " could not access " + method.getName() + " test Method.", illegalAccessException);
+            assumeNoThrowable(getName() + " could not access " + method.getName() + " test Method.", illegalAccessException);
         }
         catch (InvocationTargetException invocationTargetException) {
-            assertFailWithThrowable(getName() + " had an error thrown trying to use the " + method.getName() + " test Method.", invocationTargetException.getCause());
+            assumeNoThrowable(getName() + " had an error thrown trying to use the " + method.getName() + " test Method.", invocationTargetException.getCause());
         }
     }
 
@@ -429,10 +440,10 @@ public abstract class AbstractConfigTest extends AbstractTest {
             methodName = (methodName.charAt(0) + "").toLowerCase() + methodName.substring(1);
         }
         try {
-            return getTestMethod(methodName, null);
+            return getMethodFinder().get(methodName);
         }
-        catch (NoSuchMethodException e) {
-            assertFailWithThrowable(getName() + " does not support " + fieldName + " test. Was looking for method " + methodName + " in " + this.getClass() + " and it's superclasses.", e);
+        catch (MemberNotFoundException e) {
+            assumeNoThrowable(getName() + " does not support " + fieldName + " test. Was looking for method " + methodName + " in " + this.getClass() + " and it's superclasses. Test " + getTestName().getMethodName(), e);
             throw new Error("Throw error as this should have never been reached");
         }
     }
@@ -457,40 +468,25 @@ public abstract class AbstractConfigTest extends AbstractTest {
 
     protected Field getField(String fieldName) {
         try {
-            return getField(fieldName, null);
+            return getFieldFinder().get(fieldName);
         }
-        catch (NoSuchFieldException e) {
-            assertFailFieldThrowable(fieldName, e);
+        catch (MemberNotFoundException e) {
+            assumeNoThrowableField(fieldName, e);
             throw new Error("Throw error as this should have never been reached");
         }
     }
 
-    protected Field getField(String fieldName, Class lastClass) throws NoSuchFieldException {
-        Class currentClass = lastClass == null ? getConfigBase().getClass() : lastClass.getSuperclass();
-        if (currentClass == null) {
-            // This should throw a NoSuchMethodException for getTestMethod(String) to catch
-            return lastClass != null ? lastClass.getDeclaredField(fieldName) : null;
-        }
-        try {
-            Field ret = currentClass.getDeclaredField(fieldName);
-            ret.setAccessible(true);
-            return ret;
-        }
-        catch (NoSuchFieldException e) {
-            // Send this to look in the superclass if any
-            return getField(fieldName, currentClass);
-        }
+    protected void assertFailFieldThrowable(String fieldName, Throwable throwable) {
+        assertFailWithThrowable(getName() + " could not read the field " + fieldName + " from the ConfigBase " + getConfigBase().getClass().getSimpleName() + " or it's superclasses. Test " + getTestName().getMethodName(), throwable);
     }
 
-    protected void assertFailFieldThrowable(String fieldName, Throwable throwable) {
-        assertFailWithThrowable(getName() + " could not read the field " + fieldName + " from the ConfigBase " + getConfigBase().getClass().getSimpleName() + " or it's superclasses.", throwable);
+    protected void assumeNoThrowableField(String fieldName, Throwable throwable) {
+        assumeNoThrowable(getName() + " could not read the field " + fieldName + " from the ConfigBase " + getConfigBase().getClass().getSimpleName() + " or it's superclasses. Test " + getTestName().getMethodName(), throwable);
     }
 
     protected abstract ConfigBase createTestConfigBase(PropertiesFile file);
 
-    public String getPath() {
-        return path;
-    }
+    protected abstract File getFile() throws IOException;
 
     public PropertiesFile getPropertiesFile() {
         return propertiesFile;
@@ -498,6 +494,22 @@ public abstract class AbstractConfigTest extends AbstractTest {
 
     public ConfigBase getConfigBase() {
         return configBase;
+    }
+
+    public FieldFinder getFieldFinder() {
+        return fieldFinder;
+    }
+
+    public MethodFinder getMethodFinder() {
+        return methodFinder;
+    }
+
+    public Field getField() {
+        return field;
+    }
+
+    public String getFieldName() {
+        return fieldName;
     }
 
 }

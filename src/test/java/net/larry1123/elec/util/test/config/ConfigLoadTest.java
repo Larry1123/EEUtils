@@ -18,6 +18,10 @@ package net.larry1123.elec.util.test.config;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.ConfigFile;
 import net.visualillusionsent.utils.PropertiesFile;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Larry1123
@@ -28,7 +32,7 @@ public class ConfigLoadTest extends AbstractConfigFieldTest {
     protected final ConfigFile configFile;
 
     public ConfigLoadTest() {
-        super("ConfigLoadTest", "target/test-classes/ConfigLoadTest.cfg");
+        super("ConfigLoadTest");
         configFile = new ConfigFile(getConfigBase());
     }
 
@@ -41,6 +45,11 @@ public class ConfigLoadTest extends AbstractConfigFieldTest {
                 return file;
             }
         };
+    }
+
+    @Override
+    protected File getFile() throws IOException {
+        return FileUtils.getFile("target/test-classes/ConfigLoadTest.cfg");
     }
 
 }

@@ -16,6 +16,7 @@
 package net.larry1123.elec.util.test.logger;
 
 import net.larry1123.elec.util.factorys.EELoggerFactory;
+import net.larry1123.elec.util.factorys.FactoryManager;
 import net.larry1123.elec.util.logger.EELogger;
 import net.larry1123.elec.util.test.AbstractTest;
 import org.junit.Assert;
@@ -30,29 +31,23 @@ import java.io.IOException;
  */
 public class LoggerTest extends AbstractTest {
 
-    protected EELoggerFactory eeLoggerFactory = new EELoggerFactory();
-
     public LoggerTest() {
         super("LoggerTest");
-        getTestEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
     }
 
     @Test
     public void testMakingLogger() {
-        getTestEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
         Assert.assertNotNull("Failed to create Sub-Logger.", getTestEELoggerFactory().getLogger("EEUtilTest"));
     }
 
     @Test
     public void testMakingSubLogger() {
-        getTestEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
         EELogger main = getTestEELoggerFactory().getLogger("EEUtilTest");
         Assert.assertNotNull("Failed to create Sub-Logger.", getTestEELoggerFactory().getSubLogger(main, "SubTest"));
     }
 
     @Test
     public void testFileCreation() {
-        getTestEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
         EELogger makeAFile = getTestEELoggerFactory().getLogger("EEUtilFileTest");
         File logFile = new File(getTestEELoggerFactory().getLoggerSettings().getLoggerPath()).toPath().resolve(makeAFile.getName()).resolve(makeAFile.getName() + "." + getTestEELoggerFactory().getLoggerSettings().getFileType()).toFile();
         Assert.assertTrue("Logger File failed to be made.", logFile.exists());
@@ -64,20 +59,18 @@ public class LoggerTest extends AbstractTest {
      */
     @Test
     public void testLogs() {
-        getTestEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
         EELogger eeLogger = getTestEELoggerFactory().getLogger("EEUtilLogsTest");
         eeLogger.error("A fake ERROR!!", new Error());
     }
 
     @Test
     public void testSubLogs() {
-        getTestEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
         EELogger eeLogger = getTestEELoggerFactory().getLogger("EEUtilLogsParentTest");
         eeLogger.error("A fake ERROR!!", new Error());
         eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "SubLogger");
         eeLogger.info("This is a test of the sub-logger");
         eeLogger.error("This is the sub-logger throwing an error", new Error());
-        // Lets _get a little meta with this test
+        // Lets get a little meta with this test
         eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "SuperSubLogger");
         eeLogger.info("This is a test of the super-sub-logger");
         eeLogger.error("This is the super-sub-logger throwing an error", new Error());
@@ -85,7 +78,6 @@ public class LoggerTest extends AbstractTest {
 
     @Test
     public void testZipping() {
-        getTestEELoggerFactory().setLoggerSettings(new TestLoggerSettings());
         EELogger eeLogger = getTestEELoggerFactory().getLogger("EEUtilZipTest");
         eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "Test2");
         eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "Test3");
@@ -104,7 +96,7 @@ public class LoggerTest extends AbstractTest {
     }
 
     protected EELoggerFactory getTestEELoggerFactory() {
-        return eeLoggerFactory;
+        return FactoryManager.getFactoryManager().get(EELoggerFactory.class, "TestEELoggerFactory", new EELoggerFactory.EELoggerFactorySetup(new TestLoggerSettings()));
     }
 
 }

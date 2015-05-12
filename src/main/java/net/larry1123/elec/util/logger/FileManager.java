@@ -137,10 +137,20 @@ public class FileManager {
         return loggerDirectoryHandlerHashMap.containsKey(logger);
     }
 
+    public boolean doesLoggerFileLog(EELogger logger) {
+        return loggerDirectoryHandlerHashMap.get(logger).isLoggerSetup(logger);
+    }
+
     public void fileLog(EELogger logger) throws IOException {
         trackLogger(logger);
         LoggerDirectoryHandler directoryHandler = loggerDirectoryHandlerHashMap.get(logger);
         directoryHandler.setupLogger(logger);
+    }
+
+    public void stopFileLog(EELogger logger) {
+        if (isLoggerTracked(logger)) {
+            loggerDirectoryHandlerHashMap.get(logger).removeLogger(logger);
+        }
     }
 
     /**

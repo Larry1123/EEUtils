@@ -20,6 +20,8 @@ import net.larry1123.elec.util.config.ConfigFile;
 import net.visualillusionsent.utils.PropertiesFile;
 import org.junit.Assert;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 /**
@@ -31,7 +33,7 @@ public class ConfigSaveTest extends AbstractConfigFieldTest {
     protected final ConfigFile configFile;
 
     public ConfigSaveTest() {
-        super("ConfigSaveTest", "target/tests/ConfigSaveTest.cfg");
+        super("ConfigSaveTest");
         configFile = new ConfigFile(getConfigBase());
         configFile.save();
     }
@@ -51,6 +53,11 @@ public class ConfigSaveTest extends AbstractConfigFieldTest {
                 return file;
             }
         };
+    }
+
+    @Override
+    protected File getFile() throws IOException {
+        return getTemporaryFolder().newFile();
     }
 
 }

@@ -22,7 +22,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -35,17 +40,19 @@ public class LoggerDirectoryHandler {
 
     public class LoggerStuff {
 
-        private final Logger logger;
+        private final EELogger logger;
         private Path path;
         private UtilFileHandler utilFileHandler;
+        private boolean setToRemove = false;
 
-        public LoggerStuff(Logger logger) throws IOException {
+        public LoggerStuff(EELogger logger) throws IOException {
             this.logger = logger;
             path = makePathForLogger();
             utilFileHandler = new UtilFileHandler(makeFileOutputStream());
+            getLogger().getFileLogger().addHandler(getUtilFileHandler());
         }
 
-        public Logger getLogger() {
+        public EELogger getLogger() {
             return logger;
         }
 
@@ -99,6 +106,14 @@ public class LoggerDirectoryHandler {
             return getDirectoryPath().resolve(getLogger().getName() + "." + getConfig().getFileType());
         }
 
+        public void setToRemove(boolean bool) {
+            setToRemove = bool;
+        }
+
+        public boolean isSetToRemove() {
+            return setToRemove;
+        }
+
     }
 
     protected final FileManager fileManager;
@@ -119,8 +134,11 @@ public class LoggerDirectoryHandler {
      * @throws IOException
      */
     public void setupLogger(EELogger logger) throws IOException {
-        if (!loggerLoggerStuffHashMap.containsKey(logger)) {
+        if (!isLoggerSetup(logger)) {
             loggerLoggerStuffHashMap.put(logger, new LoggerStuff(logger));
+        }
+        else if (loggerLoggerStuffHashMap.get(logger).isSetToRemove()) {
+            loggerLoggerStuffHashMap.get(logger).setToRemove(false);
         }
     }
 
@@ -153,7 +171,13 @@ public class LoggerDirectoryHandler {
         for (LoggerStuff loggerStuff : loggerLoggerStuffHashMap.values()) {
             loggerStuff.closeUtilFileHandler();
             packFile(loggerStuff.getFile(), archiveOutputStream);
-            loggerStuff.updateUtilFileHandlerOutputStream();
+            if (loggerStuff.isSetToRemove()) {
+                // Make sure that the file gets zipped up anyway.
+                loggerLoggerStuffHashMap.remove(loggerStuff.getLogger());
+            }
+            else {
+                loggerStuff.updateUtilFileHandlerOutputStream();
+            }
         }
         archiveOutputStream.finish();
         archiveOutputStream.close();
@@ -183,6 +207,14 @@ public class LoggerDirectoryHandler {
      */
     public String getDateFormatFromMilli(long milli) {
         return DateFormatUtils.ISO_DATETIME_FORMAT.format(milli).replace(":", File.pathSeparator);
+    }
+
+    public void removeLogger(EELogger logger) {
+        if (loggerLoggerStuffHashMap.containsKey(logger)) {
+            LoggerStuff loggerStuff = loggerLoggerStuffHashMap.get(logger);
+            loggerStuff.closeUtilFileHandler();
+            loggerStuff.setToRemove(true);
+        }
     }
 
 }

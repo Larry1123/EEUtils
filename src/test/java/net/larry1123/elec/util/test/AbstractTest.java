@@ -22,6 +22,12 @@ import net.larry1123.elec.util.factorys.ParameterizedTypeFactory;
 import net.larry1123.elec.util.logger.EELogger;
 import net.larry1123.elec.util.logger.LoggerSettings;
 import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
+import org.junit.rules.TestName;
+
+import java.io.IOException;
 
 /**
  * @author Larry1123
@@ -29,13 +35,25 @@ import org.junit.Assert;
  */
 public class AbstractTest {
 
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+    @Rule
+    public TestName testName = new TestName();
+
     private static LoggerSettings testLoggerSettings = new TestLoggerSettings();
 
     protected final String name;
 
     public AbstractTest(String name) {
         this.name = name;
-        getEELoggerFactory().setLoggerSettings(testLoggerSettings);
+        try {
+            getTemporaryFolder().create();
+        }
+        catch (IOException e) {
+            assumeNoThrowable("Error creating Temporary Folder!", e);
+        }
+        getFactoryManager().get(EELoggerFactory.class, "default", new EELoggerFactory.EELoggerFactorySetup(testLoggerSettings));
     }
 
     public String getName() {
@@ -47,7 +65,7 @@ public class AbstractTest {
     }
 
     public FieldHandlerFactory getFieldHandlerFactory() {
-        return getFactoryManager().getMainFieldHandlerFactory();
+        return getFactoryManager().getFieldHandlerFactory();
     }
 
     public ParameterizedTypeFactory getParameterizedTypeFactory() {
@@ -55,7 +73,7 @@ public class AbstractTest {
     }
 
     public EELoggerFactory getEELoggerFactory() {
-        return getFactoryManager().getEELoggerFactory();
+        return getFactoryManager().get(EELoggerFactory.class, "default");
     }
 
     public EELogger getLogger() {
@@ -69,6 +87,19 @@ public class AbstractTest {
     protected void assertFailWithThrowable(String message, Throwable throwable) {
         getLogger().error(message, throwable);
         Assert.fail(message);
+    }
+
+    protected void assumeNoThrowable(String message, Throwable throwable) {
+        getLogger().error(message, throwable);
+        Assume.assumeNoException(message, throwable);
+    }
+
+    public TemporaryFolder getTemporaryFolder() {
+        return temporaryFolder;
+    }
+
+    public TestName getTestName() {
+        return testName;
     }
 
 }

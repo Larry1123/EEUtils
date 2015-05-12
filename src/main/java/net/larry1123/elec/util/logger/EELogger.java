@@ -29,7 +29,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -43,10 +42,8 @@ public class EELogger implements Logger {
     public static final LoggerLevel DEBUG = LoggerLevels.getLoggerLevel("DEBUG");
     public static final LoggerLevel ERROR = LoggerLevels.getLoggerLevel("ERROR");
 
-    protected final org.slf4j.Logger logger;
+    protected final Logger logger;
     protected final FileLogger fileLogger;
-    protected final String path;
-    protected final String logFile;
     protected final EELogger parent;
 
     public EELogger(String name) {
@@ -68,20 +65,18 @@ public class EELogger implements Logger {
         this((EELogger) null, name);
     }
 
+    @Deprecated
+    public EELogger(EELogger parent, String name, boolean fileLog) {
+        this(parent, name);
+    }
+
     public EELogger(EELogger parent, String name) {
         this.parent = parent;
         logger = LoggerFactory.getLogger((hasParent() ? getParent().getName() + "." : "") + name);
         fileLogger = new FileLogger(getName());
-        path = hasParent() ? parent.getPath() : getConfig().getLoggerPath() + getName() + File.separatorChar;
-        logFile = getPath() + (hasParent() ? getName().substring(getName().indexOf(".") + 1) : "latest");
         if (hasParent()) {
             getFileLogger().setParent(getParent().getFileLogger());
         }
-    }
-
-    @Deprecated
-    public EELogger(EELogger parent, String name, boolean fileLog) {
-        this(parent, name);
     }
 
     public static LoggerLevel getTrace() {
@@ -552,7 +547,7 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to https://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param s         the message accompanying the exception
@@ -566,7 +561,7 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to https://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param marker    the marker data specific to this log statement
@@ -581,7 +576,7 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to https://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param s         the message accompanying the exception
@@ -595,7 +590,7 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to https://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param marker    the marker data specific to this log statement
@@ -610,7 +605,7 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to https://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param s         the message accompanying the exception
@@ -624,7 +619,7 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to https://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param marker    the marker data specific to this log statement
@@ -639,7 +634,7 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to https://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param s         the message accompanying the exception
@@ -653,7 +648,7 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to https://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param marker    the marker data specific to this log statement
@@ -668,7 +663,7 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to https://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param s         the message accompanying the exception
@@ -682,7 +677,7 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to https://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      *
      * @param marker    the marker data specific to this log statement
@@ -697,7 +692,7 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to https://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      * Throws with the LoggerLevel Given
      *
@@ -715,7 +710,7 @@ public class EELogger implements Logger {
     }
 
     /**
-     * Will log a StackTrace and Post it on to http://paste.larry1123.net/
+     * Will log a StackTrace and Post it on to https://paste.larry1123.net/
      * Will return true if it was able to post and false if it was not able to post
      * Throws with the Level given
      *
@@ -785,8 +780,14 @@ public class EELogger implements Logger {
         }
     }
 
+    /**
+     * This is an internal convince method
+     * EELogger's do not know what factory made them if any did.
+     * This method calls {@link FactoryManager} to get the {@link LoggerSettings}
+     * If the Logger is not tracked by a factory then this may not return the desired {@link LoggerSettings}
+     */
     protected LoggerSettings getConfig() {
-        return FactoryManager.getFactoryManager().getEELoggerFactory().getLoggerSettings();
+        return FactoryManager.getFactoryManager().getEELoggerFactoryForLogger(this).getLoggerSettings();
     }
 
     protected LoggerLevel getLoggerLevel(Level level, Marker marker) {
@@ -803,27 +804,50 @@ public class EELogger implements Logger {
 
     /**
      * This is the path for the log files of this logger
+     *
+     * @deprecated The logger no longer knows where the file is
      */
+    @Deprecated
     public String getPath() {
-        return path;
+        return "";
     }
 
+    /**
+     * @deprecated The logger no longer knows where the file is
+     */
+    @Deprecated
     public String getLogFile() {
-        return logFile;
+        return "";
     }
 
+    /**
+     * Gets the underlying slf4j Logger
+     */
     public Logger getLogger() {
         return logger;
     }
 
+    /**
+     * Gets the underlying jdk Logger that handles logging to files
+     */
     public FileLogger getFileLogger() {
         return fileLogger;
     }
 
+    /**
+     * Get the parent logger of this Logger
+     *
+     * @return {@link EELogger} if this EELogger has a parent logger; {@code null} otherwise
+     */
     public EELogger getParent() {
         return parent;
     }
 
+    /**
+     * Checks if this EELogger has a parent
+     *
+     * @return {@code true} if this EELogger has a parent; {@code false} otherwise
+     */
     public boolean hasParent() {
         return getParent() != null;
     }

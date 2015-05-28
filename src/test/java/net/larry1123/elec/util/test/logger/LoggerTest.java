@@ -67,11 +67,11 @@ public class LoggerTest extends AbstractTest {
     public void testSubLogs() {
         EELogger eeLogger = getTestEELoggerFactory().getLogger("EEUtilLogsParentTest");
         eeLogger.error("A fake ERROR!!", new Error());
-        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "SubLogger");
+        eeLogger = getTestEELoggerFactory().getLogger(eeLogger, "SubLogger");
         eeLogger.info("This is a test of the sub-logger");
         eeLogger.error("This is the sub-logger throwing an error", new Error());
         // Lets get a little meta with this test
-        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "SuperSubLogger");
+        eeLogger = getTestEELoggerFactory().getLogger(eeLogger, "SuperSubLogger");
         eeLogger.info("This is a test of the super-sub-logger");
         eeLogger.error("This is the super-sub-logger throwing an error", new Error());
     }
@@ -79,12 +79,12 @@ public class LoggerTest extends AbstractTest {
     @Test
     public void testZipping() {
         EELogger eeLogger = getTestEELoggerFactory().getLogger("EEUtilZipTest");
-        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "Test2");
-        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "Test3");
-        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "Test4");
-        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "Test5");
-        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "Test6");
-        eeLogger = getTestEELoggerFactory().getSubLogger(eeLogger, "Test7");
+        eeLogger = getTestEELoggerFactory().getLogger(eeLogger, "Test2");
+        eeLogger = getTestEELoggerFactory().getLogger(eeLogger, "Test3");
+        eeLogger = getTestEELoggerFactory().getLogger(eeLogger, "Test4");
+        eeLogger = getTestEELoggerFactory().getLogger(eeLogger, "Test5");
+        eeLogger = getTestEELoggerFactory().getLogger(eeLogger, "Test6");
+        eeLogger = getTestEELoggerFactory().getLogger(eeLogger, "Test7");
         eeLogger.error("A fake ERROR!!", new Error());
 
         try {

@@ -81,7 +81,7 @@ public class AbstractTest {
     }
 
     public EELogger getLogger(String sub) {
-        return getEELoggerFactory().getSubLogger(getLogger(), sub, true);
+        return getEELoggerFactory().getLogger(getLogger(), sub, true);
     }
 
     protected void assertFailWithThrowable(String message, Throwable throwable) {

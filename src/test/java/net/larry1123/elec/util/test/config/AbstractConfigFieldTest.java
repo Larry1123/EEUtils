@@ -209,7 +209,8 @@ public abstract class AbstractConfigFieldTest extends AbstractConfigTest {
 
     @Test
     public void PublicStringArray() {
-        assertTest(getFieldName(), getField());           }
+        assertTest(getFieldName(), getField());
+    }
 
     @Test
     public void PublicStringArrayList() {

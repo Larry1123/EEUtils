@@ -115,13 +115,50 @@ public class EELoggerFactory extends Factory {
      * @return the EELogger for the given
      */
     public EELogger getLogger(String name, boolean fileLog) {
+        return getLogger(null, name, fileLog);
+    }
+
+    /**
+     * Gets the EELogger for the given name
+     *
+     * @param name Name of the Logger
+     * @param subName SubName of logger
+     *
+     * @return the EELogger for the given
+     */
+    public EELogger getLogger(String name, String subName) {
+        return getLogger(getLogger(name), subName);
+    }
+
+    /**
+     * Gets the EELogger for the given name as a sub of the given parent
+     *
+     * @param parent What EELogger to create a sub-Logger under
+     * @param name Name of the sub-Logger
+     *
+     * @return The EELogger for the requested sub-Logger
+     */
+    public EELogger getLogger(EELogger parent, String name) {
+        return getLogger(parent, name, true);
+    }
+
+    /**
+     * Gets the EELogger for the given name as a sub of the given parent
+     *
+     * @param parent What EELogger to create a sub-Logger under
+     * @param name Name of the sub-Logger
+     * @param fileLog {@code true} to log to file; {@code false} to not log to file
+     *
+     * @return The EELogger for the requested sub-Logger
+     */
+    public EELogger getLogger(EELogger parent, String name, boolean fileLog) {
         EELogger logger;
-        if (!containsLogger(name)) {
-            logger = new EELogger(name);
+        if (!containsLogger(getName(parent, name))) {
+            logger = new EELogger(parent, name);
             getLoggers().put(logger.getName(), logger);
         }
         else {
-            logger = getLoggers().get(name);
+            logger = getLoggers().get(getName(parent, name));
         }
         setupFileLogging(fileLog, logger);
         return logger;
@@ -134,9 +171,12 @@ public class EELoggerFactory extends Factory {
      * @param subName SubName of logger
      *
      * @return the EELogger for the given
+     *
+     * @deprecated {@link EELoggerFactory#getLogger(String, String)}
      */
+    @Deprecated
     public EELogger getSubLogger(String name, String subName) {
-        return getSubLogger(getLogger(name), subName);
+        return getLogger(name, subName);
     }
 
     /**
@@ -161,9 +201,12 @@ public class EELoggerFactory extends Factory {
      * @param name Name of the sub-Logger
      *
      * @return The EELogger for the requested sub-Logger
+     *
+     * @deprecated {@link EELoggerFactory#getLogger(EELogger, String)}
      */
+    @Deprecated
     public EELogger getSubLogger(EELogger parent, String name) {
-        return getSubLogger(parent, name, true);
+        return getLogger(parent, name);
     }
 
     /**
@@ -174,18 +217,12 @@ public class EELoggerFactory extends Factory {
      * @param fileLog {@code true} to log to file; {@code false} to not log to file
      *
      * @return The EELogger for the requested sub-Logger
+     *
+     * @deprecated {@link EELoggerFactory#getLogger(EELogger, String, boolean)}
      */
+    @Deprecated
     public EELogger getSubLogger(EELogger parent, String name, boolean fileLog) {
-        EELogger logger;
-        if (!containsLogger(getName(parent, name))) {
-            logger = new EELogger(parent, name);
-            getLoggers().put(logger.getName(), logger);
-        }
-        else {
-            logger = getLoggers().get(getName(parent, name));
-        }
-        setupFileLogging(fileLog, logger);
-        return logger;
+        return getLogger(parent, name, fileLog);
     }
 
     public synchronized void updateFileHandlers() throws IOException {
@@ -204,16 +241,26 @@ public class EELoggerFactory extends Factory {
         }
     }
 
-    protected String getName(EELogger parent, String sub) {
-        return getName(parent.getName(), sub);
+    public String getName(EELogger parent, String sub) {
+        if (parent == null) {
+            return getName((String) null, sub);
+        }
+        else {
+            return getName(parent.getName(), sub);
+        }
     }
 
-    protected String getName(String parent, String sub) {
-        return parent + "." + sub;
+    public String getName(String parent, String sub) {
+        if (parent == null) {
+            return sub;
+        }
+        else {
+            return parent + "." + sub;
+        }
     }
 
     public boolean containsLogger(EELogger logger) {
-        return containsLogger(logger.getName());
+        return getLoggers().containsValue(logger);
     }
 
     public boolean containsLogger(String name) {

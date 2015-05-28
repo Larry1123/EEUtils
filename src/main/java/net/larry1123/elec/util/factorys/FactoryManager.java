@@ -160,6 +160,10 @@ public class FactoryManager {
         return get(EELoggerFactory.class, "default", new EELoggerFactory.EELoggerFactorySetup());
     }
 
+    public <T extends Factory> T get(Class<? extends T> type) {
+        return get(type, "default");
+    }
+
     public <T extends Factory> T get(Class<? extends T> type, String name) {
         return get(type, name, null);
     }

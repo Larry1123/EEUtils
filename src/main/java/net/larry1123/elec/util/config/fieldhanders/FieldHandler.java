@@ -26,6 +26,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @author Larry1123
@@ -180,10 +181,19 @@ public abstract class FieldHandler<T> extends PropertyMeta<T> {
 
     @Override
     public Collection<String> getComments() {
+        Collection<String> ret = Lists.newArrayList();
         if (getAno().comments().length != 1 || !getAno().comments()[0].equals("")) {
-            return Lists.newArrayList(getPropertiesFile().getComments(getKey()));
+            Collections.addAll(ret, getAno().comments());
+            String[] fileComments = getPropertiesFile().getComments(getKey());
+            if (fileComments != null) {
+                for (String fileComment : fileComments) {
+                    if (!ret.contains(fileComment)) {
+                        ret.add(fileComment);
+                    }
+                }
+            }
         }
-        return Lists.newArrayList();
+        return ret;
     }
 
     @Override

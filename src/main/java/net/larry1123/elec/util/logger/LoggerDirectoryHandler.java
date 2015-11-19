@@ -58,7 +58,7 @@ public class LoggerDirectoryHandler {
 
         public Path getPath() {
             updatePath();
-            return path;
+            return _getPath();
         }
 
         public File getFile() {
@@ -94,7 +94,7 @@ public class LoggerDirectoryHandler {
          * @return {@code true} if path is right; {@code false} if path is not current
          */
         protected boolean isPathCurrent() {
-            return path.startsWith(getMainLoggerPath().resolve(mainLogger.getName()));
+            return _getPath().startsWith(getMainLoggerPath().resolve(getMainLogger().getName()));
         }
 
         /**
@@ -114,12 +114,20 @@ public class LoggerDirectoryHandler {
             return setToRemove;
         }
 
+        public Path getCurrentPath() {
+            return _getPath();
+        }
+
+        private Path _getPath() {
+            return path;
+        }
+
     }
 
-    protected final FileManager fileManager;
+    private final FileManager fileManager;
 
-    protected final Logger mainLogger;
-    protected final HashMap<Logger, LoggerStuff> loggerLoggerStuffHashMap = new HashMap<Logger, LoggerStuff>();
+    private final Logger mainLogger;
+    private final HashMap<Logger, LoggerStuff> loggerLoggerStuffHashMap = new HashMap<Logger, LoggerStuff>();
 
     public LoggerDirectoryHandler(FileManager fileManager, Logger logger) {
         this.fileManager = fileManager;
@@ -135,15 +143,15 @@ public class LoggerDirectoryHandler {
      */
     public void setupLogger(EELogger logger) throws IOException {
         if (!isLoggerSetup(logger)) {
-            loggerLoggerStuffHashMap.put(logger, new LoggerStuff(logger));
+            getLoggerLoggerStuffHashMap().put(logger, new LoggerStuff(logger));
         }
-        else if (loggerLoggerStuffHashMap.get(logger).isSetToRemove()) {
-            loggerLoggerStuffHashMap.get(logger).setToRemove(false);
+        else if (getLoggerStuffForLogger(logger).isSetToRemove()) {
+            getLoggerStuffForLogger(logger).setToRemove(false);
         }
     }
 
     public boolean isLoggerSetup(Logger logger) {
-        return loggerLoggerStuffHashMap.containsKey(logger);
+        return getLoggerLoggerStuffHashMap().containsKey(logger);
     }
 
     /**
@@ -152,7 +160,7 @@ public class LoggerDirectoryHandler {
      * @return The path to the directory
      */
     protected Path getDirectoryPath() {
-        return getMainLoggerPath().resolve(mainLogger.getName());
+        return getMainLoggerPath().resolve(getMainLogger().getName());
     }
 
     /**
@@ -164,16 +172,21 @@ public class LoggerDirectoryHandler {
         return Paths.get(getConfig().getLoggerPath());
     }
 
+    /**
+     * Will Try to zip up this directory's log files
+     *
+     * @throws IOException
+     */
     public void zipLogs() throws IOException {
         File zipFile = getDirectoryPath().resolve(getDateFormatFromMilli(System.currentTimeMillis()) + ".zip").toFile();
         ZipArchiveOutputStream archiveOutputStream = new ZipArchiveOutputStream(zipFile);
 
-        for (LoggerStuff loggerStuff : loggerLoggerStuffHashMap.values()) {
+        for (LoggerStuff loggerStuff : getLoggerLoggerStuffHashMap().values()) {
             loggerStuff.closeUtilFileHandler();
             packFile(loggerStuff.getFile(), archiveOutputStream);
             if (loggerStuff.isSetToRemove()) {
                 // Make sure that the file gets zipped up anyway.
-                loggerLoggerStuffHashMap.remove(loggerStuff.getLogger());
+                getLoggerLoggerStuffHashMap().remove(loggerStuff.getLogger());
             }
             else {
                 loggerStuff.updateUtilFileHandlerOutputStream();
@@ -195,7 +208,7 @@ public class LoggerDirectoryHandler {
     }
 
     protected LoggerSettings getConfig() {
-        return fileManager.getConfig();
+        return getFileManager().getConfig();
     }
 
     /**
@@ -209,12 +222,35 @@ public class LoggerDirectoryHandler {
         return DateFormatUtils.ISO_DATETIME_FORMAT.format(milli).replace(":", File.pathSeparator);
     }
 
-    public void removeLogger(EELogger logger) {
-        if (loggerLoggerStuffHashMap.containsKey(logger)) {
-            LoggerStuff loggerStuff = loggerLoggerStuffHashMap.get(logger);
+    public void removeLogger(Logger logger) {
+        if (isLoggerSetup(logger)) {
+            LoggerStuff loggerStuff = getLoggerStuffForLogger(logger);
             loggerStuff.closeUtilFileHandler();
             loggerStuff.setToRemove(true);
         }
+    }
+
+    public Path getCurrentPathForLogger(Logger logger) throws LoggerInternalSearchException {
+        if (isLoggerSetup(logger)) {
+            return getLoggerStuffForLogger(logger).getCurrentPath();
+        }
+        throw new LoggerInternalSearchException("Logger " + (logger != null ? logger.getName() : null) + " was not found in this LoggerDirectoryHandler!");
+    }
+
+    protected LoggerStuff getLoggerStuffForLogger(Logger logger) {
+        return getLoggerLoggerStuffHashMap().get(logger);
+    }
+
+    protected FileManager getFileManager() {
+        return fileManager;
+    }
+
+    protected Logger getMainLogger() {
+        return mainLogger;
+    }
+
+    protected HashMap<Logger, LoggerStuff> getLoggerLoggerStuffHashMap() {
+        return loggerLoggerStuffHashMap;
     }
 
 }

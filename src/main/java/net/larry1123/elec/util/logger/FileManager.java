@@ -191,6 +191,13 @@ public class FileManager {
         return isSplitting() && !hasCurrentSplit() && getConfig().getCurrentSplit() == getSplitTime();
     }
 
+    public LoggerDirectoryHandler getLoggerDirectoryHandlerForLogger(EELogger logger) throws LoggerInternalSearchException {
+        if (isLoggerTracked(logger)) {
+            return loggerDirectoryHandlerHashMap.get(logger);
+        }
+        throw new LoggerInternalSearchException("Logger " + (logger != null ? logger.getName() : null) + " is not managed by this FileManager!");
+    }
+
     public LoggerSettings getConfig() {
         return eeLoggerFactory.getLoggerSettings();
     }

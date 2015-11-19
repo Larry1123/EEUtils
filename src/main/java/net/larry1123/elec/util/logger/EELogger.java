@@ -805,19 +805,31 @@ public class EELogger implements Logger {
     /**
      * This is the path for the log files of this logger
      *
-     * @deprecated The logger no longer knows where the file is
+     * @deprecated The logger no longer knows where the file is. Will try to find out may take some time use other methods please.
      */
     @Deprecated
     public String getPath() {
-        return "";
+        try {
+            LoggerDirectoryHandler loggerDirectoryHandler = FactoryManager.getFactoryManager().getEELoggerFactoryForLogger(this).getFileManager().getLoggerDirectoryHandlerForLogger(this);
+            return loggerDirectoryHandler.getDirectoryPath().toString();
+        }
+        catch (LoggerInternalSearchException e) {
+            return "";
+        }
     }
 
     /**
-     * @deprecated The logger no longer knows where the file is
+     * @deprecated The logger no longer knows where the file is. Will try to find out may take some time use other methods please.
      */
     @Deprecated
     public String getLogFile() {
-        return "";
+        try {
+            LoggerDirectoryHandler loggerDirectoryHandler = FactoryManager.getFactoryManager().getEELoggerFactoryForLogger(this).getFileManager().getLoggerDirectoryHandlerForLogger(this);
+            return loggerDirectoryHandler.getCurrentPathForLogger(this).toString();
+        }
+        catch (LoggerInternalSearchException e) {
+            return "";
+        }
     }
 
     /**

@@ -23,7 +23,7 @@ import org.apache.commons.collections4.KeyValue;
  */
 public abstract class Property<T> implements KeyValue<String, T> {
 
-    protected final String key;
+    private final String key;
 
     public Property(String key) {
         this.key = key;

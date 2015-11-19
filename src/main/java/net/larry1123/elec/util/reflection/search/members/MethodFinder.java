@@ -18,18 +18,16 @@ package net.larry1123.elec.util.reflection.search.members;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 
 /**
  * @author Larry1123
  * @since 4/15/2015 - 3:59 AM
  */
-public class MethodFinder implements MemberFinder<Method> {
+public class MethodFinder extends AbstractAccessibleObjectMemberFinder<Method> {
 
     private final Class aClass;
     private final Class[] parameters;
-    private final boolean makeAccessible;
 
     public MethodFinder(Class aClass) {
         this(aClass, false);
@@ -44,8 +42,8 @@ public class MethodFinder implements MemberFinder<Method> {
     }
 
     public MethodFinder(Class aClass, boolean makeAccessible, Class... parameters) {
+        super(makeAccessible);
         this.aClass = aClass;
-        this.makeAccessible = makeAccessible;
         this.parameters = parameters;
     }
 
@@ -116,18 +114,8 @@ public class MethodFinder implements MemberFinder<Method> {
         return methods;
     }
 
-    protected void makeAccessible(AccessibleObject field) {
-        if (isMakeAccessible()) {
-            field.setAccessible(true);
-        }
-    }
-
     public Class getaClass() {
         return aClass;
-    }
-
-    public boolean isMakeAccessible() {
-        return makeAccessible;
     }
 
 }

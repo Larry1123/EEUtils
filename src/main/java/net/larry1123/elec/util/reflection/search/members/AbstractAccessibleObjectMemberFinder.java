@@ -15,21 +15,29 @@
  */
 package net.larry1123.elec.util.reflection.search.members;
 
-import java.lang.annotation.Annotation;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Member;
 
 /**
- * This interface is for finding members from a class.
- *
  * @author Larry1123
- * @since 4/15/2015 - 3:47 AM
+ * @since 1.4.0
  */
-public interface MemberFinder<T extends Member> {
+public abstract class AbstractAccessibleObjectMemberFinder<T extends Member> implements MemberFinder<T> {
 
-    T get(String name) throws MemberNotFoundException;
+    private final boolean makeAccessible;
 
-    T[] get(Class<? extends Annotation> annotationClass);
+    public AbstractAccessibleObjectMemberFinder(boolean makeAccessible) {
+        this.makeAccessible = makeAccessible;
+    }
 
-    T[] get();
+    public boolean isMakeAccessible() {
+        return makeAccessible;
+    }
+
+    protected void makeAccessible(AccessibleObject accessibleObject) {
+        if (isMakeAccessible()) {
+            accessibleObject.setAccessible(true);
+        }
+    }
 
 }

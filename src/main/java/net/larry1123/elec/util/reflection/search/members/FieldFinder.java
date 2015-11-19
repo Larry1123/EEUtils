@@ -18,7 +18,6 @@ package net.larry1123.elec.util.reflection.search.members;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
@@ -26,18 +25,17 @@ import java.lang.reflect.Type;
  * @author Larry1123
  * @since 4/15/2015 - 3:17 AM
  */
-public class FieldFinder implements MemberFinder<Field> {
+public class FieldFinder extends AbstractAccessibleObjectMemberFinder<Field> {
 
     private final Class aClass;
-    private final boolean makeAccessible;
 
     public FieldFinder(Class aClass) {
         this(aClass, false);
     }
 
     public FieldFinder(Class aClass, boolean makeAccessible) {
+        super(makeAccessible);
         this.aClass = aClass;
-        this.makeAccessible = makeAccessible;
     }
 
     @Override
@@ -132,18 +130,8 @@ public class FieldFinder implements MemberFinder<Field> {
         return fields;
     }
 
-    protected void makeAccessible(AccessibleObject field) {
-        if (isMakeAccessible()) {
-            field.setAccessible(true);
-        }
-    }
-
     public Class getaClass() {
         return aClass;
-    }
-
-    public boolean isMakeAccessible() {
-        return makeAccessible;
     }
 
 }
